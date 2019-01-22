@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="dsp-common" />
+        <module name="dsp-dubbo-base-interface" />
+        <module name="dsp-dubbo-consumer" />
+        <module name="dsp-dubbo-provider" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="dsp-dubbo-base-interface" target="1.7" />
+      <module name="dsp-rpc-server" target="1.7" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

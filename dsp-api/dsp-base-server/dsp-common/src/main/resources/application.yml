@@ -1,0 +1,10 @@
+server:
+  port:
+spring:
+  profiles:
+    active : dev
+  application:
+    name: dsp-common
+logging:
+  level:
+#    com.dftoutiao.dal.db : debug

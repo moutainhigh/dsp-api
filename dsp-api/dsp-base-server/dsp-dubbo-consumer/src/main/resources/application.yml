@@ -1,0 +1,10 @@
+server:
+  port: 9091
+spring:
+  profiles:
+    active : dev
+  application:
+    name: dsp-dubbo-consumer
+logging:
+  level:
+#    com.dftoutiao.dal.db : debug
