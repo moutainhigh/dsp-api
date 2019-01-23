@@ -1,4 +1,4 @@
-package com.songheng.dsp.utils;
+package com.songheng.dsp.common.utils;
 
 import eu.bitwalker.useragentutils.UserAgent;
 

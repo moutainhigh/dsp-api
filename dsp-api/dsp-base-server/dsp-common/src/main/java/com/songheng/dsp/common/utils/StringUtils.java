@@ -1,4 +1,4 @@
-package com.songheng.dsp.utils;
+package com.songheng.dsp.common.utils;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
@@ -9,7 +9,6 @@ import com.sun.istack.internal.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 
 /**
@@ -140,15 +139,6 @@ public final class StringUtils {
         return padEnd(oldStr, DEFAULT_PAD_LENGTH, DEFAULT_PAD_CHAR);
     }
 
-    /**
-     * @Description: 生成随机的UUID
-     * @param isShort 是否生成不带 "-" 的 UUID
-     * @return 随机ID
-     **/
-
-    public static String generateUUID(boolean isShort) {
-        return UUID.randomUUID().toString().replace("-", isShort ? "" : "-");
-    }
 
     /**
      * @Description: 将带空格,",","，"的字符串分割转成list
@@ -199,7 +189,6 @@ public final class StringUtils {
         System.out.println("padStart:" + StringUtils.padStart("121", 4, '0'));
         System.out.println("padDefaultEnd:" + StringUtils.padDefaultEnd("11"));
         System.out.println("padEnd:" + StringUtils.padEnd("121", 4, '0'));
-        System.out.println("generateUUID:" + StringUtils.generateUUID(true));
         List<String> list = StringUtils.strToList("a，b,c");
         System.out.println("listToStr:"+StringUtils.listToStr(list)+";");
         Map<String,String> maps = StringUtils.strToMap("k1=v1&k2=v2");
