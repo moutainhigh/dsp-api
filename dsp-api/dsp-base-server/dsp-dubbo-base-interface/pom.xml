@@ -13,6 +13,6 @@
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
-    <description>The parent project of dsp-dubbo-base-interface</description>
+    <description>The project of dsp-dubbo-base-interface</description>
 
 </project>

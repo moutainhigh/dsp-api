@@ -13,7 +13,7 @@
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
-    <description>The parent project of dsp-base-server</description>
+    <description>The project of dsp-base-server</description>
     <modules>
         <module>dsp-common</module>
         <module>dsp-dubbo-base-interface</module>
@@ -37,6 +37,19 @@
                 <version>${springboot.version}</version>
                 <scope>test</scope>
             </dependency>
+            <!-- spring-boot-starter-jdbc 模块  -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-jdbc</artifactId>
+                <version>${springboot.version}</version>
+            </dependency>
+            <!--ConfigurationProperties注解读取配置参数 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-configuration-processor</artifactId>
+                <version>${springboot.version}</version>
+            </dependency>
+
             <!--dubbo -->
             <dependency>
                 <groupId>com.alibaba.boot</groupId>

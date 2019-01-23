@@ -15,7 +15,7 @@
     <!--<packaging>war</packaging>-->
 
     <name>${project.artifactId}</name>
-    <description>The parent project of dsp-dubbo-provider</description>
+    <description>The project of dsp-dubbo-provider</description>
 
     <dependencies>
         <!--web -->

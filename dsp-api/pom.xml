@@ -14,7 +14,7 @@
     <packaging>pom</packaging>
 
     <name>${project.artifactId}</name>
-    <description>The parent project of dsp-parent</description>
+    <description>The project of dsp-parent</description>
 
     <properties>
         <!-- Compile libs -->
