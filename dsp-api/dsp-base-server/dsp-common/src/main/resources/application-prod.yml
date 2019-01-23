@@ -31,9 +31,9 @@ spring:
       test-on-borrow : false
       test-on-return : false
       test-while-idle : true
-mybatis:
-  mapper-locations: classpath:mapper/*.xml
-  type-aliases-package: com.dftoutiao.model
+#mybatis:
+#  mapper-locations: classpath:mapper/*.xml
+#  type-aliases-package: com.dftoutiao.model
 hbase:
   linknum: 2
   zookeeper:

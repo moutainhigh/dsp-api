@@ -33,8 +33,8 @@ spring:
        test-on-return : false
        test-while-idle : true
 #Mybatis信息
-mybatis:
-  mapper-locations: classpath:mapper/*.xml
+#mybatis:
+#  mapper-locations: classpath:mapper/*.xml
   #type-aliases-package: com.dftoutiao.model
 #HBASE信息
 hbase:
