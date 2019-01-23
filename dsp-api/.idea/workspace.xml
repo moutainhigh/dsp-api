@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1517ef17-8d98-4c1a-94c8-c5baee266bbe" name="Default" comment="" />
+    <list default="true" id="1517ef17-8d98-4c1a-94c8-c5baee266bbe" name="Default" comment="DB工具类">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dsp-base-server/dsp-common/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/dsp-base-server/dsp-common/pom.xml" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="$PROJECT_DIR$/dsp-baseserver/target/" />
@@ -21,7 +24,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="true">
+      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="3645">
@@ -63,11 +66,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
+      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/dsp-base-server/dsp-common/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-553">
-              <caret line="12" column="30" selection-start-line="12" selection-start-column="30" selection-end-line="12" selection-end-column="30" />
+            <state relative-caret-position="2430">
+              <caret line="90" column="21" lean-forward="true" selection-start-line="90" selection-start-column="21" selection-end-line="90" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -206,10 +209,10 @@
         <option value="$PROJECT_DIR$/dsp-base-server/pom.xml" />
         <option value="$PROJECT_DIR$/dsp-base-server/dsp-common/src/main/resources/application-dev.yml" />
         <option value="$PROJECT_DIR$/dsp-base-server/dsp-common/src/main/resources/application-prod.yml" />
-        <option value="$PROJECT_DIR$/dsp-base-server/dsp-common/pom.xml" />
         <option value="$PROJECT_DIR$/dsp-base-server/dsp-common/src/test/java/com/songheng/dsp/common/db/DBTest.java" />
         <option value="$PROJECT_DIR$/dsp-base-server/dsp-common/src/main/java/com/songheng/dsp/common/db/DruidConfiguration.java" />
         <option value="$PROJECT_DIR$/dsp-base-server/dsp-common/src/main/java/com/songheng/dsp/common/db/DbUtils.java" />
+        <option value="$PROJECT_DIR$/dsp-base-server/dsp-common/pom.xml" />
       </list>
     </option>
   </component>
@@ -522,6 +525,13 @@
               <item name="dsp-api" type="b2602c69:ProjectViewProjectNode" />
               <item name="dsp-api" type="462c0819:PsiDirectoryNode" />
               <item name="dsp-base-server" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp-common" type="462c0819:PsiDirectoryNode" />
+              <item name="target" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dsp-api" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dsp-api" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp-base-server" type="462c0819:PsiDirectoryNode" />
               <item name="dsp-dubbo-base-interface" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -612,7 +622,137 @@
               <item name="dsp-api" type="b2602c69:ProjectViewProjectNode" />
               <item name="dsp-api" type="462c0819:PsiDirectoryNode" />
               <item name="dsp-base-server" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp-dubbo-base-interface" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="songheng" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp" type="462c0819:PsiDirectoryNode" />
+              <item name="dubbo" type="462c0819:PsiDirectoryNode" />
+              <item name="baseinterface" type="462c0819:PsiDirectoryNode" />
+              <item name="partner" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dsp-api" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dsp-api" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp-base-server" type="462c0819:PsiDirectoryNode" />
               <item name="dsp-dubbo-consumer" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dsp-api" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dsp-api" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp-base-server" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp-dubbo-consumer" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dsp-api" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dsp-api" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp-base-server" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp-dubbo-consumer" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dsp-api" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dsp-api" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp-base-server" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp-dubbo-consumer" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dsp-api" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dsp-api" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp-base-server" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp-dubbo-consumer" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dsp-api" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dsp-api" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp-base-server" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp-dubbo-consumer" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="songheng" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dsp-api" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dsp-api" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp-base-server" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp-dubbo-consumer" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="songheng" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dsp-api" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dsp-api" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp-base-server" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp-dubbo-consumer" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="songheng" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp" type="462c0819:PsiDirectoryNode" />
+              <item name="dubbo" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dsp-api" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dsp-api" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp-base-server" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp-dubbo-consumer" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="songheng" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp" type="462c0819:PsiDirectoryNode" />
+              <item name="dubbo" type="462c0819:PsiDirectoryNode" />
+              <item name="consumer" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dsp-api" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dsp-api" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp-base-server" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp-dubbo-consumer" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="songheng" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp" type="462c0819:PsiDirectoryNode" />
+              <item name="dubbo" type="462c0819:PsiDirectoryNode" />
+              <item name="consumer" type="462c0819:PsiDirectoryNode" />
+              <item name="partner" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dsp-api" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dsp-api" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp-base-server" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp-dubbo-consumer" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="songheng" type="462c0819:PsiDirectoryNode" />
+              <item name="dsp" type="462c0819:PsiDirectoryNode" />
+              <item name="dubbo" type="462c0819:PsiDirectoryNode" />
+              <item name="consumer" type="462c0819:PsiDirectoryNode" />
+              <item name="partner" type="462c0819:PsiDirectoryNode" />
+              <item name="controller" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="dsp-api" type="b2602c69:ProjectViewProjectNode" />
@@ -953,7 +1093,7 @@
       <workItem from="1547794269088" duration="33329000" />
       <workItem from="1548087937369" duration="5320000" />
       <workItem from="1548151097093" duration="10593000" />
-      <workItem from="1548209770666" duration="22671000" />
+      <workItem from="1548209770666" duration="23595000" />
     </task>
     <task id="LOCAL-00001" summary="DB工具类">
       <created>1548233977864</created>
@@ -998,7 +1138,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="76899000" />
+    <option name="totallyTimeSpent" value="77823000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1358" y="-8" width="1936" height="1056" extended-state="6" />
@@ -1021,7 +1161,7 @@
       <window_info anchor="bottom" id="Java Enterprise" order="8" />
       <window_info anchor="right" id="Capture Analysis" order="3" />
       <window_info anchor="bottom" id="Run Dashboard" order="8" sideWeight="0.49946696" weight="0.2791712" />
-      <window_info anchor="bottom" id="Version Control" order="7" visible="true" weight="0.25517994" />
+      <window_info anchor="bottom" id="Version Control" order="7" visible="true" weight="0.20610687" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.3991276" />
       <window_info anchor="bottom" id="Spring" order="8" weight="0.32897604" />
       <window_info anchor="bottom" id="Terminal" order="7" />
@@ -1137,6 +1277,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
           <caret line="7" column="3" selection-start-line="7" selection-start-column="3" selection-end-line="7" selection-end-column="3" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1144,6 +1287,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="108">
           <caret line="7" selection-start-line="7" selection-end-line="11" selection-end-column="3" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1354,13 +1500,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dsp-base-server/dsp-common/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-553">
-          <caret line="12" column="30" selection-start-line="12" selection-start-column="30" selection-end-line="12" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/dsp-base-server/dsp-common/src/main/resources/application.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
@@ -1397,6 +1536,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3645">
           <caret line="135" selection-start-line="135" selection-end-line="135" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dsp-base-server/dsp-common/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2430">
+          <caret line="90" column="21" lean-forward="true" selection-start-line="90" selection-start-column="21" selection-end-line="90" selection-end-column="21" />
         </state>
       </provider>
     </entry>
