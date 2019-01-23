@@ -3,9 +3,6 @@ package com.songheng.dsp.common.utils;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +48,7 @@ public final class StringUtils {
      * @param string 需要验空的参数
      * @return 如果是无效字符串则返回 <code>true</code> 否则返回 <code>false</code>
      */
-    public static boolean isInvalidString(@Nullable String string) {
+    public static boolean isInvalidString(String string) {
         return (string == null || "".equals(string.trim()) || "null".equalsIgnoreCase(string)
                 || "nan".equalsIgnoreCase(string) || "undefined".equalsIgnoreCase(string)
         );
@@ -63,7 +60,7 @@ public final class StringUtils {
      * @param replaceString 需要替换的字符串
      * @return 如果参数是无效字符串则返回replaceString, 否则返回oldString并且去掉前后两端空格
      * */
-    public static String replaceNullOrEmpty(@Nullable String oldString, @NotNull String replaceString) {
+    public static String replaceNullOrEmpty(String oldString, String replaceString) {
         return isInvalidString(oldString) ? replaceString : oldString.trim();
     }
 
@@ -91,7 +88,7 @@ public final class StringUtils {
      * @param string 需要转换的字符串
      * @return 如果字符串是有效数值则返回对应数值 否则返回 -1
      **/
-    public static Integer parseInteger(@NotNull String string) {
+    public static Integer parseInteger(String string) {
         return isNumeric(string) ? Integer.parseInt(string) : -1;
     }
 

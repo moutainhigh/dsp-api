@@ -7,7 +7,7 @@ import java.util.UUID;
 
 /**
  *
- * @Title: StringUtils
+ * @Title: RandomUtils
  * @Package com.songheng.dsp.utils
  * @Description: 字符串工具类
  * @author: zhangshuai@021.com
