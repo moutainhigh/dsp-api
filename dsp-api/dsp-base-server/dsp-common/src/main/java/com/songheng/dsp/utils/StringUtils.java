@@ -6,7 +6,11 @@ import com.google.common.base.Strings;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 
 /**
  * @version V1.0
@@ -40,7 +44,7 @@ public final class StringUtils {
     /**
      * @Fields SPLIt_MAP_CHAR : 字符串转map的分割字符串
      */
-    private final static String STR_TO_MAP_SPLIt_CHAR = "=";
+    private final static String STR_TO_MAP_SPLIT_CHAR = "=";
 
     /**
      * @Description: 判断是否无效字符串(null, " ", " null ", " NULL ", " nan ", " NaN ", " NAN ", " undefined " ...)
@@ -160,7 +164,7 @@ public final class StringUtils {
      **/
 
     public static Map<String, String> strToMap(String strings){
-        if(!strings.contains(STR_TO_MAP_SPLIt_CHAR)) {
+        if(!strings.contains(STR_TO_MAP_SPLIT_CHAR)) {
             return new HashMap<>(0);
         }
         return Splitter.on("&").withKeyValueSeparator("=").split(strings);
