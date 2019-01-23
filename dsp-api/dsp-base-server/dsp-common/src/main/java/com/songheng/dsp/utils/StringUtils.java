@@ -13,12 +13,13 @@ import java.util.UUID;
 
 
 /**
- * @version V1.0
+ *
  * @Title: StringUtils
  * @Package com.songheng.dsp.utils
  * @Description: 字符串工具类
  * @author: zhangshuai@021.com
  * @date: 2019-01-22 22:24
+ * @version V1.0
  */
 public final class StringUtils {
 
@@ -58,7 +59,7 @@ public final class StringUtils {
     }
 
     /***
-     * @Description: 将 (null,"","null","NULL","nan","NaN","NAN"."undefined"...) 无效字符串替换成 replaceString 并去掉前后两端空格，一般用于传入参数的处理
+     * @Description: 将 (null,"","null","NULL","nan","NaN","NAN"."undefined"...) 无效字符串替换成 <code>replaceString</code> 一般用于传入参数的处理
      * @param oldString 原始字符串
      * @param replaceString 需要替换的字符串
      * @return 如果参数是无效字符串则返回replaceString, 否则返回oldString并且去掉前后两端空格
