@@ -42,6 +42,10 @@
         <zkclient.version>0.1</zkclient.version>
         <!--sentinel -->
         <alibaba.sentinal.version>0.2.0-SNAPSHOT</alibaba.sentinal.version>
+        <!--guava-->
+        <guava.version>18.0</guava.version>
+        <!--useragent-->
+        <useragent.version>1.20</useragent.version>
 
         <!--DB -->
         <mysql.version>5.1.8</mysql.version>
@@ -138,6 +142,19 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
+            </dependency>
+
+            <!--google工具包-->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <!--UserAgent-->
+            <dependency>
+                <groupId>eu.bitwalker</groupId>
+                <artifactId>UserAgentUtils</artifactId>
+                <version>${useragent.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
