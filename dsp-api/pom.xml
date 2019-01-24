@@ -55,7 +55,8 @@
         <!--inner jar -->
         <dsp.common.version>1.0-SNAPSHOT</dsp.common.version>
         <dsp.dubbo.base.interface>1.0-SNAPSHOT</dsp.dubbo.base.interface>
-
+        <!--异步框架-->
+        <com.lmax.disruptor.version>3.3.6</com.lmax.disruptor.version>
         <!-- Build -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.source.version>1.7</java.source.version>
@@ -189,7 +190,7 @@
         <dependency>
             <groupId>com.lmax</groupId>
             <artifactId>disruptor</artifactId>
-            <version>3.3.6</version>
+            <version>${com.lmax.disruptor.version}</version>
         </dependency>
     </dependencies>
 

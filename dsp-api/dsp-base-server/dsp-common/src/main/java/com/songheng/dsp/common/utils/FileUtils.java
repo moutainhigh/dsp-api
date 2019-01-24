@@ -35,7 +35,6 @@ public class FileUtils {
     public static void main(String[] args) {
         long base = System.currentTimeMillis();
         for (int i = 0; i < 100000; i++) {
-            //FileUtils.copyFile("/Users/mac/Documents/workspace/1.txt", "/Users/mac/Documents/workspace/2.txt");
             log.error("{}&{}\t{}","aaaaaadfdfadsfadfadfadfadaaaaaa","bbbbbbadfdsafadfadsfadfasfabbbb","ccccccsdfadsfadsfadadfadfadfadadfadsfadfadfa");
         }
         long end = System.currentTimeMillis();
