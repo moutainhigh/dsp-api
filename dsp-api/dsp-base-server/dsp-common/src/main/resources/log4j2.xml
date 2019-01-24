@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+6个优先级从高到低依次为：OFF、FATAL、ERROR、WARN、INFO、DEBUG、TRACE、 ALL。
+如果设置优先级为WARN，那么OFF、FATAL、ERROR、WARN 4个级别的log能正常输出
+设置为OFF 表示不记录log4j2本身的日志，
+-->
+
+<!-- status：用来指定log4j本身的打印日志级别,monitorInterval:指定log4j自动重新配置的监测间隔时间 -->
+<configuration status="OFF" monitorInterval="60">
+    <!-- 自己设置属性，后面通过${}来访问 -->
+    <properties>
+        <property name="LOG_HOME">/data/dsp-api/dsp-base-server/dsp-common</property>
+        <property name="SYSTEM_LOG">/system</property>
+    </properties>
+    <appenders>
+        <!--Appender  输出到Console控制台，指定输出格式和过滤器等级为INFO -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <!--ThresholdFilter指定日志消息的输出最低层次-->
+            <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss}\t%F:%L\t%m%n"/>
+        </Console>
+
+        <!--Appender  输出到滚动保存的文件, 触发保存日志文件的条件是每天第一次的日志事件。ERROR日志是按每天产生日志 -->
+        <!--<RollingFile name="errorLog" fileName="${LOG_HOME}/${ERROR_LOG}/error.log" filePattern="${LOG_HOME}/${ERROR_LOG}/error-%d{yyyyMMdd}.log">-->
+            <!--<ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>-->
+            <!--<PatternLayout charset="UTF-8" pattern="%d{yyyy-MM-dd HH:mm:ss}\t%F:%L\t%m%n"/>-->
+            <!--<TimeBasedTriggeringPolicy/>-->
+        <!--</RollingFile>-->
+
+        <!--Appender  输出到滚动保存的文件, 触发保存日志文件的条件是每天第一次的日志事件。ERROR日志是按每天产生日志 -->
+        <RollingFile name="systemLog" fileName="${LOG_HOME}/${SYSTEM_LOG}/system.log" filePattern="${LOG_HOME}/${SYSTEM_LOG}/system-%d{yyyyMMdd}.log">
+            <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout charset="UTF-8" pattern="%d{yyyy-MM-dd HH:mm:ss}\t%F:%L\t%m%n"/>
+            <TimeBasedTriggeringPolicy/>
+        </RollingFile>
+
+
+        <!--Appender  输出到滚动保存的文件, 触发保存日志文件的条件是日志文件大于3KB，只保存最新的10个日志-->
+        <!--<RollingFile name="debugLog" fileName="${LOG_HOME}/${DEBUG_LOG}/debug.log" filePattern="${LOG_HOME}/${DEBUG_LOG}/debug-%i.log">-->
+            <!--<ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>-->
+            <!--<PatternLayout charset="UTF-8" pattern="%d{yyyy-MM-dd HH:mm:ss}\t%F:%L\t%m%n"/>-->
+            <!--<SizeBasedTriggeringPolicy size="3KB"/>-->
+            <!--&lt;!&ndash; DefaultRolloverStrategy 中的参数max，可以限制 SizeBasedTriggeringPolicy中size超出后，只保留max个存档&ndash;&gt;-->
+            <!--<DefaultRolloverStrategy max="10"/>-->
+        <!--</RollingFile>-->
+
+
+
+    </appenders>
+    <!--root 默认加载-->
+    <loggers>
+        <!--<root level="error">-->
+            <!--<appender-ref ref="Console"/>-->
+        <!--</root>-->
+
+        <!--测试环境开启debug模式,生产开启info模式   -->
+        <!--等级由低到高：debug<info<warn<Error<Fatal;-->
+        <!--info 用于打印程序应该出现的正常状态信息， 便于追踪定位；-->
+        <!--warn 表明系统出现轻微的不合理但不影响运行和使用；-->
+        <!--error 表明出现了系统错误和异常，无法正常完成目标操作。-->
+       <!--<Logger name="com.songheng.dsp.common" level="info" additivity="false">-->
+            <!--<appender-ref ref="systemLog"/>-->
+        <!--</Logger>-->
+        <Logger name="com.songheng.dsp.common" level="info" additivity="false">-->
+            <appender-ref ref="systemLog"/>
+        </Logger>
+        <!--<AsyncLogger name="com.songheng.dsp.common" level="info" additivity="false">-->
+            <!--<appender-ref ref="systemLog"/>-->
+        <!--</AsyncLogger>-->
+    </loggers>
+</configuration>

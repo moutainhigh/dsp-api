@@ -1,6 +1,8 @@
 package com.songheng.dsp.common.utils;
 
 import com.google.common.io.Files;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.File;
 
 /**
@@ -12,6 +14,7 @@ import java.io.File;
  * @date: 2019-01-23 20:44
  * @version V1.0
  **/
+@Slf4j
 public class FileUtils {
     /**
      * @Description: 复制文件
@@ -24,12 +27,18 @@ public class FileUtils {
             Files.copy(new File(originFilePath), new File(copyFilePath));
             return true;
         }catch (Exception e){
-            e.printStackTrace();
+            log.error("{}&{}\t{}",originFilePath,copyFilePath,e);
             return false;
         }
     }
 
     public static void main(String[] args) {
-        FileUtils.copyFile("/Users/mac/Documents/workspace/1.txt","/Users/mac/Documents/workspace/2.txt");
+        long base = System.currentTimeMillis();
+        for (int i = 0; i < 100000; i++) {
+            //FileUtils.copyFile("/Users/mac/Documents/workspace/1.txt", "/Users/mac/Documents/workspace/2.txt");
+            log.error("{}&{}\t{}","aaaaaadfdfadsfadfadfadfadaaaaaa","bbbbbbadfdsafadfadsfadfasfabbbb","ccccccsdfadsfadsfadadfadfadfadadfadsfadfadfa");
+        }
+        long end = System.currentTimeMillis();
+        System.out.println(base+"\t"+end+"\t"+(end-base));
     }
 }
