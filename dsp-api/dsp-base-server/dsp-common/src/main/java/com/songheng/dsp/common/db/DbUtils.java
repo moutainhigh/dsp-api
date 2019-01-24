@@ -2,8 +2,6 @@ package com.songheng.dsp.common.db;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
 import java.sql.*;
@@ -15,11 +13,7 @@ import java.util.List;
  * @date: 2019/1/22 22:54
  * @description: DB工具类
  */
-@Component
 public class DbUtils {
-
-    @Autowired
-    private DruidConfiguration druidConfiguration;
 
     /**
      * 单个对象查询
@@ -29,8 +23,8 @@ public class DbUtils {
      * @param <T>
      * @return
      */
-    public <T> T queryById(String sql, Class<T> cls, Object... paras) {
-        Connection conn = druidConfiguration.getConnection();
+    public static <T> T queryById(String sql, Class<T> cls, Object... paras) {
+        Connection conn = DruidConfiguration.getConnection();
         if (null == conn) {
             return null;
         }
@@ -54,7 +48,7 @@ public class DbUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            druidConfiguration.closeResource(conn, pst, rs);
+            DruidConfiguration.closeResource(conn, pst, rs);
         }
         return singleObject;
     }
@@ -65,7 +59,7 @@ public class DbUtils {
      * @param paras
      * @return
      */
-    public boolean selectExists(String sql, Object... paras){
+    public static boolean selectExists(String sql, Object... paras){
         Integer num = queryById(sql, Integer.class, paras);
         return num > 0 ? true : false;
     }
@@ -76,7 +70,7 @@ public class DbUtils {
      * @param paras
      * @return
      */
-    public int selectCount(String sql, Object... paras){
+    public static int selectCount(String sql, Object... paras){
         Integer num = queryById(sql, Integer.class, paras);
         return num.intValue();
     }
@@ -89,8 +83,8 @@ public class DbUtils {
      * @param <T>
      * @return
      */
-    public <T> List<T> queryList(String sql, Class<T> cls, Object... paras){
-        Connection conn = druidConfiguration.getConnection();
+    public static <T> List<T> queryList(String sql, Class<T> cls, Object... paras){
+        Connection conn = DruidConfiguration.getConnection();
         if (null == conn) {
             return null;
         }
@@ -114,7 +108,7 @@ public class DbUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            druidConfiguration.closeResource(conn, pst, rs);
+            DruidConfiguration.closeResource(conn, pst, rs);
         }
         return list;
     }
@@ -127,8 +121,8 @@ public class DbUtils {
      * @param <T>
      * @return
      */
-    public <T> List<T> queryList(String sql, Class<T> cls, JSONObject jsonObject){
-        Connection conn = druidConfiguration.getConnection();
+    public static <T> List<T> queryList(String sql, Class<T> cls, JSONObject jsonObject){
+        Connection conn = DruidConfiguration.getConnection();
         if (null == conn) {
             return null;
         }
@@ -153,7 +147,7 @@ public class DbUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            druidConfiguration.closeResource(conn, pst, rs);
+            DruidConfiguration.closeResource(conn, pst, rs);
         }
         return list;
     }
@@ -165,7 +159,7 @@ public class DbUtils {
      * @param <T>
      * @return
      */
-    public <T> List<T> analysisRst(ResultSet rs, Class<T> cls){
+    public static <T> List<T> analysisRst(ResultSet rs, Class<T> cls){
         if (null == rs){
             return null;
         }
@@ -281,8 +275,8 @@ public class DbUtils {
      * @param <T>
      * @return
      */
-    public <T> List<T> callProcedure(String sql, Class<T> cls, Object... paras){
-        Connection conn = druidConfiguration.getConnection();
+    public static <T> List<T> callProcedure(String sql, Class<T> cls, Object... paras){
+        Connection conn = DruidConfiguration.getConnection();
         if (null == conn) {
             return null;
         }
@@ -306,7 +300,7 @@ public class DbUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            druidConfiguration.closeResource(conn, cst, rs);
+            DruidConfiguration.closeResource(conn, cst, rs);
         }
         return list;
     }
@@ -317,8 +311,8 @@ public class DbUtils {
      * @param paras
      * @return
      */
-    public boolean executeNamingSql(String sql, Object... paras) {
-        Connection conn = druidConfiguration.getConnection();
+    public static boolean executeNamingSql(String sql, Object... paras) {
+        Connection conn = DruidConfiguration.getConnection();
         PreparedStatement pst = null;
         boolean flag = false;
         int index = 1;
@@ -335,7 +329,7 @@ public class DbUtils {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            druidConfiguration.closeResource(conn, pst);
+            DruidConfiguration.closeResource(conn, pst);
         }
         return flag;
     }
@@ -346,8 +340,8 @@ public class DbUtils {
      * @param jsonArray
      * @return
      */
-    public void insertBatch(String sql, JSONArray jsonArray) {
-        Connection conn = druidConfiguration.getConnection();
+    public static void insertBatch(String sql, JSONArray jsonArray) {
+        Connection conn = DruidConfiguration.getConnection();
         PreparedStatement pst = null;
         int index = 1;
         try {
@@ -377,7 +371,7 @@ public class DbUtils {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            druidConfiguration.closeResource(conn, pst);
+            DruidConfiguration.closeResource(conn, pst);
         }
     }
 

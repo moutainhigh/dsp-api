@@ -1,9 +1,7 @@
 package com.songheng.dsp.common.db;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import com.songheng.dsp.common.utils.PropertyPlaceholder;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -16,20 +14,54 @@ import java.sql.Statement;
  * @date: 2019/1/22 22:19
  * @description:
  */
-@Configuration
 public class DruidConfiguration {
 
     /**
-     * 注意默认是读取application.properties配置文件。
-     * 如果配置文件不在默认文件中。
-     * 需要在类中引入配置文件例如：@PropertySource(value = "classpath:druid.properties")
+     * DataSource
+     */
+    private static DataSource dataSource;
+
+    /**
+     * 获取 数据源
      * @return
      */
-    @Bean(destroyMethod = "close",initMethod = "init")
-    @ConfigurationProperties(prefix = "spring.datasource")
-    public DataSource druidDataSource(){
-        DruidDataSource druidDataSource = new DruidDataSource();
-        return druidDataSource;
+    public static DataSource getDataSource(){
+        if (null == dataSource){
+            synchronized (DruidDataSource.class) {
+                if (null == dataSource){
+                    dataSource = druidDataSource();
+                }
+            }
+        }
+        return dataSource;
+    }
+
+    /**
+     * 初始化 DruidDataSource
+     * @return
+     */
+    private static DataSource druidDataSource(){
+        DruidDataSource dds = new DruidDataSource();
+        dds.setUrl(PropertyPlaceholder.getProperty("ds.url"));
+        dds.setUsername(PropertyPlaceholder.getProperty("ds.username"));
+        dds.setPassword(PropertyPlaceholder.getProperty("ds.password"));
+        dds.setDriverClassName(PropertyPlaceholder.getProperty("ds.driver"));
+
+        //configuration
+        dds.setInitialSize(Integer.parseInt(PropertyPlaceholder.getProperty("ds.initialSize")));
+        dds.setMinIdle(Integer.parseInt(PropertyPlaceholder.getProperty("ds.minIdle")));
+        dds.setMaxActive(Integer.parseInt(PropertyPlaceholder.getProperty("ds.maxActive")));
+        dds.setMaxWait(Long.parseLong(PropertyPlaceholder.getProperty("ds.maxWait")));
+        dds.setTimeBetweenEvictionRunsMillis(Long.parseLong(PropertyPlaceholder.getProperty("ds.timeBetweenEvictionRunsMillis")));
+        dds.setMinEvictableIdleTimeMillis(Long.parseLong(PropertyPlaceholder.getProperty("ds.minEvictableIdleTimeMillis")));
+        dds.setValidationQuery(PropertyPlaceholder.getProperty("ds.validationQuery"));
+        dds.setTestWhileIdle(Boolean.parseBoolean(PropertyPlaceholder.getProperty("ds.testWhileIdle")));
+        dds.setTestOnBorrow(Boolean.parseBoolean(PropertyPlaceholder.getProperty("ds.testOnBorrow")));
+        dds.setTestOnReturn(Boolean.parseBoolean(PropertyPlaceholder.getProperty("ds.testOnReturn")));
+        dds.setPoolPreparedStatements(Boolean.parseBoolean(PropertyPlaceholder.getProperty("ds.poolPreparedStatements")));
+        dds.setMaxOpenPreparedStatements(Integer.parseInt(PropertyPlaceholder.getProperty("ds.maxOpenPreparedStatements")));
+
+        return dds;
     }
 
     /**
@@ -37,8 +69,8 @@ public class DruidConfiguration {
      * @return
      *
      */
-    public Connection getConnection() {
-        DataSource dataSource = druidDataSource();
+    public static Connection getConnection() {
+        DataSource dataSource = getDataSource();
         try {
             Connection connection = dataSource.getConnection();
             return connection;
@@ -53,7 +85,7 @@ public class DruidConfiguration {
      * @param conn
      * @param stat
      */
-    public void closeResource(Connection conn, Statement stat){
+    public static void closeResource(Connection conn, Statement stat){
         if (null != stat){
             try {
                 stat.close();
@@ -76,7 +108,7 @@ public class DruidConfiguration {
      * @param stat
      * @param rs
      */
-    public void closeResource(Connection conn, Statement stat, ResultSet rs){
+    public static void closeResource(Connection conn, Statement stat, ResultSet rs){
         if (null != rs){
             try {
                 rs.close();

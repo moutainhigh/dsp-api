@@ -30,6 +30,12 @@
                     <!--<artifactId>spring-boot-starter-tomcat</artifactId>-->
                 <!--</exclusion>-->
             <!--</exclusions>-->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!--test-->
         <dependency>
@@ -63,11 +69,11 @@
             <artifactId>zkclient</artifactId>
         </dependency>
 
-        <!--<dependency>-->
-            <!--<groupId>com.songheng.dsp</groupId>-->
-            <!--<artifactId>dsp-common</artifactId>-->
-            <!--<version>${dsp.common.version}</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>com.songheng.dsp</groupId>
+            <artifactId>dsp-common</artifactId>
+            <version>${dsp.common.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.songheng.dsp</groupId>
             <artifactId>dsp-dubbo-base-interface</artifactId>
