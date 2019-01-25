@@ -22,25 +22,24 @@ public class DruidConfiguration {
     private static DataSource dataSource;
 
     /**
-     * 获取 数据源
+     * 初始化 数据源
      * @return
      */
-    public static DataSource getDataSource(){
+    public static void initDataSource(){
         if (null == dataSource){
             synchronized (DruidDataSource.class) {
                 if (null == dataSource){
-                    dataSource = druidDataSource();
+                    DruidConfiguration.druidDataSource();
                 }
             }
         }
-        return dataSource;
     }
 
     /**
      * 初始化 DruidDataSource
      * @return
      */
-    private static DataSource druidDataSource(){
+    private static void druidDataSource(){
         DruidDataSource dds = new DruidDataSource();
         dds.setUrl(PropertyPlaceholder.getProperty("ds.url"));
         dds.setUsername(PropertyPlaceholder.getProperty("ds.username"));
@@ -60,8 +59,12 @@ public class DruidConfiguration {
         dds.setTestOnReturn(Boolean.parseBoolean(PropertyPlaceholder.getProperty("ds.testOnReturn")));
         dds.setPoolPreparedStatements(Boolean.parseBoolean(PropertyPlaceholder.getProperty("ds.poolPreparedStatements")));
         dds.setMaxOpenPreparedStatements(Integer.parseInt(PropertyPlaceholder.getProperty("ds.maxOpenPreparedStatements")));
-
-        return dds;
+        try {
+            dds.setFilters(PropertyPlaceholder.getProperty("ds.filters"));
+        } catch (SQLException e) {
+            System.err.println("druid configuration initialization filter: "+ e);
+        }
+        dataSource = dds;
     }
 
     /**
@@ -70,7 +73,6 @@ public class DruidConfiguration {
      *
      */
     public static Connection getConnection() {
-        DataSource dataSource = getDataSource();
         try {
             Connection connection = dataSource.getConnection();
             return connection;

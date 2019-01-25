@@ -23,7 +23,7 @@ public class UtilsTest {
 
     @BeforeClass
     public static void initLoad(){
-        InitLoadConf.init();
+        InitLoadConf.init("partner", "wap");
     }
 
     @Before

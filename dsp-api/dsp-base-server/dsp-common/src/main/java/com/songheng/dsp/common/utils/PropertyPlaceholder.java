@@ -16,7 +16,7 @@ public class PropertyPlaceholder {
     /**
      * 属性key value映射
      */
-    private static Map<String,String> propertyMap = new HashMap<>(128);;
+    private static Map<String,String> propertyMap = new HashMap<>(128);
 
 
     /**

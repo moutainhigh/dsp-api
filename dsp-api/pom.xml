@@ -59,6 +59,10 @@
         <com.lmax.disruptor.version>3.3.6</com.lmax.disruptor.version>
         <!--lombok插件 -->
         <lombok.version>1.16.18</lombok.version>
+        <!--jedis -->
+        <jedis.version>2.9.0</jedis.version>
+        <commons-pool2.version>2.4.2</commons-pool2.version>
+
         <!-- Build -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.source.version>1.7</java.source.version>
