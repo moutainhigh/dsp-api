@@ -4,6 +4,8 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import lombok.extern.slf4j.Slf4j;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -71,10 +73,18 @@ public class FileUtils {
             return false;
         }
     }
+    public static List<String> readFileIntoList(String filePath){
+        try {
+            List<String> strings = Files.readLines(new File(filePath), Charsets.UTF_8);
+            log.debug("[read file]:path={}&size:{}",filePath,strings.size());
+            return strings;
+        }catch (Exception e){
+            log.error("path={}\t{}",filePath,e);
+            return new ArrayList<>(0);
+        }
+    }
     public static void main(String[] args) {
-        writeFile("/data/1.txt","hello,world8",true);
-        copyFile("/data/1.txt","/data/2.txt");
-        moveFile("/data/1.txt","/data/2.txt");
+
 
     }
 }

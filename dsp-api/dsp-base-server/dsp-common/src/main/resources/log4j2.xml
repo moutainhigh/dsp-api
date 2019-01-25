@@ -61,12 +61,13 @@
        <!--<Logger name="com.songheng.dsp.common" level="info" additivity="false">-->
             <!--<appender-ref ref="systemLog"/>-->
         <!--</Logger>-->
-        <Logger name="com.songheng.dsp.common" level="debug" additivity="false">-->
+        <!--<Logger name="com.songheng.dsp.common" level="debug" additivity="false">&ndash;&gt;-->
             <!--<appender-ref ref="Console"/>-->
-            <appender-ref ref="systemLog"/>
-        </Logger>
-        <!--<AsyncLogger name="com.songheng.dsp.common" level="info" additivity="false">-->
             <!--<appender-ref ref="systemLog"/>-->
-        <!--</AsyncLogger>-->
+        <!--</Logger>-->
+        <AsyncLogger name="com.songheng.dsp.common" level="debug" additivity="false">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="systemLog"/>
+        </AsyncLogger>
     </loggers>
 </configuration>
