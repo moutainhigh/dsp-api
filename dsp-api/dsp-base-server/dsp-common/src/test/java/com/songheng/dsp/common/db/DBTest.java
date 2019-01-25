@@ -12,13 +12,13 @@ import java.util.List;
 /**
  * @author: luoshaobing
  * @date: 2019/1/23 00:13
- * @description:DB工具类测试
+ * @description: DB工具类测试
  */
 public class DBTest {
 
     @BeforeClass
     public static void initLoad(){
-        InitLoadConf.init();
+        InitLoadConf.init("partner", "wap");
     }
 
     @Before

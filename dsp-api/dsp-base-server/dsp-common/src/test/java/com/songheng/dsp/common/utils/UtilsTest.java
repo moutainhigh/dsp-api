@@ -9,13 +9,13 @@ import org.junit.Test;
 /**
  * @author: luoshaobing
  * @date: 2019/1/24 17:15
- * @description:工具类测试
+ * @description: 工具类测试
  */
 public class UtilsTest {
 
     @BeforeClass
     public static void initLoad(){
-        InitLoadConf.init();
+        InitLoadConf.init("partner", "wap");
     }
 
     @Before

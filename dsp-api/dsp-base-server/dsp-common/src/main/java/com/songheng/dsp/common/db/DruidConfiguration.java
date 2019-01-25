@@ -12,7 +12,7 @@ import java.sql.Statement;
 /**
  * @author: luoshaobing
  * @date: 2019/1/22 22:19
- * @description:
+ * @description: Druid数据库连接池配置
  */
 public class DruidConfiguration {
 

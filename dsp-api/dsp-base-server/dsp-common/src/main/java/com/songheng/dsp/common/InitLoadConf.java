@@ -7,7 +7,7 @@ import com.songheng.dsp.common.utils.PropertyPlaceholder;
 /**
  * @author: luoshaobing
  * @date: 2019/1/24 19:32
- * @description:
+ * @description: 初始化加载资源
  */
 public class InitLoadConf {
 

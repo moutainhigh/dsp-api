@@ -10,7 +10,7 @@ import java.util.Properties;
 /**
  * @author: luoshaobing
  * @date: 2019/1/24 15:45
- * @description:初始化配置文件加载
+ * @description: 初始化配置文件加载
  */
 public class PropertyPlaceholder {
     /**

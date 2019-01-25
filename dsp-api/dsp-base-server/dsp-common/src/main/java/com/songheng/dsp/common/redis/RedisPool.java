@@ -13,7 +13,7 @@ import java.util.*;
 /**
  * @author: luoshaobing
  * @date: 2019/1/24 21:49
- * @description:
+ * @description: redis 分片连接池配置
  */
 public class RedisPool {
 

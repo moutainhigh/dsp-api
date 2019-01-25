@@ -14,7 +14,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 /**
  * @author: luoshaobing
  * @date: 2019/1/24 17:46
- * @description:
+ * @description: 测试common工具类
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProviderApplication.class)
