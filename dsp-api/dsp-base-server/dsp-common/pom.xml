@@ -15,10 +15,6 @@
     <name>${project.artifactId}</name>
     <description>The project of dsp-common</description>
 
-    <properties>
-        <kryo.version>4.0.2</kryo.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>mysql</groupId>
@@ -63,11 +59,21 @@
             <groupId>eu.bitwalker</groupId>
             <artifactId>UserAgentUtils</artifactId>
         </dependency>
-        <!---序列化-->
+
+        <!--jedis -->
         <dependency>
-            <groupId>com.esotericsoftware</groupId>
-            <artifactId>kryo</artifactId>
-            <version>${kryo.version}</version>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+        <!--HttpClient -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.1</version>
         </dependency>
     </dependencies>
 

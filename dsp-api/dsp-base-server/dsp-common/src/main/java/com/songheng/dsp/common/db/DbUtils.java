@@ -2,6 +2,7 @@ package com.songheng.dsp.common.db;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
 import java.sql.*;
@@ -13,6 +14,7 @@ import java.util.List;
  * @date: 2019/1/22 22:54
  * @description: DB工具类
  */
+@Slf4j
 public class DbUtils {
 
     /**
@@ -47,6 +49,7 @@ public class DbUtils {
 
         } catch (Exception e) {
             e.printStackTrace();
+            log.error("queryById failure, sql={}&parameters={}&className={}\t{}", sql, paras, cls.getName(), e);
         } finally {
             DruidConfiguration.closeResource(conn, pst, rs);
         }
@@ -107,6 +110,7 @@ public class DbUtils {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            log.error("queryList failure, sql={}&parameters={}&className={}\t{}", sql, paras, cls.getName(), e);
         } finally {
             DruidConfiguration.closeResource(conn, pst, rs);
         }
@@ -146,6 +150,7 @@ public class DbUtils {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            log.error("queryList failure, sql={}&parameters={}&className={}\t{}", sql, jsonObject, cls.getName(), e);
         } finally {
             DruidConfiguration.closeResource(conn, pst, rs);
         }
@@ -263,6 +268,7 @@ public class DbUtils {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            log.error("analysisRst failure, ResultSet={}&className={}\t{}", rs, cls.getName(), e);
         }
         return list;
     }
@@ -299,6 +305,7 @@ public class DbUtils {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            log.error("callProcedure failure, sql={}&parameters={}&className={}\t{}", sql, paras, cls.getName(), e);
         } finally {
             DruidConfiguration.closeResource(conn, cst, rs);
         }
@@ -328,6 +335,7 @@ public class DbUtils {
             flag = result > 0 ? true : false;
         } catch (SQLException e) {
             e.printStackTrace();
+            log.error("executeNamingSql failure, sql={}&parameters={}\t{}", sql, paras, e);
         } finally {
             DruidConfiguration.closeResource(conn, pst);
         }
@@ -370,6 +378,7 @@ public class DbUtils {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            log.error("insertBatch failure, sql={}&parameters={}\t{}", sql, jsonArray, e);
         } finally {
             DruidConfiguration.closeResource(conn, pst);
         }

@@ -2,6 +2,7 @@ package com.songheng.dsp.common.db;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.songheng.dsp.common.utils.PropertyPlaceholder;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -12,8 +13,9 @@ import java.sql.Statement;
 /**
  * @author: luoshaobing
  * @date: 2019/1/22 22:19
- * @description:
+ * @description: Druid数据库连接池配置
  */
+@Slf4j
 public class DruidConfiguration {
 
     /**
@@ -22,25 +24,25 @@ public class DruidConfiguration {
     private static DataSource dataSource;
 
     /**
-     * 获取 数据源
+     * 初始化 数据源
      * @return
      */
-    public static DataSource getDataSource(){
+    public static void initDataSource(){
         if (null == dataSource){
             synchronized (DruidDataSource.class) {
                 if (null == dataSource){
-                    dataSource = druidDataSource();
+                    DruidConfiguration.druidDataSource();
                 }
             }
         }
-        return dataSource;
     }
 
     /**
      * 初始化 DruidDataSource
      * @return
      */
-    private static DataSource druidDataSource(){
+    private static void druidDataSource(){
+        log.debug("初始化加载druid数据库连接池配置...");
         DruidDataSource dds = new DruidDataSource();
         dds.setUrl(PropertyPlaceholder.getProperty("ds.url"));
         dds.setUsername(PropertyPlaceholder.getProperty("ds.username"));
@@ -60,8 +62,14 @@ public class DruidConfiguration {
         dds.setTestOnReturn(Boolean.parseBoolean(PropertyPlaceholder.getProperty("ds.testOnReturn")));
         dds.setPoolPreparedStatements(Boolean.parseBoolean(PropertyPlaceholder.getProperty("ds.poolPreparedStatements")));
         dds.setMaxOpenPreparedStatements(Integer.parseInt(PropertyPlaceholder.getProperty("ds.maxOpenPreparedStatements")));
-
-        return dds;
+        try {
+            dds.setFilters(PropertyPlaceholder.getProperty("ds.filters"));
+        } catch (SQLException e) {
+            System.err.println("druid configuration initialization filter: "+ e);
+            log.error("druid configuration initialization filter: ", e);
+        }
+        dataSource = dds;
+        log.debug("加载druid数据库连接池完毕...");
     }
 
     /**
@@ -70,12 +78,12 @@ public class DruidConfiguration {
      *
      */
     public static Connection getConnection() {
-        DataSource dataSource = getDataSource();
         try {
             Connection connection = dataSource.getConnection();
             return connection;
         } catch (SQLException e) {
             e.printStackTrace();
+            log.error("获取Connection失败", e);
         }
         return null;
     }
