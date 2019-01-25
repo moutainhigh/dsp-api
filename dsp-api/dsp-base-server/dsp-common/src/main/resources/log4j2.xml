@@ -17,7 +17,7 @@
         <Console name="Console" target="SYSTEM_OUT">
             <!--ThresholdFilter指定日志消息的输出最低层次-->
             <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss}\t%F:%L\t%m%n"/>
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss}\t%p\t%c\t%m\t%r%n"/>
         </Console>
 
         <!--Appender  输出到滚动保存的文件, 触发保存日志文件的条件是每天第一次的日志事件。ERROR日志是按每天产生日志 -->
@@ -30,7 +30,7 @@
         <!--Appender  输出到滚动保存的文件, 触发保存日志文件的条件是每天第一次的日志事件。ERROR日志是按每天产生日志 -->
         <RollingFile name="systemLog" fileName="${LOG_HOME}/${SYSTEM_LOG}/system.log" filePattern="${LOG_HOME}/${SYSTEM_LOG}/system-%d{yyyyMMdd}.log">
             <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
-            <PatternLayout charset="UTF-8" pattern="%d{yyyy-MM-dd HH:mm:ss}\t%F:%L\t%m%n"/>
+            <PatternLayout charset="UTF-8" pattern="%d{yyyy-MM-dd HH:mm:ss}\t%p\t%c\t%m\t%r%n"/>
             <TimeBasedTriggeringPolicy/>
         </RollingFile>
 
@@ -61,11 +61,13 @@
        <!--<Logger name="com.songheng.dsp.common" level="info" additivity="false">-->
             <!--<appender-ref ref="systemLog"/>-->
         <!--</Logger>-->
-        <Logger name="com.songheng.dsp.common" level="info" additivity="false">-->
-            <appender-ref ref="systemLog"/>
-        </Logger>
-        <!--<AsyncLogger name="com.songheng.dsp.common" level="info" additivity="false">-->
+        <!--<Logger name="com.songheng.dsp.common" level="debug" additivity="false">&ndash;&gt;-->
+            <!--<appender-ref ref="Console"/>-->
             <!--<appender-ref ref="systemLog"/>-->
-        <!--</AsyncLogger>-->
+        <!--</Logger>-->
+        <AsyncLogger name="com.songheng.dsp.common" level="debug" additivity="false">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="systemLog"/>
+        </AsyncLogger>
     </loggers>
 </configuration>
