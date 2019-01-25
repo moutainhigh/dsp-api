@@ -21,7 +21,9 @@ import java.util.List;
  * @version V1.0
  **/
 @Slf4j
-public class FileUtils {
+public final class FileUtils {
+
+    private FileUtils(){}
 
     /**
      * @description: 写文件
@@ -135,6 +137,32 @@ public class FileUtils {
             return new ArrayList<>(0);
         }
     }
+    /**
+     * @description: 按行读取文件内容并按指定字符分割,取下标列内容读取后转化为List集合
+     * @param filePath 读取的文件路径
+     * @param splitSymbol 分割符
+     * @param index 取得第几列 从0开始
+     * @param removeDuplicate 是否去掉重复数据
+     * @param replaceSymbol 需要将原始分隔符替换成的分隔符
+     * @param matchStr 需要查找的字符串
+     * @return 读取的集合
+     **/
+
+    public static List<String> readFileLineSplitFindIntoList(String filePath,String splitSymbol,int index,
+                                                             boolean removeDuplicate,String replaceSymbol,String matchStr){
+        try {
+            List<String> strings = Files.readLines(new File(filePath), Charsets.UTF_8,
+                    new FileLineProcessor(splitSymbol,index,replaceSymbol,matchStr));
+            if(removeDuplicate){
+                CollectionUtils.removeDuplicate(strings);
+            }
+            log.debug("[read file & split]:path={}&removeDuplicate={}&size:{}",filePath,removeDuplicate,strings.size());
+            return strings;
+        }catch (Exception e){
+            log.error("[read file & split]:path={}&removeDuplicate={}\t{}",filePath,removeDuplicate,e);
+            return new ArrayList<>(0);
+        }
+    }
 
     /***
      * 文件行处理器
@@ -142,15 +170,38 @@ public class FileUtils {
     public static class FileLineProcessor implements LineProcessor<List<String>> {
         private List<String> result = Lists.newArrayList();
         private static Splitter splitter = null;
-        private static int INDEX = 1;
-        public FileLineProcessor(String splitSymbol,int index){
+        private static int INDEX = 0;
+        private static String REPLACESYMBOL = "";
+        private static String SPLITSYMBOL = "";
+        private static String MATCHSTR = "";
+        private static boolean isFindMatchStr = false;
+        /**
+         * 获取index列的值
+         * **/
+        private FileLineProcessor(String splitSymbol,int index){
             splitter =  Splitter.on(splitSymbol);
             INDEX = index;
+        }
+        /**
+         * 查找matchIndex列包含matchStr的值 并将分隔符splitSymbol替换成replaceSymbol
+         * **/
+        private FileLineProcessor(String splitSymbol,int matchIndex,String replaceSymbol,String matchStr){
+            this(splitSymbol,matchIndex);
+            isFindMatchStr = true;
+            REPLACESYMBOL = replaceSymbol;
+            SPLITSYMBOL = splitSymbol;
+            MATCHSTR = StringUtils.replaceNullOrEmpty(matchStr,"");
         }
         @Override
         public boolean processLine(String line) {
             try {
-                result.add(Iterables.get(splitter.split(line), INDEX));
+                if(isFindMatchStr){
+                    if(MATCHSTR.equalsIgnoreCase(Iterables.get(splitter.split(line), INDEX))) {
+                        result.add(line.replace(SPLITSYMBOL, REPLACESYMBOL));
+                    }
+                }else {
+                    result.add(Iterables.get(splitter.split(line), INDEX));
+                }
             }catch (Exception e){
                 log.debug("[read file & split & process]:line={}\t{}",line,e);
             }
@@ -164,6 +215,9 @@ public class FileUtils {
 
 
     public static void main(String[] args) throws Exception{
+        writeFile("/data/1.txt","10009\tzhangsan\n10010\tlisi\n",true);
+        System.out.println(readFileLineSplitFindIntoList("/data/1.txt",
+                "\t",0,false,"】","10010"));
 
     }
 }

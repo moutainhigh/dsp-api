@@ -1,4 +1,4 @@
-package com.songheng.dsp.common.utils;
+package com.songheng.dsp.common.utils.serialize;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;

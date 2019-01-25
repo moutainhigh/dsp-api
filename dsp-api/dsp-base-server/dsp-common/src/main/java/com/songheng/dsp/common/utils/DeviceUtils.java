@@ -3,9 +3,9 @@ package com.songheng.dsp.common.utils;
 import eu.bitwalker.useragentutils.UserAgent;
 
 /**
- * @Description: 获取设备信息工具类
- * @Package com.songheng.dsp.utils
- * @Title: DeviceUtils
+ * @description: 获取设备信息工具类
+ * @package com.songheng.dsp.utils
+ * @title: DeviceUtils
  * @author: zhangshuai@021.com
  * @date: 2019-01-23 13:32
  * @version 1.0
@@ -14,7 +14,7 @@ public final class DeviceUtils {
 
     private DeviceUtils(){}
     /**
-     * @Description: 获取操作系统名称
+     * @description: 获取操作系统名称
      * @param ua UserAgent
      * @return Android,iOS,Mac OS X,Windows,Unknown
      */
@@ -24,7 +24,7 @@ public final class DeviceUtils {
         return userAgent.getOperatingSystem().getGroup().getName();
     }
     /**
-     * @Description: 获取设备类型
+     * @description: 获取设备类型
      * @param ua UserAgent
      * @return Mobile,Computer,Unknown
      */
@@ -34,7 +34,7 @@ public final class DeviceUtils {
     }
 
     /**
-     * @Description: 获取浏览器名称
+     * @description: 获取浏览器名称
      * @param ua UserAgent
      * @return Chrome,Outlook,Firefox,Safari,Opera,Unknown
      */
@@ -43,7 +43,7 @@ public final class DeviceUtils {
         return userAgent.getBrowser().getGroup().getName();
     }
     /**
-     * @Description: 获取浏览器版本
+     * @description: 获取浏览器版本
      * @param ua UserAgent
      * @return 71.0.3578.98,10.0,Unknown
      */
@@ -52,7 +52,7 @@ public final class DeviceUtils {
         return userAgent.getBrowserVersion().getVersion();
     }
     /**
-     * @Description: 获取UserAgentId
+     * @description: 获取UserAgentId
      * @param ua UserAgent
      * @return 251989860,Unknown
      */

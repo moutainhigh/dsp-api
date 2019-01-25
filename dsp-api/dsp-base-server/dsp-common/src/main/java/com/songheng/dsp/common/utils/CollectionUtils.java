@@ -1,5 +1,6 @@
 package com.songheng.dsp.common.utils;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 import java.util.LinkedHashSet;
@@ -14,8 +15,15 @@ import java.util.List;
  * @date: 2019-01-25 12:54
  * @version V1.0
  **/
-public class CollectionUtils {
+public final class CollectionUtils {
 
+    private CollectionUtils(){}
+
+    /**
+     * @description: 将lists集合去重
+     * @param lists 需要处理的集合
+     * @return 去重后的list集合
+     */
     public static<T> List<T> removeDuplicate(List<T> lists){
         if(lists!=null && lists.size()>0) {
             LinkedHashSet<T> set = new LinkedHashSet<>(lists.size());
@@ -27,8 +35,6 @@ public class CollectionUtils {
     }
 
     public static void main(String[] args) {
-        List<String> list = Lists.newArrayList("A","B","C","D","C");
-        removeDuplicate(list);
-        System.out.println(list);
+
     }
 }
