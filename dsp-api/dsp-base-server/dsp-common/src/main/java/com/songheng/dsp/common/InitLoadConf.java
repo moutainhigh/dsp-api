@@ -17,6 +17,7 @@ public class InitLoadConf {
      * @param channel pc/wap
      */
     public static void init(String projectName, String channel){
+        System.setProperty("dsp.project.name", projectName);
         //加载配置文件
         PropertyPlaceholder.loadProperties("common-config.properties",
                 "common-db-config.properties",
