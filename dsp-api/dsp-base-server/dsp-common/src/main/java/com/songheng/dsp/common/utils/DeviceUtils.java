@@ -4,11 +4,8 @@ import eu.bitwalker.useragentutils.UserAgent;
 
 /**
  * @description: 获取设备信息工具类
- * @package com.songheng.dsp.utils
- * @title: DeviceUtils
  * @author: zhangshuai@021.com
  * @date: 2019-01-23 13:32
- * @version 1.0
  */
 public final class DeviceUtils {
 

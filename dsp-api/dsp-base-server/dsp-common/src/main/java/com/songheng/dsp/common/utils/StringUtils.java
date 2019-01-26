@@ -9,13 +9,9 @@ import java.util.Map;
 
 
 /**
- *
- * @title: StringUtils
- * @package com.songheng.dsp.utils
  * @description: 字符串工具类
  * @author: zhangshuai@021.com
  * @date: 2019-01-22 22:24
- * @version V1.0
  */
 public final class StringUtils {
 

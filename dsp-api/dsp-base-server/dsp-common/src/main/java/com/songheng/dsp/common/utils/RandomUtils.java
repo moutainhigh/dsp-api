@@ -6,13 +6,9 @@ import java.util.Random;
 import java.util.UUID;
 
 /**
- *
- * @title: RandomUtils
- * @package com.songheng.dsp.utils
  * @description: 字符串工具类
  * @author: zhangshuai@021.com
  * @date: 2019-01-22 22:24
- * @version V1.0
  **/
 public class RandomUtils {
 

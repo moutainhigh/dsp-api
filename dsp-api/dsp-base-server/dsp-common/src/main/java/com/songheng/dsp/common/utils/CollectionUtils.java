@@ -1,15 +1,11 @@
 package com.songheng.dsp.common.utils;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 
 import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
  *
- * @title: CollectionUtils
- * @package com.songheng.dsp.utils
  * @description: 文件操作工具类
  * @author: zhangshuai@021.com
  * @date: 2019-01-25 12:54

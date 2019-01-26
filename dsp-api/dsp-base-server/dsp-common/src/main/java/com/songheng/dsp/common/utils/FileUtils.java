@@ -13,12 +13,9 @@ import java.util.List;
 
 /**
  *
- * @title: FileUtils
- * @package com.songheng.dsp.utils
  * @description: 文件操作工具类
  * @author: zhangshuai@021.com
  * @date: 2019-01-23 20:44
- * @version V1.0
  **/
 @Slf4j
 public final class FileUtils {

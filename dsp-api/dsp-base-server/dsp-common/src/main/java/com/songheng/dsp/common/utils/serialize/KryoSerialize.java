@@ -4,6 +4,7 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.google.common.collect.Lists;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.util.Base64;
 import org.objenesis.strategy.StdInstantiatorStrategy;
@@ -14,13 +15,9 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 /**
- *
- * @title: KryoSerialize
- * @package com.songheng.dsp.utils.serialize
  * @description: 序列化工具
  * @author: zhangshuai@021.com
  * @date: 2019-01-25 15:50
- * @version V1.0
  **/
 @Slf4j
 public class KryoSerialize {
@@ -152,13 +149,10 @@ public class KryoSerialize {
 }
 @Getter
 @Setter
+@ToString
 class Simple implements java.io.Serializable {
     private String name;
     private int age;
-    @Override
-    public String toString() {
-        return this.name + "\t" + this.age;
-    }
 
     public static Simple getSimple(int age) {
         Simple simple = new Simple();
