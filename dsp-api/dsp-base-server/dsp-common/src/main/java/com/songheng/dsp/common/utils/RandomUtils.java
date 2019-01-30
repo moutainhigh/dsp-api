@@ -7,7 +7,7 @@ import java.util.Random;
 import java.util.UUID;
 
 /**
- * @description: 字符串工具类
+ * @description: 随机数工具类
  * @author: zhangshuai@021.com
  * @date: 2019-01-22 22:24
  **/

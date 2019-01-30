@@ -7,10 +7,9 @@ import java.util.List;
 
 /**
  *
- * @description: 文件操作工具类
+ * @description: 集合工具类
  * @author: zhangshuai@021.com
  * @date: 2019-01-25 12:54
- * @version V1.0
  **/
 public class CollectionUtils {
 
