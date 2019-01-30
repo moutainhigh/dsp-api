@@ -53,6 +53,7 @@ public final class MathUtils {
          * 如果它为偶数，则作ROUND_HALF_DOWN
          * **/
         ROUND_HALF_EVEN(BigDecimal.ROUND_HALF_EVEN);
+
         private final int value;
 
         ROUND_MODE_ENUM(int value) {
@@ -199,16 +200,46 @@ public final class MathUtils {
     }
     /**
      * double ---> long
+     * 对无限小数、溢出抛出异常
      * **/
     public static long doubleToLong(double v){
         return DoubleMath.roundToLong(v, RoundingMode.HALF_UP);
     }
     /**
+     * double * rate ---> double
+     * **/
+    public static double doubleMulRate(double v,int rate){
+        BigDecimal b1 = new BigDecimal(Double.toString(v)).setScale(DEF_DIV_SCALE,ROUND_MODE);
+        BigDecimal b2 = new BigDecimal(String.valueOf(rate));
+        return b1.multiply(b2).setScale(DEF_DIV_SCALE,ROUND_MODE).doubleValue();
+
+    }
+
+    /**
+     * double * rate ---> long
+     * 对无限小数、溢出抛出异常
+     * **/
+    public static long doubleToLong(double v,int rate){
+        double value = doubleMulRate(v,rate);
+        return DoubleMath.roundToLong(value, RoundingMode.HALF_UP);
+    }
+    /**
      * double ---> int
+     * 对无限小数、溢出抛出异常
      * **/
     public static int doubleToInt(double v){
         return DoubleMath.roundToInt(v,RoundingMode.HALF_UP);
     }
+
+    /**
+     * double * rate ---> int
+     * 对无限小数、溢出抛出异常
+     * **/
+    public static int doubleToInt(double v,int rate){
+        double value = doubleMulRate(v,rate);
+        return DoubleMath.roundToInt(value,RoundingMode.HALF_UP);
+    }
+
     public static void main(String[] args) {
         System.out.println(mul(add(1.745,0),1000));
         System.out.println(sub(7.091,7.342221));
@@ -225,5 +256,6 @@ public final class MathUtils {
                         100000)));
         System.out.println(doubleToLong(1.745));
         System.out.println((long)1.745);
+        System.out.println(doubleToLong(1.745,1000));
     }
 }
