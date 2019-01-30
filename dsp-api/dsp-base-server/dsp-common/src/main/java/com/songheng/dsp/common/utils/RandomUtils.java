@@ -1,5 +1,6 @@
 package com.songheng.dsp.common.utils;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -17,6 +18,7 @@ public class RandomUtils {
     private static final String CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz";
     /**
      * @description: 生成随机的UUID
+     *     性能要求严格的情况下不推荐使用
      * @param isShort 是否生成不带 "-" 的 UUID
      * @return 随机ID
      **/
@@ -64,6 +66,17 @@ public class RandomUtils {
     public static String generateTimeMillis(String perfix) {
         return perfix + System.currentTimeMillis();
     }
+
+    /**
+     *SimpleDateFormat 非线程安全,使用ThreadLocal 解决线程安全问题,以及频繁创建该对象的问题
+     * **/
+    private static ThreadLocal<DateFormat> threadLocalDateFormat = new ThreadLocal<DateFormat>() {
+        @Override
+        protected DateFormat initialValue() {
+            return new SimpleDateFormat("yyMMddHHmmss");
+        }
+    };
+
     /**
      * @description: 生成当前时间(yyMMddHHmmss)+<code>randLength</code> 长度的随机数
      * @param perfix 前缀
@@ -71,15 +84,7 @@ public class RandomUtils {
      */
 
     public static String generateDateRand(String perfix,int randLength){
-        String date = new SimpleDateFormat(DateUtils.DATE_TIME_FORMAT_YYMMDDHHMISS).format(new Date());
+        String date =  threadLocalDateFormat.get().format(new Date());
         return perfix + date + generateRandNumber("",randLength);
-    }
-
-    public static void main(String[] args) {
-        System.out.println("generateUUID:" + RandomUtils.generateUUID(true));
-        System.out.println("generateRandNumber:" + generateRandNumber("df",18));
-        System.out.println("generateRandString:" + generateRandString("df",18));
-        System.out.println("generateTimestamp:"+generateTimeMillis("df"));
-        System.out.println("generateDateRand:"+generateDateRand("",6));
     }
 }
