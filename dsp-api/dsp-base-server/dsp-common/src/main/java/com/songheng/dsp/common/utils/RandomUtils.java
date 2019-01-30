@@ -18,7 +18,6 @@ public class RandomUtils {
     private static final String CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz";
     /**
      * @description: 生成随机的UUID
-     *     性能要求严格的情况下不推荐使用
      * @param isShort 是否生成不带 "-" 的 UUID
      * @return 随机ID
      **/

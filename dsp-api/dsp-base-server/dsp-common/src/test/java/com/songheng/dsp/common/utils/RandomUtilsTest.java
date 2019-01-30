@@ -31,14 +31,7 @@ public class RandomUtilsTest {
 
     @Test(timeout = 5)
     public void generateUUID() {
-        for(int i=0;i<5;i++) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    assertNotNull(RandomUtils.generateUUID(false));
-                }
-            }).start();
-        }
+        assertNotNull(RandomUtils.generateUUID(false));
     }
 
     @Test(timeout = 5)
@@ -58,13 +51,6 @@ public class RandomUtilsTest {
 
     @Test(timeout = 5)
     public void generateDateRand() {
-        for(int i=0;i<10;i++) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    assertNotNull(RandomUtils.generateDateRand("df", 5));
-                }
-            }).start();
-        }
+        assertNotNull(RandomUtils.generateDateRand("df", 5));
     }
 }
