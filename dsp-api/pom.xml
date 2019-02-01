@@ -10,6 +10,7 @@
 
     <modules>
         <module>dsp-base-server</module>
+        <module>dsp-biz-server</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -224,7 +225,7 @@
                     <target>${java.target.version}</target>
                     <encoding>${java.encoding}</encoding>
                     <!--打包跳过单元测试 -->
-                    <skip>true</skip>
+                    <skip>false</skip>
                 </configuration>
             </plugin>
         </plugins>

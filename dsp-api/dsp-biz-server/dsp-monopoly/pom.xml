@@ -3,19 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>dsp-parent</artifactId>
+        <artifactId>dsp-biz-server</artifactId>
         <groupId>com.songheng.dsp</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>dsp-biz-server</artifactId>
+    <artifactId>dsp-monopoly</artifactId>
 
-    <packaging>pom</packaging>
-    <name>${project.artifactId}</name>
-    <description>The project of dsp-biz-server</description>
-    <modules>
-        <module>dsp-ssp</module>
-        <module>dsp-monopoly</module>
-    </modules>
+
 </project>

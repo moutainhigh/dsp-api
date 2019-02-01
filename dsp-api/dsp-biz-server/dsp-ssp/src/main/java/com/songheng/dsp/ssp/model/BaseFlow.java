@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * @description 基础流量信息
@@ -62,5 +63,18 @@ public class BaseFlow implements Serializable {
      * 安装时间
      **/
     private String installTime;
+    /**
+     *地域信息
+     **/
+    private Map<String,String> area;
+
+    /**
+     * 是否是测试流量
+     **/
+    private boolean isTestFlow;
+    /**
+     *是否是刷量流量
+     **/
+    private boolean isBrushFlow;
 
 }

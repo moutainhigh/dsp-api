@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * @author zhangshuai@021.com
+ */
 @Setter
 @Getter
 @ToString
