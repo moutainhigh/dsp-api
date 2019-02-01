@@ -18,4 +18,13 @@
         <module>dsp-ssp</module>
         <module>dsp-monopoly</module>
     </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.songheng.dsp</groupId>
+            <artifactId>dsp-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+    </dependencies>
 </project>
