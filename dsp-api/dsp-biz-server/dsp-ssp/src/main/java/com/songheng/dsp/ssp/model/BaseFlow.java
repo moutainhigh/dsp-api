@@ -24,6 +24,10 @@ public class BaseFlow implements Serializable {
      **/
     private String terminal;
     /**
+     *页面类型 list/detail/open/sy/ny....
+     **/
+    private String pgType;
+    /**
      *流量类型:Mobile,Computer
      **/
     private String deviceType;
