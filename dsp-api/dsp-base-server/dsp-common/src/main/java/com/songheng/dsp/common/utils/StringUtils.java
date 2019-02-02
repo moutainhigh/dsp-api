@@ -51,12 +51,13 @@ public final class StringUtils {
     }
 
     /***
-     * @description: 将 (null,"","null","NULL","nan","NaN","NAN"."undefined"...) 无效字符串替换成 <code>replaceString</code> 一般用于传入参数的处理
+     * @description: 将 (null,"","null","NULL","nan","NaN","NAN"."undefined"...) 无效字符串替换成 <code>replaceString</code>
+     * 一般用于传入参数的处理
      * @param oldString 原始字符串
      * @param replaceString 需要替换的字符串
      * @return 如果参数是无效字符串则返回replaceString, 否则返回oldString并且去掉前后两端空格
      * */
-    public static String replaceNullOrEmpty(String oldString, String replaceString) {
+    public static String replaceInvalidString(String oldString, String replaceString) {
         return isInvalidString(oldString) ? replaceString : oldString.trim();
     }
 
@@ -106,7 +107,7 @@ public final class StringUtils {
      * @return 填充后的字符串，若原始字符串长度大于<code>strLength</code> 则返回原始字符串
      **/
 
-    public static String padDefaultStart(String oldStr) {
+    public static String padStart(String oldStr) {
         return padStart(oldStr, DEFAULT_PAD_LENGTH, DEFAULT_PAD_CHAR);
     }
 
@@ -128,7 +129,7 @@ public final class StringUtils {
      * @return 填充后的字符串，若原始字符串长度大于<code>strLength</code> 则返回原始字符串
      **/
 
-    public static String padDefaultEnd(String oldStr) {
+    public static String padEnd(String oldStr) {
         return padEnd(oldStr, DEFAULT_PAD_LENGTH, DEFAULT_PAD_CHAR);
     }
 
@@ -175,12 +176,12 @@ public final class StringUtils {
         //判断字符串是否为空
         System.out.println("isEmpty:" + StringUtils.isInvalidString(null));
         //将 null 或者 "" 字符串 使用默认值替换
-        System.out.println("replaceNullOrEmpty:" + StringUtils.replaceNullOrEmpty(" aa aa bb ", "1") + ";");
+        System.out.println("replaceInvalidString:" + StringUtils.replaceInvalidString(" aa aa bb ", "1") + ";");
         System.out.println("isNumeric:" + isNumeric(null));
         System.out.println("parseInteger:" + StringUtils.parseInteger("1298888"));
-        System.out.println("padDefaultStart：" + StringUtils.padDefaultStart("11"));
+        System.out.println("padDefaultStart：" + StringUtils.padStart("11"));
         System.out.println("padStart:" + StringUtils.padStart("121", 4, '0'));
-        System.out.println("padDefaultEnd:" + StringUtils.padDefaultEnd("11"));
+        System.out.println("padDefaultEnd:" + StringUtils.padEnd("11"));
         System.out.println("padEnd:" + StringUtils.padEnd("121", 4, '0'));
         List<String> list = StringUtils.strToList("a，b,c");
         System.out.println("listToStr:"+StringUtils.listToStr(list)+";");

@@ -219,7 +219,7 @@ public final class FileUtils {
             isFindMatchStr = true;
             REPLACE_SYMBOL = replaceSymbol;
             SPLIT_SYMBOL = splitSymbol;
-            MATCH_STR = StringUtils.replaceNullOrEmpty(matchStr,"");
+            MATCH_STR = StringUtils.replaceInvalidString(matchStr,"");
         }
         @Override
         public boolean processLine(String line) {

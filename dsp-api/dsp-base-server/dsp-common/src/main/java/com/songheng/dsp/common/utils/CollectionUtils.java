@@ -23,9 +23,15 @@ public class CollectionUtils {
         return lists;
     }
 
+    public static<T> List<T> objsToList(T... objs){
+        return Lists.newArrayList(objs);
+    }
+
     public static void main(String[] args) {
         List<String> list = Lists.newArrayList("A","B","C","D","C");
         removeDuplicate(list);
         System.out.println(list);
+        List<String> strs = objsToList("1","2","3");
+        System.out.println(strs);
     }
 }
