@@ -11,10 +11,8 @@ import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.model.materiel.DspAdvInfo;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
 
 /**
  * @description: 垄断业务
@@ -23,15 +21,6 @@ import java.util.Set;
  **/
 @Slf4j
 public abstract class Monopoly {
-
-    /**
-     *已经展现的投放id
-     **/
-    private Set<String> deliveryIdFilter = new HashSet<>();
-    /**
-     * 已经使用过的广告位
-     * */
-    private Set<String> positionFilter = new HashSet<>();
 
     /**
      *获取垄断广告的响应信息
@@ -44,6 +33,16 @@ public abstract class Monopoly {
         }
         List<String> positions = baseFlow.getFlowPositions();
         int positionSize = positions.size();
+        /**
+         *已经展现的投放id
+         **/
+        Set<String> deliveryIdFilter = new HashSet<>(20);
+        /**
+         * 已经使用过的广告位
+         * */
+        Set<String> positionFilter = new HashSet<>(20);
+
+
         //遍历所有广告位
         for(int i=0;i<positionSize;i++){
             String position = positions.get(i);
@@ -54,8 +53,9 @@ public abstract class Monopoly {
             //获取该位置的广告
             List<DspAdvInfo> advInfos = this.getMonopolyAdvByCurPosition(baseFlow,position);
             if(null != advInfos && advInfos.size()>0) {
-                //过滤广告
-                DspAdvInfo advInfo = this.filter(baseFlow,advInfos,deliveryIdFilter);
+                this.sort(advInfos);
+                //过滤广告 获取可用广告
+                DspAdvInfo advInfo = this.getFilterMonopolyAdvInfo(baseFlow,advInfos,deliveryIdFilter);
                 if(null != advInfo) {
                     //将广告对象转化为响应对象
                     ResponseBean responseBean = this.conversion(advInfo, baseFlow, i);
@@ -80,13 +80,49 @@ public abstract class Monopoly {
     public abstract List<DspAdvInfo> getMonopolyAdvByCurPosition(BaseFlow baseFlow,String position);
 
     /**
-     * 过滤广告
+     * 对广告排序
+     **/
+    public void sort(List<DspAdvInfo> advInfos){
+
+    }
+
+    /**
+     * 获取可用的垄断广告
      * @param baseFlow 流量信息
      * @param advInfos 需要过滤的广告列表
      * @param deliveryIdFilter 已经展现过的投放id
      * @return 广告信息
      */
-    public abstract DspAdvInfo filter(BaseFlow baseFlow,List<DspAdvInfo> advInfos,Set<String> deliveryIdFilter);
+    public final DspAdvInfo getFilterMonopolyAdvInfo(BaseFlow baseFlow,List<DspAdvInfo> advInfos,Set<String> deliveryIdFilter){
+        Iterator<DspAdvInfo> iterator = advInfos.iterator();
+        while (iterator.hasNext()){
+            DspAdvInfo advInfo = iterator.next();
+            //过滤已经展现的广告
+            if(deliveryIdFilter.contains(advInfo.getDeliveryid())){
+                iterator.remove();
+                continue;
+            }
+            //TODO 公共的过滤(引入屏蔽模块)
+            //1、地域屏蔽
+            //2、操作系统
+
+            //定制化过滤
+            if(isUsefulAdv(baseFlow,advInfo)){
+                return advInfo;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 判断该广告是否可用,针对不同的终端垄断策略可定制化
+     * @param baseFlow 流量信息
+     * @param advInfos 需要过滤的广告列表
+     * @return 广告信息
+     */
+    public abstract boolean isUsefulAdv(BaseFlow baseFlow,DspAdvInfo advInfos);
+
+
 
     /**
      * 转化广告对象为响应对象
