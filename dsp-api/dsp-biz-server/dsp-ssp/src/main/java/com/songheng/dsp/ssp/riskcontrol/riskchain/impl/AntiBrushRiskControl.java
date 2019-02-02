@@ -14,11 +14,11 @@ public class AntiBrushRiskControl extends RiskControl{
      *重写风控验证失败的原因
      **/
     @Override
-    public RiskControlResult getFailResult(BaseFlow baseFlow) {
+    protected RiskControlResult getFailResult(BaseFlow baseFlow) {
         return new RiskControlResult(false,"brushFlow","刷量流量",baseFlow);
     }
     @Override
-    public RiskControlResult doVerification(BaseFlow baseFlow) {
+    protected RiskControlResult doVerification(BaseFlow baseFlow) {
         if(baseFlow.isBrushFlow()){
             return getFailResult(baseFlow);
         }else{

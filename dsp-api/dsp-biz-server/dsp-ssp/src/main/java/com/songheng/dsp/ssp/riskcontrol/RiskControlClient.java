@@ -19,7 +19,7 @@ public class RiskControlClient extends RiskControl {
     /***
      *风控列表,后续如需实现新的风控业务,添加即可
      **/
-    private static List<RiskControl> riskVerifications = CollectionUtils.objsToList(
+    protected static List<RiskControl> riskVerifications = CollectionUtils.objsToList(
         new FlowRiskControl(),
         new AntiBrushRiskControl(),
         new OtherRiskControl()
@@ -45,7 +45,7 @@ public class RiskControlClient extends RiskControl {
     }
 
     @Override
-    public RiskControlResult doVerification(BaseFlow baseFlow) {
+    protected RiskControlResult doVerification(BaseFlow baseFlow) {
         //该管理类只负责转发,不负责验证
        throw new IllegalAccessError("RiskControlClient.doVerification(BaseFlow baseFlow)函数不允许调用," +
                "请调用RiskControlClient.verification()函数");

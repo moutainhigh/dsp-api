@@ -3,6 +3,8 @@ package com.songheng.dsp.ssp.riskcontrol;
 import com.songheng.dsp.common.InitLoadConf;
 import com.songheng.dsp.ssp.model.BaseFlow;
 import com.songheng.dsp.ssp.model.PcFlow;
+import com.songheng.dsp.ssp.riskcontrol.riskchain.impl.FlowRiskControl;
+import com.songheng.dsp.ssp.riskcontrol.riskchain.impl.OtherRiskControl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -67,4 +69,12 @@ public class RiskControlClientTest {
         System.out.println(client.verification(baseFlow,client));
     }
 
+    @Test
+    public void riskControlOne() {
+        baseFlow.setTerminal("h5");
+        baseFlow.setTestFlow(false);
+        baseFlow.setBrushFlow(true);
+        RiskControlClient client = new RiskControlClient();
+        System.out.println(new FlowRiskControl().verification(baseFlow,client));
+    }
 }

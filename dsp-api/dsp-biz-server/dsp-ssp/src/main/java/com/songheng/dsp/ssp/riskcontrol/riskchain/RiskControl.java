@@ -13,13 +13,13 @@ public abstract class RiskControl {
     /**
      * 获取成功结果：成功的方法不需要子类重写
      * */
-    public static final RiskControlResult getSuccessResult(BaseFlow baseFlow){
+    protected static final RiskControlResult getSuccessResult(BaseFlow baseFlow){
         return new RiskControlResult(true,"success","验证通过",baseFlow);
     }
     /**
      *获取失败结果
      **/
-    public RiskControlResult getFailResult(BaseFlow baseFlow){
+    protected RiskControlResult getFailResult(BaseFlow baseFlow){
         return new RiskControlResult(false,"failed","验证失败",baseFlow);
     }
 
@@ -47,5 +47,5 @@ public abstract class RiskControl {
      * @param baseFlow 流量信息
      * @return  true : 风控验证通过  false:风控验证失败
      **/
-    public abstract RiskControlResult doVerification(BaseFlow baseFlow);
+    protected abstract RiskControlResult doVerification(BaseFlow baseFlow);
 }

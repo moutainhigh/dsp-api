@@ -15,12 +15,12 @@ public class OtherRiskControl extends RiskControl {
      *重写风控验证失败的原因
      **/
     @Override
-    public RiskControlResult getFailResult(BaseFlow baseFlow) {
+    protected RiskControlResult getFailResult(BaseFlow baseFlow) {
         return new RiskControlResult(false,"notPcFlow","非pc流量",baseFlow);
     }
 
     @Override
-    public RiskControlResult doVerification(BaseFlow baseFlow) {
+    protected RiskControlResult doVerification(BaseFlow baseFlow) {
         if(!"pc".equalsIgnoreCase(baseFlow.getTerminal())){
             return getFailResult(baseFlow);
         }else{
