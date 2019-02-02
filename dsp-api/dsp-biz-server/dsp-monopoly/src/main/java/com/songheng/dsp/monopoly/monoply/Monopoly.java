@@ -83,7 +83,6 @@ public abstract class Monopoly {
      * 对广告排序
      **/
     public void sort(List<DspAdvInfo> advInfos){
-
     }
 
     /**
