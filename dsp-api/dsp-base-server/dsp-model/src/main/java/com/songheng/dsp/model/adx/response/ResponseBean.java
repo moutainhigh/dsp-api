@@ -2,6 +2,8 @@ package com.songheng.dsp.model.adx.response;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+
 import java.util.List;
 
 @Getter
@@ -57,8 +59,8 @@ public class ResponseBean {
 		this.dsp_id = "";
 	}
 
-    @Override
+	@Override
 	public String toString() {
-		return this.dsp_id + "-" + this.id;
+		return this.seatbid.get(0).getAdm();
 	}
 }

@@ -3,9 +3,11 @@ package com.songheng.dsp.model.flow;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
 import java.io.Serializable;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @description 基础流量信息
@@ -68,9 +70,14 @@ public class BaseFlow implements Serializable {
      **/
     private String installTime;
     /**
-     *地域信息
+     *地域信息：省份
      **/
-    private Map<String,String> area;
+    private String province;
+
+    /**
+     *地域信息：地级市
+     **/
+    private String city;
 
     /**
      * 是否是测试流量
@@ -80,5 +87,24 @@ public class BaseFlow implements Serializable {
      *是否是刷量流量
      **/
     private boolean isBrushFlow;
+
+    /**
+    * 请求Id
+    **/
+    private String reqId;
+
+    /**
+     *流量广告位 list_1_1,list_1_2
+     **/
+    private List<String> flowPositions;
+    /**
+     *垄断流量占用的广告位
+     **/
+    private Set<String> monopolyPositions;
+
+    public BaseFlow(){
+        this.flowPositions = new ArrayList<>(20);
+        this.monopolyPositions = new HashSet<>(20);
+    }
 
 }

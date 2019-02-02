@@ -42,6 +42,15 @@ public class DspAdvInfo {
     private String subadstyle;
     private int switchTag;
     private int userId;
+    /**
+     * 广告位置
+     **/
+    private String pid;
+
+    @Override
+    public String toString(){
+        return this.deliveryid;
+    }
 
     @Getter
     @Setter
