@@ -1,6 +1,6 @@
 package com.songheng.dsp.ssp.riskcontrol;
 
-import com.songheng.dsp.ssp.model.BaseFlow;
+import com.songheng.dsp.model.flow.BaseFlow;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

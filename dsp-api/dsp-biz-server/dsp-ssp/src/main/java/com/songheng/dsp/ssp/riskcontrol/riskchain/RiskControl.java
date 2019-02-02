@@ -1,6 +1,6 @@
 package com.songheng.dsp.ssp.riskcontrol.riskchain;
 
-import com.songheng.dsp.ssp.model.BaseFlow;
+import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.ssp.riskcontrol.RiskControlResult;
 
 /**

@@ -1,4 +1,4 @@
-package com.songheng.dsp.ssp.model;
+package com.songheng.dsp.model.flow;
 
 import lombok.Getter;
 import lombok.Setter;
