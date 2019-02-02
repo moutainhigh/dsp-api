@@ -18,12 +18,12 @@ import java.util.Map;
  **/
 public class MonopolyClient {
 
-    private static Map<String, Monopoly> targets = new HashMap<>();
+    private static Map<String, Monopoly> monopolyRealize = new HashMap<>();
 
     static{
-        targets.put("h5-list",new DefaultMonopoly());
-        targets.put("pc",new DefaultMonopoly());
-        targets.put("app",new DefaultMonopoly());
+        monopolyRealize.put("h5-list",new DefaultMonopoly());
+        monopolyRealize.put("pc",new DefaultMonopoly());
+        monopolyRealize.put("app",new DefaultMonopoly());
     }
     /**
      * 根据不同流量获取不同垄断广告策略key
@@ -36,8 +36,8 @@ public class MonopolyClient {
     public static List<ResponseBean> execute(BaseFlow baseFlow) {
         Monopoly monopoly;
         String key = getDispatchKey(baseFlow);
-        if(targets.containsKey(key)){
-            monopoly = targets.get(key);
+        if(monopolyRealize.containsKey(key)){
+            monopoly = monopolyRealize.get(key);
         }else{
             monopoly = new DefaultMonopoly();
         }
