@@ -1,10 +1,10 @@
 package com.songheng.dsp.ssp.riskcontrol;
 
 import com.songheng.dsp.common.InitLoadConf;
+import com.songheng.dsp.ssp.RiskControlClient;
 import com.songheng.dsp.ssp.model.BaseFlow;
 import com.songheng.dsp.ssp.model.PcFlow;
 import com.songheng.dsp.ssp.riskcontrol.riskchain.impl.FlowRiskControl;
-import com.songheng.dsp.ssp.riskcontrol.riskchain.impl.OtherRiskControl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
