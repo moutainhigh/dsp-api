@@ -2,7 +2,6 @@ package com.songheng.dsp.ssp.riskcontrol;
 
 import com.songheng.dsp.common.utils.CollectionUtils;
 import com.songheng.dsp.ssp.model.BaseFlow;
-import com.songheng.dsp.ssp.model.PcFlow;
 import com.songheng.dsp.ssp.riskcontrol.riskchain.RiskControl;
 import com.songheng.dsp.ssp.riskcontrol.riskchain.impl.AntiBrushRiskControl;
 import com.songheng.dsp.ssp.riskcontrol.riskchain.impl.FlowRiskControl;
@@ -50,44 +49,5 @@ public class RiskControlClient extends RiskControl {
         //该管理类只负责转发,不负责验证
        throw new IllegalAccessError("RiskControlClient.doVerification(BaseFlow baseFlow)函数不允许调用," +
                "请调用RiskControlClient.verification()函数");
-    }
-
-
-    public static void main(String[] args) {
-
-        BaseFlow baseFlow = new PcFlow();
-        baseFlow.setTestFlow(false);
-        baseFlow.setBrushFlow(false);
-        baseFlow.setTerminal("pc");
-        RiskControlClient client = new RiskControlClient();
-        System.out.println(client.verification(baseFlow,client));
-
-
-        baseFlow.setTestFlow(true);
-        baseFlow.setBrushFlow(false);
-        baseFlow.setTerminal("pc");
-        RiskControlClient client2 = new RiskControlClient();
-        System.out.println(client2.verification(baseFlow,client2));
-
-
-        baseFlow.setTestFlow(false);
-        baseFlow.setBrushFlow(true);
-        baseFlow.setTerminal("pc");
-        RiskControlClient client3 = new RiskControlClient();
-        System.out.println(client3.verification(baseFlow,client3));
-
-        baseFlow.setTestFlow(false);
-        baseFlow.setBrushFlow(false);
-        baseFlow.setTerminal("h5");
-        RiskControlClient client4 = new RiskControlClient();
-        System.out.println(client4.verification(baseFlow,client4));
-
-
-        baseFlow.setTestFlow(true);
-        baseFlow.setBrushFlow(true);
-        baseFlow.setTerminal("h5");
-        RiskControlClient client5 = new RiskControlClient();
-        System.out.println(client5.verification(baseFlow,client5));
-
     }
 }

@@ -33,7 +33,7 @@ public class RiskControlResult {
      **/
     private BaseFlow baseFlow;
     /**
-     * 风控业务执行次数
+     * 风控业务执行的链数
      **/
     private int rcNum;
 
@@ -44,7 +44,7 @@ public class RiskControlResult {
         this.baseFlow = baseFlow;
     }
     /**
-     *设置这次风控业务
+     *设置风控业务执行的链数
      **/
     public RiskControlResult setRcNum(int rcNum){
         this.rcNum = rcNum;
