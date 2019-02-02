@@ -20,6 +20,9 @@ public class MonopolyClient {
 
     private static Map<String, Monopoly> monopolyRealize = new HashMap<>();
 
+    /**
+     *注册垄断的具体实现
+     **/
     static{
         monopolyRealize.put("h5-list",new DefaultMonopoly());
         monopolyRealize.put("pc",new DefaultMonopoly());
