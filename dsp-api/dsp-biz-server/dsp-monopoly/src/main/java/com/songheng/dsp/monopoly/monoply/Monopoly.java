@@ -55,7 +55,7 @@ public abstract class Monopoly {
             if(null != advInfos && advInfos.size()>0) {
                 this.sort(advInfos);
                 //过滤广告 获取可用广告
-                DspAdvInfo advInfo = this.getFilterMonopolyAdvInfo(baseFlow,advInfos,deliveryIdFilter);
+                DspAdvInfo advInfo = this.getMonopolyAdvInfoByFilter(baseFlow,advInfos,deliveryIdFilter);
                 if(null != advInfo) {
                     //将广告对象转化为响应对象
                     ResponseBean responseBean = this.conversion(advInfo, baseFlow, i);
@@ -93,7 +93,7 @@ public abstract class Monopoly {
      * @param deliveryIdFilter 已经展现过的投放id
      * @return 广告信息
      */
-    public final DspAdvInfo getFilterMonopolyAdvInfo(BaseFlow baseFlow,List<DspAdvInfo> advInfos,Set<String> deliveryIdFilter){
+    public final DspAdvInfo getMonopolyAdvInfoByFilter(BaseFlow baseFlow,List<DspAdvInfo> advInfos,Set<String> deliveryIdFilter){
         Iterator<DspAdvInfo> iterator = advInfos.iterator();
         while (iterator.hasNext()){
             DspAdvInfo advInfo = iterator.next();
