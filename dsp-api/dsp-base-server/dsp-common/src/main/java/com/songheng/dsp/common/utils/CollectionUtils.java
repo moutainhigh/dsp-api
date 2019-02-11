@@ -7,12 +7,9 @@ import java.util.List;
 
 /**
  *
- * @title: CollectionUtils
- * @package com.songheng.dsp.utils
- * @description: 文件操作工具类
+ * @description: 集合工具类
  * @author: zhangshuai@021.com
  * @date: 2019-01-25 12:54
- * @version V1.0
  **/
 public class CollectionUtils {
 
@@ -26,9 +23,15 @@ public class CollectionUtils {
         return lists;
     }
 
+    public static<T> List<T> objsToList(T... objs){
+        return Lists.newArrayList(objs);
+    }
+
     public static void main(String[] args) {
         List<String> list = Lists.newArrayList("A","B","C","D","C");
         removeDuplicate(list);
         System.out.println(list);
+        List<String> strs = objsToList("1","2","3");
+        System.out.println(strs);
     }
 }

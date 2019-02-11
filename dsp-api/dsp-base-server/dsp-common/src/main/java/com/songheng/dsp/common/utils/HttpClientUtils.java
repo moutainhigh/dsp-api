@@ -46,10 +46,10 @@ public class HttpClientUtils {
         requestConfig = RequestConfig.
                 custom()
                 //socket time out
-                .setSocketTimeout(Integer.parseInt(com.songheng.dsp.common.utils.StringUtils.replaceNullOrEmpty(
+                .setSocketTimeout(Integer.parseInt(com.songheng.dsp.common.utils.StringUtils.replaceInvalidString(
                         PropertyPlaceholder.getProperty("httpclient.socket.timeout"),"5000")))
                 // connect time out
-                .setConnectTimeout(Integer.parseInt(com.songheng.dsp.common.utils.StringUtils.replaceNullOrEmpty(
+                .setConnectTimeout(Integer.parseInt(com.songheng.dsp.common.utils.StringUtils.replaceInvalidString(
                         PropertyPlaceholder.getProperty("httpclient.connect.timeout"),"5000")))
                 .build();
     }
