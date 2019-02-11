@@ -73,6 +73,16 @@ public class DruidConfiguration {
     }
 
     /**
+     * 获取数据源
+     * @return
+     */
+    public static DataSource getDataSource(){
+        if (null == dataSource){
+            initDataSource();
+        }
+        return dataSource;
+    }
+    /**
      * 获取数据库链接
      * @return
      *

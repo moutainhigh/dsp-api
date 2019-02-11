@@ -60,7 +60,7 @@ public class RedisPool {
      * @param projectName 项目名称 admethod/partner/dfpcitv/dspdatalog_B/dspdatalog_E
      * @param channel pc/wap
      */
-    public static void initShardePool(String projectName, String channel){
+    private static void initShardePool(String projectName, String channel){
         TreeSet<String> redisNodes = new TreeSet<>();
         Map<String, String> redisConf = new HashMap<>(16);
         Map<String, String> confMap = PropertyPlaceholder.getPropertyMap();
