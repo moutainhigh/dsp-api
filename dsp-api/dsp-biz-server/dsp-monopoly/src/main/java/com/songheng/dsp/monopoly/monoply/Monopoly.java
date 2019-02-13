@@ -53,6 +53,7 @@ public abstract class Monopoly {
             //获取该位置的广告
             List<DspAdvInfo> advInfos = this.getMonopolyAdvByCurPosition(baseFlow,position);
             if(null != advInfos && advInfos.size()>0) {
+                //对广告进行排序
                 this.sort(advInfos);
                 //过滤广告 获取可用广告
                 DspAdvInfo advInfo = this.getMonopolyAdvInfoByFilter(baseFlow,advInfos,deliveryIdFilter);
