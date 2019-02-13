@@ -46,8 +46,12 @@ public abstract class Monopoly {
         //遍历所有广告位
         for(int i=0;i<positionSize;i++){
             String position = positions.get(i);
-            //使用过的广告位,不再使用
+            //使用过的广告位,不可再使用
             if(positionFilter.contains(position)){
+                continue;
+            }
+            //过滤当前流量广告位
+            if(this.filterCurrPosition(baseFlow,position)){
                 continue;
             }
             //获取该位置的广告
@@ -84,6 +88,15 @@ public abstract class Monopoly {
      * 对广告排序
      **/
     public void sort(List<DspAdvInfo> advInfos){
+    }
+
+    /**
+     * 过滤当前流量的广告位
+     * @return true 过滤 false 不过滤
+     * */
+    public boolean filterCurrPosition(BaseFlow baseFlow,String position){
+        //TODO 引入屏蔽模块
+        return false;
     }
 
     /**
