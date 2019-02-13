@@ -63,6 +63,8 @@
         <!--jedis -->
         <jedis.version>2.9.0</jedis.version>
         <commons-pool2.version>2.4.2</commons-pool2.version>
+        <!--httpclient -->
+        <httpclient.version>4.5.1</httpclient.version>
 
         <!-- Build -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -314,17 +314,17 @@ public class DbUtils {
 
     /**
      * 执行 INSERT/UPDATE/DELETE 语句
+     * 添加事务
      * @param sql
      * @param paras
      * @return
      */
     public static boolean executeNamingSql(String sql, Object... paras) {
-        Connection conn = DruidConfiguration.getConnection();
-        PreparedStatement pst = null;
+        Connection conn = TransactionUtils.getConnection();
         boolean flag = false;
         int index = 1;
         try {
-            pst = conn.prepareStatement(sql);
+            PreparedStatement pst = conn.prepareStatement(sql);
             if(paras != null && paras.length > 0) {
                 pst.clearParameters();
                 for(int i=0; i<paras.length; i++) {
@@ -336,8 +336,6 @@ public class DbUtils {
         } catch (SQLException e) {
             e.printStackTrace();
             log.error("executeNamingSql failure, sql={}&parameters={}\t{}", sql, paras, e);
-        } finally {
-            DruidConfiguration.closeResource(conn, pst);
         }
         return flag;
     }
