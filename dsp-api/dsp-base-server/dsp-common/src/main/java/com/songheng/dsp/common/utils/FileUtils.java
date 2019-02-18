@@ -42,7 +42,7 @@ public final class FileUtils {
             }else {
                 Files.write(content, new File(writeFilePath), Charsets.UTF_8);
             }
-            log.debug("[writeFile]:path={}&append={}&content:{}",writeFilePath,append,
+            log.info("[writeFile]:path={}&append={}&content:{}",writeFilePath,append,
                     content.replace("\n","\\n"));
             return true;
         }catch (Exception e){
@@ -61,7 +61,7 @@ public final class FileUtils {
             //创建父级目录
             Files.createParentDirs(new File(writeFilePath));
             Files.write("", new File(writeFilePath), Charsets.UTF_8);
-            log.debug("[clearFileContent]:path={}",writeFilePath);
+            log.info("[clearFileContent]:path={}",writeFilePath);
             return true;
         }catch (Exception e){
             log.error("[clearFileContent]:path={}\t{}",writeFilePath,e);
@@ -77,7 +77,7 @@ public final class FileUtils {
     public static boolean copyFile(String originFilePath,String copyFilePath){
         try {
             Files.copy(new File(originFilePath), new File(copyFilePath));
-            log.debug("[copyFile]:origin={}&copy={}",originFilePath,copyFilePath);
+            log.info("[copyFile]:origin={}&copy={}",originFilePath,copyFilePath);
             return true;
         }catch (Exception e){
             log.error("[copyFile]:origin={}&copy={}\t{}",originFilePath,copyFilePath,e);
@@ -94,7 +94,7 @@ public final class FileUtils {
     public static boolean moveFile(String originFilePath,String moveFilePath){
         try {
             Files.move(new File(originFilePath), new File(moveFilePath));
-            log.debug("[moveFile]:origin={}&move:{}",originFilePath,moveFilePath);
+            log.info("[moveFile]:origin={}&move:{}",originFilePath,moveFilePath);
             return true;
         }catch (Exception e){
             log.error("[moveFile]:origin={}&move=&{}\t{}",originFilePath,moveFilePath,e);
@@ -236,7 +236,7 @@ public final class FileUtils {
                     result.add(colVal);
                 }
             }catch (Exception e){
-                log.debug("[read file & split & process]:line={}\t{}",line,e);
+                log.error("[read file & split & process]:line={}\t{}",line,e);
             }
             return true;
         }
