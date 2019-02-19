@@ -4,6 +4,7 @@ package com.songheng.dsp.model.flow;
 
 import com.alibaba.fastjson.JSONArray;
 import com.songheng.dsp.common.utils.StringUtils;
+import com.songheng.dsp.model.enums.DeviceType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -72,7 +73,7 @@ public class AdvPositions {
 	}
 
 	private static String getTestJson(String deviceType){
-		if("mobile".equalsIgnoreCase(deviceType)) {
+		if(DeviceType.isMobile(deviceType)) {
 			return "[{\"pid\":\"detail_-2_1\",\"style\":\"one,group,full\"},"
 					+ "{\"pid\":\"detail_-1_1\",\"style\":\"one,big,group\"},"
 					+ "{\"pid\":\"detail_-1_2\",\"style\":\"one,big,group\"},"
@@ -80,15 +81,11 @@ public class AdvPositions {
 					+ "{\"pid\":\"detail_1_1\",\"style\":\"one,big,group\"},"
 					+ "{\"pid\":\"detail_1_2\",\"style\":\"one,big,group\"},"
 					+ "{\"pid\":\"detail_1_3\",\"style\":\"one,big,group\"}]";
-		}else{
+		}else if(DeviceType.isComputer(deviceType)){
 			return "[{\"pid\":\"sy_nyxf\"},"
-//					+ "{\"pid\":\"sy_yxxf\"},"
-//					+ "{\"pid\":\"sy_y1\"},"
-//					+ "{\"pid\":\"sy_y2\"},"
-//					+ "{\"pid\":\"sy_dl\"},"
-//					+ "{\"pid\":\"sy_y3\"},"
-//					+ "{\"pid\":\"sy_y4\"},"
 					+ "{\"pid\":\"sy_y5\"}]";
+		}else{
+			return null;
 		}
 	}
 	/**
