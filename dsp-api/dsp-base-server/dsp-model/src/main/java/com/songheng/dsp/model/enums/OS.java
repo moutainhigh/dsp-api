@@ -8,20 +8,24 @@ public enum OS {
     /**
      * Android
      * */
-    Android("4","Android"),
+    Android("4","android"),
     /**
      * iOS
      * */
-    iOS("5","iOS"),
+    iOS("5","ios"),
 
     /**
      * Windows
      * */
-    Windows("7","windows"),
+    Windows("7","Windows"),
     /**
      * Mac OS
      * */
     MacOS("8","Mac OS"),
+    /**
+     *Linux
+     **/
+    Linux("9","Linux"),
     /**
      * 未知
      * */

@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * @description 请求的广告位
+ * 广告位
  * @author zhangshuai@021.com
  *
  */
@@ -31,9 +31,20 @@ public class AdvPositions {
 	 * */
 	private String tagId;
 	/**
-	 * 广告样式 one/group/big
+	 * 对内的广告样式 one/group/big
 	 */
 	private String style;
+
+	/**
+	 * 对外的广告样式 DF_ADX_BIG:500*250*1
+	 * */
+
+	private String outerStyle;
+
+	/**
+	 * 广告位底价
+	 * */
+	private double floorPrice;
 
 	/**
 	 *页码：自行解析
@@ -101,7 +112,7 @@ public class AdvPositions {
 			}
 			//解析页码 和 下标
 			String[] pids = advPositions.getPid().split("_");
-			if(pids.length==3 && "mobile".equalsIgnoreCase(deviceType)){
+			if(pids.length == 3 && DeviceType.isMobile(deviceType)){
 				try {
 					advPositions.setPgNum(Integer.parseInt(pids[1].trim()));
 					advPositions.setIdx(Integer.parseInt(pids[2].trim()));
@@ -117,6 +128,13 @@ public class AdvPositions {
 				advPositions.setVerifyStyle(true);
 			}
 			//TODO 获取广告位密文tagId
+
+			//TODO 获取广告位底价
+
+			//TODO 对外的样式
+
+
+
 		}
 	}
 
@@ -145,9 +163,4 @@ public class AdvPositions {
 		}
 		return true;
 	}
-
-	public static void main(String[] args) {
-		System.out.println(jsonArrayToBeans("","computer"));
-	}
-
 }

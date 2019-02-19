@@ -2,7 +2,6 @@ package com.songheng.dsp.adxbid.utils;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.songheng.dsp.common.utils.CollectionUtils;
 import com.songheng.dsp.common.utils.PropertyPlaceholder;
 import com.songheng.dsp.common.utils.RandomUtils;
 import com.songheng.dsp.common.utils.StringUtils;
@@ -13,11 +12,11 @@ import com.songheng.dsp.model.adx.request.User;
 import com.songheng.dsp.model.flow.AdvPositions;
 import com.songheng.dsp.model.flow.BaseFlow;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- *构建请求bean
+ * 构建请求bean
+ * @author zhangshuai@021.com
  * */
 public final class BuildAdxBidRequestBean {
 
@@ -108,12 +107,10 @@ public final class BuildAdxBidRequestBean {
         List<AdvPositions> positions = baseFlow.getBidPositions();
         for (AdvPositions advPosition:positions) {
             JSONObject imp = new JSONObject();
-            //曝光id
             imp.put("id", RandomUtils.generateRandString("b",10));
             imp.put("tagid", advPosition.getTagId());
-            imp.put("styles", StringUtils.strToList(advPosition.getStyle()));
-            //TODO 设置广告底价
-            imp.put("bidfloor",10D);
+            imp.put("styles", StringUtils.strToList(advPosition.getOuterStyle()));
+            imp.put("bidfloor",advPosition.getFloorPrice());
             imps.add(imp);
         }
         requestBean.setImp(imps);
