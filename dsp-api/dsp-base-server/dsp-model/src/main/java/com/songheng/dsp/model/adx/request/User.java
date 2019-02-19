@@ -11,16 +11,13 @@ public class User {
 	private String buyerid;
 	private String gender;
 	private String age;
-	public User(String id, String buyerid, String gender, String age,String imei,String deviceid) {
+	public User(String id, String gender, String age,String deviceId) {
 		super();
 		this.id = id;
-		this.buyerid = buyerid;
+		this.imei = id;
+		this.buyerid = "";
 		this.gender = gender;
 		this.age = age;
-		this.imei = imei;
-		this.deviceid = deviceid;
-	}
-	public User() {
-		super();
+		this.deviceid = deviceId;
 	}
 }

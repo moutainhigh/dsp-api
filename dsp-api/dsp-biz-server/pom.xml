@@ -17,6 +17,7 @@
     <modules>
         <module>dsp-ssp</module>
         <module>dsp-monopoly</module>
+        <module>dsp-adxbid</module>
     </modules>
 
     <dependencies>

@@ -51,7 +51,6 @@ public class MonopolyClient {
         BaseFlow baseFlow = new BaseFlow();
         baseFlow.setTerminal("h5");
         baseFlow.setPgType("list");
-        baseFlow.setFlowPositions(StringUtils.strToList("list_1_1,list_1_2,list_1_3,list_1_4"));
         System.out.println("\n========================垄断广告获取到的广告=================================\n"
                 +execute(baseFlow));
         System.out.println(baseFlow);

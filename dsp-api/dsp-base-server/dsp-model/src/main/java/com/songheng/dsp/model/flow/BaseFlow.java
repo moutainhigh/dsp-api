@@ -22,9 +22,44 @@ public class BaseFlow implements Serializable {
     private static final long serialVersionUID = 1983712738291293847L;
 
     /**
-     *流量终端:h5/app/union/pc
+     *流量终端:h5/app/pc
      **/
     private String terminal;
+
+    /**
+     * 站点/应用名称:
+     * h5/pc :site
+     * app:apptypeid
+     * */
+    private String siteName;
+    /**
+     * 渠道号
+     * */
+    private String qid;
+    /**
+     * 流量的新闻url
+     * */
+    private String page;
+    /**
+     * 流量新闻栏位
+     * */
+    private String newsType;
+    /**
+     * 阅读的历史新闻
+     * */
+    private String readHistory;
+    /**
+     * 用户唯一标识
+     * h5/pc:uid
+     * app:ime
+     * */
+    private String userId;
+
+    /**
+     * 设备Id
+     * */
+    private String deviceId;
+
     /**
      *页面类型 list/detail/open/sy/ny....
      **/
@@ -48,11 +83,11 @@ public class BaseFlow implements Serializable {
     /**
      *操作系统+版本
      **/
-    private String os;
+    private String osAndVersion;
     /**
      * 操作系统
      **/
-    private String osName;
+    private String os;
     /**
      *浏览器名称
      **/
@@ -65,6 +100,27 @@ public class BaseFlow implements Serializable {
      *referer
      **/
     private String referer;
+    /**
+     * 设备型号
+     * */
+    private String model;
+    /**
+     * 网络类型:默认wifi
+     * wifi,5g,4g,3g,2g,unknown
+     * */
+    private String net;
+    /**
+     * 运营商
+     * */
+    private String isp;
+    /**
+     * 性别
+     * */
+    private String gender;
+    /**
+     * 年龄
+     * */
+    private String age;
     /**
      * 安装时间
      **/
@@ -89,22 +145,33 @@ public class BaseFlow implements Serializable {
     private boolean isBrushFlow;
 
     /**
-    * 请求Id
-    **/
+     * 请求Id
+     **/
     private String reqId;
 
     /**
-     *流量广告位 list_1_1,list_1_2
+     *所有流量广告位 list_1_1,list_1_2
      **/
-    private List<String> flowPositions;
+    private List<AdvPositions> flowPositions;
+
+    /**
+     * 竞价的广告位
+     * */
+    private List<AdvPositions> bidPositions;
     /**
      *垄断流量占用的广告位
      **/
-    private Set<String> monopolyPositions;
+    private Set<AdvPositions> monopolyPositions;
 
     public BaseFlow(){
         this.flowPositions = new ArrayList<>(20);
-        this.monopolyPositions = new HashSet<>(20);
+        this.bidPositions = new ArrayList<>(15);
+        this.monopolyPositions = new HashSet<>(5);
+        //默认wifi
+        this.net = "wifi";
+        this.age = "";
+        this.gender = "";
+        this.isp = "";
     }
 
 }

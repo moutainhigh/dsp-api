@@ -7,6 +7,7 @@ import com.songheng.dsp.common.utils.PropertyPlaceholder;
 import com.songheng.dsp.common.utils.RandomUtils;
 import com.songheng.dsp.model.adx.response.BidBean;
 import com.songheng.dsp.model.adx.response.ResponseBean;
+import com.songheng.dsp.model.flow.AdvPositions;
 import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.model.materiel.DspAdvInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,7 @@ public abstract class Monopoly {
             log.debug("没有获取到流量广告位");
             return result;
         }
-        List<String> positions = baseFlow.getFlowPositions();
+        List<AdvPositions> positions = baseFlow.getFlowPositions();
         int positionSize = positions.size();
         /**
          *已经展现的投放id
@@ -45,17 +46,19 @@ public abstract class Monopoly {
 
         //遍历所有广告位
         for(int i=0;i<positionSize;i++){
-            String position = positions.get(i);
+            AdvPositions advPositions = positions.get(i);
+            //广告位标识
+            String pid = advPositions.getPid();
             //使用过的广告位,不可再使用
-            if(positionFilter.contains(position)){
+            if(positionFilter.contains(pid)){
                 continue;
             }
             //过滤当前流量广告位
-            if(this.filterCurrPosition(baseFlow,position)){
+            if(this.filterCurrPosition(baseFlow,pid)){
                 continue;
             }
             //获取该位置的广告
-            List<DspAdvInfo> advInfos = this.getMonopolyAdvByCurPosition(baseFlow,position);
+            List<DspAdvInfo> advInfos = this.getMonopolyAdvByCurPosition(baseFlow,pid);
             if(null != advInfos && advInfos.size()>0) {
                 //对广告进行排序
                 this.sort(advInfos);
@@ -68,14 +71,34 @@ public abstract class Monopoly {
                     //设置返回出去的广告,用于过滤
                     deliveryIdFilter.add(advInfo.getDeliveryid());
                     //设置已经占用的广告位
-                    positionFilter.add(position);
+                    positionFilter.add(pid);
                     //设置垄断广告占用的位置
-                    baseFlow.getMonopolyPositions().add(position);
+                    baseFlow.getMonopolyPositions().add(advPositions);
                 }
             }
         }
+        //设置竞价广告位
+        setBidPositions(baseFlow);
         return result;
     }
+
+    /**
+     * 设置竞价的广告位
+     * @param baseFlow 流量信息
+     * */
+    private static void setBidPositions(BaseFlow baseFlow){
+        //获取所有广告位
+        List<AdvPositions> advPositionsList = baseFlow.getFlowPositions();
+        Iterator<AdvPositions> iterator = advPositionsList.iterator();
+        while(iterator.hasNext()){
+            AdvPositions advPositions = iterator.next();
+            //没有垄断的广告位 则为竞价的广告位
+            if(!baseFlow.getMonopolyPositions().contains(advPositions)){
+                baseFlow.getBidPositions().add(advPositions);
+            }
+        }
+    }
+
     /**
      * 获取这个位置的垄断广告
      * @param baseFlow 流量信息
