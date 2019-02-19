@@ -6,11 +6,15 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class RquestBean {
+public class RequestBean {
     private String id;
     private JSONArray imp;
     private Site site;
     private Device device;
     private User user;
     private int at;
+
+    public RequestBean(String reqId){
+        this.id = reqId;
+    }
 }

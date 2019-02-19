@@ -23,7 +23,7 @@ public final class DeviceUtils {
     /**
      * @description: 获取操作系统名称
      * @param ua UserAgent
-     * @return Android 5.x,iOS,Mac OS X,Windows,Unknown
+     * @return Android 5.x,Mac OS X (iPhone),Mac OS X,Windows,Unknown
      */
     public static String getOs(String ua){
         UserAgent userAgent = UserAgent.parseUserAgentString(ua);
@@ -70,7 +70,7 @@ public final class DeviceUtils {
     public static void main(String[] args) {
         String macua =     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36";
         String androidua = "Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Mobile Safari/537.36";
-        String iosua     = "Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1";
+        String iosua     = "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1";
         String winua     = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36";
         System.out.println(getOsName(iosua));
         System.out.println(getOs(winua));
@@ -78,5 +78,7 @@ public final class DeviceUtils {
         System.out.println(getBrowserName(androidua));
         System.out.println(getBrowserVersion(androidua));
         System.out.println(getUserAgentId(iosua));
+        System.out.println(getOsName(iosua));
+        System.out.println(getOs(iosua));
     }
 }
