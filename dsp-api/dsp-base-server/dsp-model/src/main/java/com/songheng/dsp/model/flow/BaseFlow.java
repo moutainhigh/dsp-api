@@ -185,6 +185,7 @@ public class BaseFlow implements Serializable {
         this.browserVersion = DeviceUtils.getBrowserVersion(ua);
         this.deviceType = DeviceUtils.getDeviceType(ua);
         this.userAgentId = DeviceUtils.getUserAgentId(ua);
+        this.model = DeviceUtils.getPhoneModel(ua);
         if(DeviceType.isComputer(this.deviceType)){
             this.terminal = "pc";
         }
