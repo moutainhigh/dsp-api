@@ -8,15 +8,15 @@ public enum DeviceType {
     /**
      * 手机
      * */
-    Mobile("1","Mobile"),
+    Mobile("1","mobile"),
     /**
      * 电脑
      * */
-    Computer("2","Computer"),
+    Computer("2","computer"),
     /**
      * 未知
      * */
-    Unknown("-1","Unknown")
+    Unknown("-1","unknown")
     ;
 
     private String key;

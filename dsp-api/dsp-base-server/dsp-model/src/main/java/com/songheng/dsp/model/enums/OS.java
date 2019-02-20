@@ -17,19 +17,19 @@ public enum OS {
     /**
      * Windows
      * */
-    Windows("7","Windows"),
+    Windows("7","windows"),
     /**
      * Mac OS
      * */
-    MacOS("8","Mac OS"),
+    MacOS("8","mac os"),
     /**
      *Linux
      **/
-    Linux("9","Linux"),
+    Linux("9","linux"),
     /**
      * 未知
      * */
-    Unknown("-1","Unknown")
+    Unknown("-1","unknown")
     ;
 
     private String key;

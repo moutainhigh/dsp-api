@@ -2,9 +2,15 @@ package com.songheng.dsp.model.adx.request;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
+/**
+ * 设备信息
+ * @author zhangshuai@021.com
+ * */
 @Getter
 @Setter
+@ToString
 public class Device {
 	private String ua;
 	private String ip;

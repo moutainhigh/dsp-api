@@ -13,30 +13,30 @@ public final class DeviceUtils {
     /**
      * @description: 获取操作系统名称
      * @param ua UserAgent
-     * @return Android,iOS,Mac OS X,Windows,Unknown
+     * @return android,ios,mac os x,windows,unknown
      */
 
     public static String getOsName(String ua){
         UserAgent userAgent = UserAgent.parseUserAgentString(ua);
-        return userAgent.getOperatingSystem().getGroup().getName();
+        return userAgent.getOperatingSystem().getGroup().getName().toLowerCase();
     }
     /**
      * @description: 获取操作系统名称
      * @param ua UserAgent
-     * @return Android 5.x,Mac OS X (iPhone),Mac OS X,Windows,Unknown
+     * @return android 5.x,mac os x (iphone),mac os x,windows,unknown
      */
     public static String getOs(String ua){
         UserAgent userAgent = UserAgent.parseUserAgentString(ua);
-        return userAgent.getOperatingSystem().getName();
+        return userAgent.getOperatingSystem().getName().toLowerCase();
     }
     /**
      * @description: 获取设备类型
      * @param ua UserAgent
-     * @return Mobile,Computer,Unknown
+     * @return mobile,computer,unknown
      */
     public static String getDeviceType(String ua){
         UserAgent userAgent = UserAgent.parseUserAgentString(ua);
-        return userAgent.getOperatingSystem().getDeviceType().getName();
+        return userAgent.getOperatingSystem().getDeviceType().getName().toLowerCase();
     }
 
     /**

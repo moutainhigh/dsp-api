@@ -3,6 +3,7 @@ package com.songheng.dsp.model.flow;
 
 
 import com.alibaba.fastjson.JSONArray;
+import com.songheng.dsp.common.utils.MathUtils;
 import com.songheng.dsp.common.utils.StringUtils;
 import com.songheng.dsp.model.enums.DeviceType;
 import lombok.Getter;
@@ -64,17 +65,20 @@ public class AdvPositions {
 		this.pgNum = -1;
 		this.idx = -1;
 		this.isVerifyStyle = false;
+		//默认底价1元
+		this.floorPrice = MathUtils.round(1);
 		this.style = "";
+		this.outerStyle = "";
 	}
 
-	public static List<AdvPositions> jsonArrayToBeans(String jsonStr,String deviceType){
+	public static List<AdvPositions> getAdvPositionsByJsonStr(String jsonStr,BaseFlow baseFlow){
 		List<AdvPositions> positionInfo = new ArrayList<>();
 		try {
 			//测试json
-			jsonStr = getTestJson(deviceType);
+			jsonStr = BaseFlow.getTestAdvPositionJson(baseFlow,jsonStr);
 			if(jsonStr!=null && !"".contentEquals(jsonStr.trim())){
 				positionInfo =  JSONArray.parseArray(jsonStr,AdvPositions.class);
-				parseData(positionInfo,deviceType);
+				parseData(positionInfo,baseFlow.getDeviceType());
 			}
 			return positionInfo;
 		} catch (Exception e) {
@@ -83,22 +87,7 @@ public class AdvPositions {
 		}
 	}
 
-	private static String getTestJson(String deviceType){
-		if(DeviceType.isMobile(deviceType)) {
-			return "[{\"pid\":\"detail_-2_1\",\"style\":\"one,group,full\"},"
-					+ "{\"pid\":\"detail_-1_1\",\"style\":\"one,big,group\"},"
-					+ "{\"pid\":\"detail_-1_2\",\"style\":\"one,big,group\"},"
-					+ "{\"pid\":\"detail_-6_1\",\"style\":\"big\"},"
-					+ "{\"pid\":\"detail_1_1\",\"style\":\"one,big,group\"},"
-					+ "{\"pid\":\"detail_1_2\",\"style\":\"one,big,group\"},"
-					+ "{\"pid\":\"detail_1_3\",\"style\":\"one,big,group\"}]";
-		}else if(DeviceType.isComputer(deviceType)){
-			return "[{\"pid\":\"sy_nyxf\"},"
-					+ "{\"pid\":\"sy_y5\"}]";
-		}else{
-			return null;
-		}
-	}
+
 	/**
 	 * 解析页码 和 idx
 	 * */
