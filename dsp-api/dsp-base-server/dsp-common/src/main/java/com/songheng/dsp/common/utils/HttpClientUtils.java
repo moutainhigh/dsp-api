@@ -166,15 +166,23 @@ public class HttpClientUtils {
         return httpRlt;
     }
 
+    /**
+     * httpPost
+     * @param url
+     * @param heads
+     * @param params
+     * @return
+     */
     public static String httpPost(String url, Map<String,String> heads, Map<String,String> params){
         // post请求返回结果
         String strResult = "";
         //响应
         CloseableHttpResponse response = null;
+        CloseableHttpClient httpClient = getHttpClient();
         //请求参数转换
         List<NameValuePair> list = convertParams(params);
         try{
-            response = executeRequest(url,"POST",heads,list,CHARSET_ENCODING);
+            response = executeRequest(httpClient, url,"POST",heads,list,CHARSET_ENCODING);
             // 请求发送成功，并得到响应
             if (HttpStatus.SC_OK == response.getStatusLine().getStatusCode()) {
                 strResult = EntityUtils.toString(response.getEntity(), CHARSET_ENCODING);
@@ -193,6 +201,13 @@ public class HttpClientUtils {
                     e.printStackTrace();
                 }
             }
+            if (null != httpClient){
+                try {
+                    httpClient.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return strResult;
     }
@@ -205,10 +220,11 @@ public class HttpClientUtils {
     public static String httpGet(String url,Map<String,String> params){
         // get请求返回结果
         String strResult = "";
+        CloseableHttpClient httpClient = getHttpClient();
         CloseableHttpResponse response = null;
         List<NameValuePair> list = convertParams(params);
         try{
-            response = executeRequest(url,"GET",null,list,CHARSET_ENCODING);
+            response = executeRequest(httpClient, url,"GET",null,list,CHARSET_ENCODING);
             // 请求发送成功，并得到响应
             if (HttpStatus.SC_OK == response.getStatusLine().getStatusCode())
             {
@@ -228,6 +244,13 @@ public class HttpClientUtils {
                     e.printStackTrace();
                 }
             }
+            if (null != httpClient){
+                try {
+                    httpClient.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return strResult;
     }
@@ -242,6 +265,7 @@ public class HttpClientUtils {
 
     /**
      * 执行请求，得到resonse对象
+     * @param httpClient
      * @param url
      * @param method
      * @param header
@@ -249,9 +273,8 @@ public class HttpClientUtils {
      * @param charset
      * @return
      */
-    public static CloseableHttpResponse executeRequest(String url, String method,
+    public static CloseableHttpResponse executeRequest(CloseableHttpClient httpClient, String url, String method,
                                                        Map<String, String> header, List<NameValuePair> nameValuePairs, String charset) {
-        CloseableHttpClient httpClient = getHttpClient();
         CloseableHttpResponse response = null;
         try {
             if (HttpPost.METHOD_NAME.equalsIgnoreCase(method)) {
@@ -295,22 +318,8 @@ public class HttpClientUtils {
         } catch (IOException e) {
             e.printStackTrace();
             log.error("executeRequest failure: url={}&method={}&header={}&nameValuePairs={}\t{}", url, method, header, nameValuePairs, e);
-        } finally{
-            if(null != response){
-                try {
-                    response.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (null != httpClient){
-                try {
-                    httpClient.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
+
         return response;
     }
 
