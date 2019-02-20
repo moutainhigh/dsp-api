@@ -1,6 +1,7 @@
 package com.songheng.dsp.common;
 
 import com.songheng.dsp.common.db.DruidConfiguration;
+import com.songheng.dsp.common.hbase.HbaseConnmini;
 import com.songheng.dsp.common.redis.RedisPool;
 import com.songheng.dsp.common.utils.PropertyPlaceholder;
 
@@ -27,5 +28,7 @@ public class InitLoadConf {
         DruidConfiguration.initDataSource();
         //初始化redis pool
         RedisPool.initRedisPool(projectName, channel);
+        //初始化创建hbase连接
+        HbaseConnmini.createHbaseLink(channel);
     }
 }
