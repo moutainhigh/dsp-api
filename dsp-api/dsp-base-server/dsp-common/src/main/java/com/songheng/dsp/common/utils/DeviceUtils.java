@@ -1,5 +1,7 @@
 package com.songheng.dsp.common.utils;
 
+import eu.bitwalker.useragentutils.DeviceType;
+import eu.bitwalker.useragentutils.OperatingSystem;
 import eu.bitwalker.useragentutils.UserAgent;
 
 /**
@@ -66,7 +68,25 @@ public final class DeviceUtils {
         UserAgent userAgent = UserAgent.parseUserAgentString(ua);
         return userAgent.getId();
     }
-
+    /**
+     * @description: 获取手机品牌
+     * @param ua UserAgent
+     * @return 251989860,Unknown
+     */
+    public static String getPhoneModel(String ua){
+        if(DeviceType.MOBILE.getName().equalsIgnoreCase(getDeviceType(ua))){
+            if(OperatingSystem.IOS.getName().equalsIgnoreCase(getOsName(ua))){
+                return "iPhone";
+            }else{
+                String rex="[()]+";
+                String[] str=ua.split(rex);
+                str = str[1].split("[;]");
+                String[] res=str[str.length-1].split("Build/");
+                return res[0].trim();
+            }
+        }
+        return  "other";
+    }
     public static void main(String[] args) {
         String macua =     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36";
         String androidua = "Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Mobile Safari/537.36";
@@ -80,5 +100,8 @@ public final class DeviceUtils {
         System.out.println(getUserAgentId(iosua));
         System.out.println(getOsName(iosua));
         System.out.println(getOs(iosua));
+        System.out.println("=="+getPhoneModel(androidua)+"==");
+        System.out.println(getPhoneModel(iosua));
+        System.out.println(getPhoneModel(winua));
     }
 }
