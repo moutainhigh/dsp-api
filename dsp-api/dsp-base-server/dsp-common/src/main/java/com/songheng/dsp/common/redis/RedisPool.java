@@ -201,10 +201,7 @@ public class RedisPool {
      */
     private static void initPoolConfig(String projectName, TreeSet<String> redisNodes, Map<String, String> redisConf,
                                        TreeSet<String> redisNewNodes){
-        if (redisNodes.size() == 0 || redisConf.size() == 0){
-            return;
-        }
-        System.out.println("初始化 "+projectName+" redis池子前");
+        System.out.println("初始化 【"+projectName+"】 redis池子前");
         try {
             JedisPoolConfig config = new JedisPoolConfig();
             //资源池中最大连接数

@@ -35,9 +35,8 @@ public class RedisCache {
             return sharedJedis.exists(key);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("exists").append("\t").append(key)
-                    .append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("exists");
+            sb.append("\t").append(key).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return false;
@@ -66,9 +65,8 @@ public class RedisCache {
             return sharedJedis.expire(key, seconds);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("expire").append("\t").append(key)
-                    .append("\t").append(seconds).append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("expire");
+            sb.append("\t").append(key).append("\t").append(seconds).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.EXPIRE,isNewSharedJedis,key,seconds));
             log.error(sb.toString());
@@ -98,9 +96,8 @@ public class RedisCache {
             return sharedJedis.expireAt(key, unixTime);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("expireAt").append("\t").append(key)
-                    .append("\t").append(unixTime).append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("expireAt");
+            sb.append("\t").append(key).append("\t").append(unixTime).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.EXPIREAT,isNewSharedJedis,key,unixTime));
             log.error(sb.toString());
@@ -130,9 +127,8 @@ public class RedisCache {
             return sharedJedis.pexpire(key ,milliseconds);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("pexpire").append("\t").append(key)
-                    .append("\t").append(milliseconds).append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("pexpire");
+            sb.append("\t").append(key).append("\t").append(milliseconds).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.PEXPIRE,isNewSharedJedis,key,milliseconds));
             log.error(sb.toString());
@@ -162,9 +158,8 @@ public class RedisCache {
             return sharedJedis.pexpireAt(key, millisecondsTimestamp);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("pexpireAt").append("\t").append(key)
-                    .append("\t").append(millisecondsTimestamp).append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("pexpireAt");
+            sb.append("\t").append(key).append("\t").append(millisecondsTimestamp).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.PEXPIREAT,isNewSharedJedis,key,millisecondsTimestamp));
             log.error(sb.toString());
@@ -193,9 +188,8 @@ public class RedisCache {
             return sharedJedis.ttl(key);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("ttl").append("\t").append(key)
-                    .append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("ttl");
+            sb.append("\t").append(key).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return -1L;
@@ -223,9 +217,8 @@ public class RedisCache {
             sharedJedis.persist(key);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("persist").append("\t").append(key)
-                    .append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("persist");
+            sb.append("\t").append(key).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.PERSIST,isNewSharedJedis,key));
@@ -253,9 +246,8 @@ public class RedisCache {
             sharedJedis.del(key);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("del").append("\t").append(key)
-                    .append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("del");
+            sb.append("\t").append(key).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.DEL,isNewSharedJedis,key));
@@ -284,9 +276,8 @@ public class RedisCache {
             return sharedJedis.strlen(key);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("strlen").append("\t").append(key)
-                    .append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("strlen");
+            sb.append("\t").append(key).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return 0L;
@@ -318,9 +309,8 @@ public class RedisCache {
             sharedJedis.set(key, value);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("set").append("\t").append(key)
-                    .append("\t").append(value).append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("set");
+            sb.append("\t").append(key).append("\t").append(value).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.SET,isNewSharedJedis,key,value));
@@ -349,9 +339,8 @@ public class RedisCache {
             sharedJedis.setnx(key, value);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("setnx").append("\t").append(key)
-                    .append("\t").append(value).append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("setnx");
+            sb.append("\t").append(key).append("\t").append(value).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.SETNX,isNewSharedJedis,key,value));
@@ -379,9 +368,8 @@ public class RedisCache {
             return sharedJedis.get(key);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("get").append("\t").append(key)
-                    .append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("get");
+            sb.append("\t").append(key).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return null;
@@ -410,9 +398,8 @@ public class RedisCache {
             return sharedJedis.getSet(key, value);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("getSet").append("\t").append(key)
-                    .append("\t").append(value).append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("getSet");
+            sb.append("\t").append(key).append("\t").append(value).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return null;
@@ -441,9 +428,8 @@ public class RedisCache {
             return sharedJedis.incr(key);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("incr").append("\t").append(key)
-                    .append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("incr");
+            sb.append("\t").append(key).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.INCR,isNewSharedJedis,key));
@@ -474,9 +460,8 @@ public class RedisCache {
             return sharedJedis.incrBy(key, value);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("incrBy").append("\t").append(key)
-                    .append("\t").append(value).append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("incrBy");
+            sb.append("\t").append(key).append("\t").append(value).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.INCRBY,isNewSharedJedis,key,value));
@@ -507,9 +492,8 @@ public class RedisCache {
             return sharedJedis.incrByFloat(key, value);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("incrByFloat").append("\t").append(key)
-                    .append("\t").append(value).append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("incrByFloat");
+            sb.append("\t").append(key).append("\t").append(value).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.INCRBYFLOAT,isNewSharedJedis,key,value));
@@ -539,9 +523,8 @@ public class RedisCache {
             return sharedJedis.decr(key);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("decr").append("\t").append(key)
-                    .append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("decr");
+            sb.append("\t").append(key).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.DECR,isNewSharedJedis,key));
@@ -572,9 +555,8 @@ public class RedisCache {
             return sharedJedis.decrBy(key, value);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("decrBy").append("\t").append(key)
-                    .append("\t").append(value).append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("decrBy");
+            sb.append("\t").append(key).append("\t").append(value).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.DECRBY,isNewSharedJedis,key,value));
@@ -606,9 +588,8 @@ public class RedisCache {
             return sharedJedis.hget(key, field);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("hget").append("\t").append(key)
-                    .append("\t").append(field).append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("hget");
+            sb.append("\t").append(key).append("\t").append(field).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return null;
@@ -637,9 +618,8 @@ public class RedisCache {
             return sharedJedis.hmget(key, fields);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("hmget").append("\t").append(key)
-                    .append("\t").append(fields).append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("hmget");
+            sb.append("\t").append(key).append("\t").append(fields).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return new ArrayList<>();
@@ -667,9 +647,8 @@ public class RedisCache {
             return sharedJedis.hgetAll(key);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("hgetAll").append("\t").append(key)
-                    .append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("hgetAll");
+            sb.append("\t").append(key).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return new HashMap<>(16);
@@ -699,9 +678,8 @@ public class RedisCache {
             sharedJedis.hset(key, field, value);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("hset").append("\t").append(key)
-                    .append("\t").append(field).append("\t").append(value).append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("hset");
+            sb.append("\t").append(key).append("\t").append(field).append("\t").append(value).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.HSET,isNewSharedJedis,key,field,value));
@@ -731,9 +709,8 @@ public class RedisCache {
             sharedJedis.hsetnx(key, field, value);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("hsetnx").append("\t").append(key)
-                    .append("\t").append(field).append("\t").append(value).append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("hsetnx");
+            sb.append("\t").append(key).append("\t").append(field).append("\t").append(value).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.HSETNX,isNewSharedJedis,key,field,value));
@@ -761,9 +738,8 @@ public class RedisCache {
             sharedJedis.hmset(key, hash);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("hmset").append("\t").append(key)
-                    .append("\t").append(hash).append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("hmset");
+            sb.append("\t").append(key).append("\t").append(hash).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.HMSET,isNewSharedJedis,key,hash));
@@ -793,9 +769,8 @@ public class RedisCache {
             return sharedJedis.hincrBy(key, field, value);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("hincrBy").append("\t").append(key)
-                    .append("\t").append(field).append("\t").append(value).append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("hincrBy");
+            sb.append("\t").append(key).append("\t").append(field).append("\t").append(value).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.HINCRBY,isNewSharedJedis,key,field,value));
@@ -826,9 +801,8 @@ public class RedisCache {
             return sharedJedis.hincrByFloat(key, field, value);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("hincrByFloat").append("\t").append(key)
-                    .append("\t").append(field).append("\t").append(value).append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("hincrByFloat");
+            sb.append("\t").append(key).append("\t").append(field).append("\t").append(value).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.HINCRBYFLOAT,isNewSharedJedis,key,field,value));
@@ -858,9 +832,8 @@ public class RedisCache {
             return sharedJedis.hexists(key, field);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("hexists").append("\t").append(key)
-                    .append("\t").append(field).append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("hexists");
+            sb.append("\t").append(key).append("\t").append(field).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return false;
@@ -888,9 +861,8 @@ public class RedisCache {
             sharedJedis.hdel(key, fields);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("hdel").append("\t").append(key)
-                    .append("\t").append(fields).append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("hdel");
+            sb.append("\t").append(key).append("\t").append(fields).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.HDEL,isNewSharedJedis,key,fields));
@@ -918,9 +890,8 @@ public class RedisCache {
             return sharedJedis.hkeys(key);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("hkeys").append("\t").append(key)
-                    .append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("hkeys");
+            sb.append("\t").append(key).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return new HashSet<>();
@@ -948,9 +919,8 @@ public class RedisCache {
             return sharedJedis.hvals(key);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("hvals").append("\t").append(key)
-                    .append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("hvals");
+            sb.append("\t").append(key).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return new ArrayList<>();
@@ -978,9 +948,8 @@ public class RedisCache {
             return sharedJedis.hlen(key);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("hlen").append("\t").append(key)
-                    .append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("hlen");
+            sb.append("\t").append(key).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return 0L;
@@ -1016,9 +985,8 @@ public class RedisCache {
             return result;
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("hmgetByPipeline").append("\t").append(keys)
-                    .append("\t").append(fields).append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("hmgetByPipeline");
+            sb.append("\t").append(keys).append("\t").append(fields).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return new ArrayList<>();
@@ -1051,9 +1019,8 @@ public class RedisCache {
             return result;
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("hmgetByPipeline").append("\t").append(keyAndFields)
-                    .append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("hmgetByPipeline");
+            sb.append("\t").append(keyAndFields).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return new ArrayList<>();
@@ -1093,9 +1060,8 @@ public class RedisCache {
             pipeline.sync();
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("hmsetByPipeline").append("\t").append(key)
-                    .append("\t").append(field_vals_byincr).append("\t")
+            StringBuffer sb = new StringBuffer("hmsetByPipeline");
+            sb.append("\t").append(key).append("\t").append(field_vals_byincr).append("\t")
                     .append(field_vals_byset).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
@@ -1158,9 +1124,8 @@ public class RedisCache {
             pipeline.sync();
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("hmsetByPipeline").append("\t").append(key_field_vals_byincr)
-                    .append("\t").append(key_field_vals_byset).append("\t")
+            StringBuffer sb = new StringBuffer("hmsetByPipeline");
+            sb.append("\t").append(key_field_vals_byincr).append("\t").append(key_field_vals_byset).append("\t")
                     .append(key_expire_times).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.HMSETBYPIPELINE,isNewSharedJedis,key_field_vals_byincr,key_field_vals_byset,key_expire_times));
@@ -1200,9 +1165,8 @@ public class RedisCache {
             }
         } catch (Exception e) {
             String id = "d" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("delByPipeline").append("\t").append(keys)
-                    .append("\t").append(delNum).append("\t").append("del").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("delByPipeline");
+            sb.append("\t").append(keys).append("\t").append(delNum).append("\t").append("del").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.DELBYPIPELINE,isNewSharedJedis,keys));
@@ -1232,9 +1196,8 @@ public class RedisCache {
             sharedJedis.lpush(key, lists);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("lpush").append("\t").append(key)
-                    .append("\t").append(lists).append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("lpush");
+            sb.append("\t").append(key).append("\t").append(lists).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.LPUSH,isNewSharedJedis,key,lists));
@@ -1262,9 +1225,8 @@ public class RedisCache {
             sharedJedis.rpush(key, lists);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("rpush").append("\t").append(key)
-                    .append("\t").append(lists).append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("rpush");
+            sb.append("\t").append(key).append("\t").append(lists).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.RPUSH,isNewSharedJedis,key,lists));
@@ -1292,9 +1254,8 @@ public class RedisCache {
             return sharedJedis.lpop(key);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("lpop").append("\t").append(key)
-                    .append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("lpop");
+            sb.append("\t").append(key).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return null;
@@ -1322,9 +1283,8 @@ public class RedisCache {
             return sharedJedis.rpop(key);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("rpop").append("\t").append(key)
-                    .append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("rpop");
+            sb.append("\t").append(key).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return null;
@@ -1357,9 +1317,8 @@ public class RedisCache {
             return sharedJedis.lrem(key, count, value);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("lrem").append("\t").append(key)
-                    .append("\t").append(count).append("\t").append(value).append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("lrem");
+            sb.append("\t").append(key).append("\t").append(count).append("\t").append(value).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.LREM,isNewSharedJedis,key,count,value));
@@ -1388,9 +1347,8 @@ public class RedisCache {
             return sharedJedis.llen(key);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("llen").append("\t").append(key)
-                    .append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("llen");
+            sb.append("\t").append(key).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return 0L;
@@ -1421,9 +1379,8 @@ public class RedisCache {
             return sharedJedis.lindex(key, index);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("lindex").append("\t").append(key)
-                    .append("\t").append(index).append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("lindex");
+            sb.append("\t").append(key).append("\t").append(index).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return null;
@@ -1455,9 +1412,8 @@ public class RedisCache {
             sharedJedis.linsert(key, where, pivot, value);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("linsert").append("\t").append(key)
-                    .append("\t").append(where).append("\t").append(pivot).append("\t").append(value)
+            StringBuffer sb = new StringBuffer("linsert");
+            sb.append("\t").append(key).append("\t").append(where).append("\t").append(pivot).append("\t").append(value)
                     .append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
@@ -1489,9 +1445,8 @@ public class RedisCache {
             return sharedJedis.lset(key, index, value);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("lset").append("\t").append(key)
-                    .append("\t").append(index).append("\t").append(value).append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("lset");
+            sb.append("\t").append(key).append("\t").append(index).append("\t").append(value).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.LSET,isNewSharedJedis,key,index,value));
@@ -1524,9 +1479,8 @@ public class RedisCache {
             return sharedJedis.lrange(key, start, end);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("lrange").append("\t").append(key)
-                    .append("\t").append(start).append("\t").append(end).append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("lrange");
+            sb.append("\t").append(key).append("\t").append(start).append("\t").append(end).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return new ArrayList<>();
@@ -1556,9 +1510,8 @@ public class RedisCache {
             return sharedJedis.ltrim(key, start, end);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("ltrim").append("\t").append(key)
-                    .append("\t").append(start).append("\t").append(end).append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("ltrim");
+            sb.append("\t").append(key).append("\t").append(start).append("\t").append(end).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.LTRIM,isNewSharedJedis,key,start,end));
@@ -1589,9 +1542,8 @@ public class RedisCache {
             sharedJedis.sadd(key, members);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("sadd").append("\t").append(key)
-                    .append("\t").append(members).append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("sadd");
+            sb.append("\t").append(key).append("\t").append(members).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.SADD,isNewSharedJedis,key,members));
@@ -1620,9 +1572,8 @@ public class RedisCache {
             return sharedJedis.sismember(key, member);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("sismember").append("\t").append(key)
-                    .append("\t").append(member).append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("sismember");
+            sb.append("\t").append(key).append("\t").append(member).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return false;
@@ -1650,9 +1601,8 @@ public class RedisCache {
             sharedJedis.srem(key, members);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("srem").append("\t").append(key)
-                    .append("\t").append(members).append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("srem");
+            sb.append("\t").append(key).append("\t").append(members).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.SREM,isNewSharedJedis,key,members));
@@ -1680,9 +1630,8 @@ public class RedisCache {
             return sharedJedis.scard(key);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("scard").append("\t").append(key)
-                    .append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("scard");
+            sb.append("\t").append(key).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return 0L;
@@ -1710,9 +1659,8 @@ public class RedisCache {
             return sharedJedis.smembers(key);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("smembers").append("\t").append(key)
-                    .append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("smembers");
+            sb.append("\t").append(key).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return new HashSet<>();
@@ -1745,9 +1693,8 @@ public class RedisCache {
             sharedJedis.zadd(key, score, member);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("zadd").append("\t").append(key)
-                    .append("\t").append(score).append("\t").append(member).append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("zadd");
+            sb.append("\t").append(key).append("\t").append(score).append("\t").append(member).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.ZADD,isNewSharedJedis,key,score,member));
@@ -1775,9 +1722,8 @@ public class RedisCache {
             sharedJedis.zadd(key, scoreMembers);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("zadd").append("\t").append(key)
-                    .append("\t").append(scoreMembers).append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("zadd");
+            sb.append("\t").append(key).append("\t").append(scoreMembers).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.ZADD,isNewSharedJedis,scoreMembers,key));
@@ -1806,9 +1752,8 @@ public class RedisCache {
             return sharedJedis.zscore(key ,member);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("zscore").append("\t").append(key)
-                    .append("\t").append(member).append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("zscore");
+            sb.append("\t").append(key).append("\t").append(member).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return 0D;
@@ -1838,9 +1783,8 @@ public class RedisCache {
             return sharedJedis.zincrby(key, score, member);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("zincrby").append("\t").append(key)
-                    .append("\t").append(member).append("\t").append(score).append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("zincrby");
+            sb.append("\t").append(key).append("\t").append(member).append("\t").append(score).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.ZINCRBY,isNewSharedJedis,key,score,member));
@@ -1869,9 +1813,8 @@ public class RedisCache {
             return sharedJedis.zcard(key);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("zcard").append("\t").append(key)
-                    .append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("zcard");
+            sb.append("\t").append(key).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return 0L;
@@ -1901,9 +1844,8 @@ public class RedisCache {
             return sharedJedis.zcount(key, min, max);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("zcount").append("\t").append(key)
-                    .append("\t").append(min).append("\t").append(max).append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("zcount");
+            sb.append("\t").append(key).append("\t").append(min).append("\t").append(max).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return 0L;
@@ -1938,9 +1880,8 @@ public class RedisCache {
             return sharedJedis.zrange(key, start, end);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("zrange").append("\t").append(key)
-                    .append("\t").append(start).append("\t").append(end).append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("zrange");
+            sb.append("\t").append(key).append("\t").append(start).append("\t").append(end).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return new HashSet<>();
@@ -1972,9 +1913,8 @@ public class RedisCache {
             return sharedJedis.zrangeWithScores(key, start, end);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("zrangeWithScores").append("\t").append(key)
-                    .append("\t").append(start).append("\t").append(end).append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("zrangeWithScores");
+            sb.append("\t").append(key).append("\t").append(start).append("\t").append(end).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return new HashSet<>();
@@ -2006,9 +1946,8 @@ public class RedisCache {
             return sharedJedis.zrevrange(key, start, end);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("zrevrange").append("\t").append(key)
-                    .append("\t").append(start).append("\t").append(end).append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("zrevrange");
+            sb.append("\t").append(key).append("\t").append(start).append("\t").append(end).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return new HashSet<>();
@@ -2040,9 +1979,8 @@ public class RedisCache {
             return sharedJedis.zrevrangeWithScores(key, start, end);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("zrevrangeWithScores").append("\t").append(key)
-                    .append("\t").append(start).append("\t").append(end).append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("zrevrangeWithScores");
+            sb.append("\t").append(key).append("\t").append(start).append("\t").append(end).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return new HashSet<>();
@@ -2073,9 +2011,8 @@ public class RedisCache {
             return sharedJedis.zrangeByScore(key, min, max);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("zrangeByScore").append("\t").append(key)
-                    .append("\t").append(min).append("\t").append(max).append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("zrangeByScore");
+            sb.append("\t").append(key).append("\t").append(min).append("\t").append(max).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return new HashSet<>();
@@ -2106,9 +2043,8 @@ public class RedisCache {
             return sharedJedis.zrangeByScoreWithScores(key, min, max);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("zrangeByScoreWithScores").append("\t").append(key)
-                    .append("\t").append(min).append("\t").append(max).append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("zrangeByScoreWithScores");
+            sb.append("\t").append(key).append("\t").append(min).append("\t").append(max).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return new HashSet<>();
@@ -2144,9 +2080,8 @@ public class RedisCache {
             return sharedJedis.zrangeByScore(key, min, max, offset, count);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("zrangeByScore").append("\t").append(key)
-                    .append("\t").append(min).append("\t").append(max)
+            StringBuffer sb = new StringBuffer("zrangeByScore");
+            sb.append("\t").append(key).append("\t").append(min).append("\t").append(max)
                     .append("\t").append(offset).append("\t").append(count).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
@@ -2183,9 +2118,8 @@ public class RedisCache {
             return sharedJedis.zrangeByScoreWithScores(key, min, max, offset, count);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("zrangeByScoreWithScores").append("\t").append(key)
-                    .append("\t").append(min).append("\t").append(max)
+            StringBuffer sb = new StringBuffer("zrangeByScoreWithScores");
+            sb.append("\t").append(key).append("\t").append(min).append("\t").append(max)
                     .append("\t").append(offset).append("\t").append(count).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
@@ -2217,9 +2151,8 @@ public class RedisCache {
             return sharedJedis.zrevrangeByScore(key, min, max);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("zrevrangeByScore").append("\t").append(key)
-                    .append("\t").append(min).append("\t").append(max).append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("zrevrangeByScore");
+            sb.append("\t").append(key).append("\t").append(min).append("\t").append(max).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return new HashSet<>();
@@ -2250,9 +2183,8 @@ public class RedisCache {
             return sharedJedis.zrevrangeByScoreWithScores(key, min, max);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("zrevrangeByScoreWithScores").append("\t").append(key)
-                    .append("\t").append(min).append("\t").append(max).append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("zrevrangeByScoreWithScores");
+            sb.append("\t").append(key).append("\t").append(min).append("\t").append(max).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return new HashSet<>();
@@ -2288,9 +2220,8 @@ public class RedisCache {
             return sharedJedis.zrevrangeByScore(key, min, max, offset, count);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("zrevrangeByScore").append("\t").append(key)
-                    .append("\t").append(min).append("\t").append(max)
+            StringBuffer sb = new StringBuffer("zrevrangeByScore");
+            sb.append("\t").append(key).append("\t").append(min).append("\t").append(max)
                     .append("\t").append(offset).append("\t").append(count).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
@@ -2327,9 +2258,8 @@ public class RedisCache {
             return sharedJedis.zrevrangeByScoreWithScores(key, min, max, offset, count);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("zrevrangeByScoreWithScores").append("\t").append(key)
-                    .append("\t").append(min).append("\t").append(max)
+            StringBuffer sb = new StringBuffer("zrevrangeByScoreWithScores");
+            sb.append("\t").append(key).append("\t").append(min).append("\t").append(max)
                     .append("\t").append(offset).append("\t").append(count).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
@@ -2360,9 +2290,8 @@ public class RedisCache {
             return sharedJedis.zrank(key, member);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("zrank").append("\t").append(key)
-                    .append("\t").append(member).append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("zrank");
+            sb.append("\t").append(key).append("\t").append(member).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return -1L;
@@ -2392,9 +2321,8 @@ public class RedisCache {
             return sharedJedis.zrevrank(key, member);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("zrevrank").append("\t").append(key)
-                    .append("\t").append(member).append("\t").append("read").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("zrevrank");
+            sb.append("\t").append(key).append("\t").append(member).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             return -1L;
@@ -2423,9 +2351,8 @@ public class RedisCache {
             remNum = sharedJedis.zrem(key, members);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("zrem").append("\t").append(key)
-                    .append("\t").append(members).append("\t").append(remNum).append("\t").append("write").append("\t").append(id)
+            StringBuffer sb = new StringBuffer("zrem");
+            sb.append("\t").append(key).append("\t").append(members).append("\t").append(remNum).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
             RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.ZREM,isNewSharedJedis,key,members));
@@ -2459,9 +2386,8 @@ public class RedisCache {
             remNum = sharedJedis.zremrangeByRank(key, start, end);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("zremrangeByRank").append("\t").append(key)
-                    .append("\t").append(start).append("\t").append(end)
+            StringBuffer sb = new StringBuffer("zremrangeByRank");
+            sb.append("\t").append(key).append("\t").append(start).append("\t").append(end)
                     .append("\t").append(remNum).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
@@ -2492,9 +2418,8 @@ public class RedisCache {
             remNum = sharedJedis.zremrangeByScore(key, start, end);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
-            StringBuffer sb = new StringBuffer(System.currentTimeMillis()+"");
-            sb.append("\t").append("zremrangeByScore").append("\t").append(key)
-                    .append("\t").append(start).append("\t").append(end)
+            StringBuffer sb = new StringBuffer("zremrangeByScore");
+            sb.append("\t").append(key).append("\t").append(start).append("\t").append(end)
                     .append("\t").append(remNum).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());

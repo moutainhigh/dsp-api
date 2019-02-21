@@ -1,6 +1,7 @@
 package com.songheng.dsp.common.redis;
 
 import com.songheng.dsp.common.utils.FileUtils;
+import com.songheng.dsp.common.utils.PropertyPlaceholder;
 import com.songheng.dsp.common.utils.serialize.KryoSerialize;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -19,6 +20,16 @@ public abstract class RedisWriteBack {
      * 回写异常数据
      */
     private static ConcurrentLinkedQueue<WriteBackObj> writeBackExcpt = new ConcurrentLinkedQueue<>();
+    /**
+     * fileDir
+     */
+    public static String fileDir = String.format("%s%s%s", PropertyPlaceholder.getProperty("writeback.file.dataHome"), System.getProperty("dsp.project.name"),
+            PropertyPlaceholder.getProperty("writeback.file.dir"));
+    /**
+     * filePath
+     */
+    private static String filePath = String.format("%s%s%s", RedisWriteBack.fileDir, PropertyPlaceholder.getProperty("writeback.file.redis.fileName"),
+            PropertyPlaceholder.getProperty("writeback.file.suffix"));
     /**
      * 将回写异常数据插入此队列的尾部
      * @param writeBack
@@ -44,14 +55,16 @@ public abstract class RedisWriteBack {
      * @return
      */
     public static ConcurrentLinkedQueue<WriteBackObj> getWriteBackInfo() {
-        return writeBackExcpt;
+        synchronized (writeBackExcpt) {
+            return writeBackExcpt;
+        }
     }
 
     /**
      * redis写异常回写数据
      * @param writeBackObj
      */
-    protected static void writeBack(WriteBackObj writeBackObj){
+    protected void writeBack(WriteBackObj writeBackObj){
         if (null == writeBackObj){
             return;
         }
@@ -181,49 +194,43 @@ public abstract class RedisWriteBack {
 
     /**
      * 序列化写入文件
-     * @param filePath
+     *
      */
-    protected static void serialWriteBackInfos(String filePath){
-        log.info("序列化写入文件开始...");
-        if (StringUtils.isBlank(filePath)){
-            return;
-        }
+    protected void serialWriteBackInfos(){
+        log.info("【RedisWriteBack】序列化写入文件开始...");
         ConcurrentLinkedQueue<WriteBackObj> memoryData = RedisWriteBack.getWriteBackInfo();
         ConcurrentLinkedQueue<WriteBackObj> serialRecord = new ConcurrentLinkedQueue<>();
         while (!memoryData.isEmpty()) {
             serialRecord.offer(memoryData.poll());
         }
         boolean result = FileUtils.writeFile(filePath, KryoSerialize.writeToString(serialRecord), false);
-        log.info("序列化写入文件，result = {}, filePath = {}, serialObjSize = {}", result, filePath, serialRecord.size());
+        log.info("【RedisWriteBack】序列化写入文件，result = {}, filePath = {}, serialObjSize = {}", result, filePath, serialRecord.size());
     }
 
     /**
      * 反序列化读取文件
-     * @param filePath
+     *
      */
-    protected static void deSerialWriteBackInfos(String filePath){
-        log.info("反序列化读取文件开始...");
-        if (StringUtils.isBlank(filePath)){
-            return;
-        }
+    protected void deSerialWriteBackInfos(){
+        log.info("【RedisWriteBack】反序列化读取文件开始...");
         ConcurrentLinkedQueue<WriteBackObj> obj = KryoSerialize.readFromString(FileUtils.readString(filePath));
         RedisWriteBack.putAllWriteBackInfo(obj);
-        log.info("反序列化读取文件，filePath = {}, deSerialObjSize = {}", filePath, obj.size());
+        log.info("【RedisWriteBack】反序列化读取文件，filePath = {}, deSerialObjSize = {}", filePath, obj.size());
     }
 
     /**
-     * 定时任务 回写redis异常数据
+     * 定时任务 回写异常的数据
      */
-    public abstract void writeBackByTimer();
+    protected abstract void writeBackExcptByTimer();
 
     /**
      * 容器初始化调用
      */
-    public abstract void initialized();
+    protected abstract void initialized();
 
     /**
      * 容器销毁调用
      */
-    public abstract void destroyed();
+    protected abstract void destroyed();
 
 }

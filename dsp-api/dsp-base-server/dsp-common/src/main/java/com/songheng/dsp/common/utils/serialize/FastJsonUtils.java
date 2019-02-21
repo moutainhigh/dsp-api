@@ -40,6 +40,16 @@ public class FastJsonUtils {
     }
 
     /**
+     * toJsonObject
+     * @param json
+     * @return
+     */
+    public static JSONObject toJsonObject(String json){
+
+        return JSON.parseObject(json);
+    }
+
+    /**
      * Json ==> Bean
      * @param json String
      * @param cls Class
