@@ -1,9 +1,12 @@
 package com.songheng.dsp.model.enums;
 
+import lombok.Getter;
+
 /**
  * @author zhangshuai@021.com
  * 操作系统 Android/iOS/Windows/Mac OS
  * */
+@Getter
 public enum OS {
     /**
      * Android

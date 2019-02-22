@@ -44,10 +44,9 @@ public class AdxBidClient {
                 responseBeans.add(responseBean);
             }catch (Exception e){
                 e.printStackTrace();
-                log.error("[get-response-error]\t{}",e);
+                log.error("[get-response-error],reqId={}\t{}",baseFlow.getReqId(),e);
             }
         }
-
         return responseBeans;
     }
 }

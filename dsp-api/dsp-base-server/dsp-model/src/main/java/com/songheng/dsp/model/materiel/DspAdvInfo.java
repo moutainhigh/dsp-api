@@ -43,6 +43,10 @@ public class DspAdvInfo {
     private int switchTag;
     private int userId;
     /**
+     * 投放的操作系统
+     * ***/
+    private String deliveryOs;
+    /**
      * 广告位置
      **/
     private String pid;
