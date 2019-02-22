@@ -1,4 +1,4 @@
-package com.songheng.dsp.model.enums;
+package com.songheng.dsp.common.enums;
 
 import lombok.Getter;
 
@@ -7,19 +7,28 @@ import lombok.Getter;
  * 项目信息
  * */
 @Getter
-public enum Project {
+public enum ProjectEnum {
     /**
      * h5项目
      * */
-    H5("partner","h5","mobile",""),
+    H5("partner","h5",new String[]{"CLUSTER_B"},"mobile",""),
     /**
      * app项目
      * */
-    APP("admethod","app","mobile",""),
+    APP("admethod","app",new String[]{"CLUSTER_B"},"mobile",""),
     /**
      * pc项目
      * */
-    PC("dfpcitv","pc","computer","");
+    PC("dfpcitv","pc",new String[]{"CLUSTER_E"},"computer",""),
+
+    /**
+     * dspdatalog项目
+     */
+    DSPDATALOG("dspdatalog","log",new String[]{"CLUSTER_B","CLUSTER_E"},"",""),
+    /**
+     * datacenter项目
+     */
+    DATACENTER("datacenter","dc",new String[]{"CLUSTER_B","CLUSTER_E"},"","");
 
     /**
      * 项目名称
@@ -29,7 +38,10 @@ public enum Project {
      * 项目终端
      * */
     private String terminal;
-
+    /**
+     * 所属集群
+     */
+    private String[] cluster;
     /**
      * 设备类型
      * */
@@ -40,12 +52,14 @@ public enum Project {
      * */
     private String describe;
 
-    Project(String projectName,String terminal,String deviceType,String describe){
+    ProjectEnum(String projectName, String terminal, String[] cluster, String deviceType, String describe){
         this.projectName = projectName;
         this.terminal = terminal;
+        this.cluster = cluster;
         this.deviceType = deviceType;
         this.describe = describe;
     }
+
     /**
      * 是否h5项目
      * */
@@ -64,4 +78,5 @@ public enum Project {
     public static boolean isPc(String terminal){
         return PC.getTerminal().equalsIgnoreCase(terminal);
     }
+
 }

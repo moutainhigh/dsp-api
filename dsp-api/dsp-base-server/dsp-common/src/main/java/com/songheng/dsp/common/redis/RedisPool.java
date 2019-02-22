@@ -1,8 +1,10 @@
 package com.songheng.dsp.common.redis;
 
-
+import com.songheng.dsp.common.enums.ClusterEnum;
+import com.songheng.dsp.common.enums.ProjectEnum;
 import com.songheng.dsp.common.utils.DateUtils;
 import com.songheng.dsp.common.utils.PropertyPlaceholder;
+import com.songheng.dsp.common.utils.StringUtils;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisShardInfo;
 import redis.clients.jedis.ShardedJedis;
@@ -18,77 +20,113 @@ import java.util.*;
 public class RedisPool {
 
     /**
-     * ShardedJedisPool连接池
+     * ShardedJedisPool_B 连接池
      */
-    private static ShardedJedisPool shardedJedisPool;
+    private static ShardedJedisPool shardedJedisPool_B;
     /**
-     * shardedJedisPoolNew 新集群连接池
+     * shardedJedisPoolNew_B 新集群连接池
      */
-    private static ShardedJedisPool shardedJedisPoolNew;
+    private static ShardedJedisPool shardedJedisPoolNew_B;
 
+    /**
+     * shardedJedisPool_E 连接池
+     */
+    private static ShardedJedisPool shardedJedisPool_E;
 
     /**
      * 获取 ShardedJedis
      * @return
      */
-    public static ShardedJedis getSharedJedis() {
-        return shardedJedisPool.getResource();
+    public static ShardedJedis getSharedJedisByClusterB() {
+        return shardedJedisPool_B.getResource();
     }
 
     /**
      * 获取redis连接池活动数
      * @return
      */
-    public static int getNumActive(){
-        return shardedJedisPool.getNumActive();
+    public static int getNumActiveByClusterB(){
+        return shardedJedisPool_B.getNumActive();
     }
 
     /**
      * 获取redis连接池等待数
      * @return
      */
-    public static int getNumWaiters(){
-        return shardedJedisPool.getNumWaiters();
+    public static int getNumWaitersByClusterB(){
+        return shardedJedisPool_B.getNumWaiters();
     }
 
     /**
      * 获取redis连接池空闲数
      * @return
      */
-    public static int getNumIdle(){
-        return shardedJedisPool.getNumIdle();
+    public static int getNumIdleByClusterB(){
+        return shardedJedisPool_B.getNumIdle();
     }
 
     /**
      * 获取 新集群 ShardedJedis
      * @return
      */
-    public static ShardedJedis getSharedJedisNew() {
-        return shardedJedisPoolNew.getResource();
+    public static ShardedJedis getSharedJedisNewByClusterB() {
+        return shardedJedisPoolNew_B.getResource();
     }
 
     /**
      * 获取 新集群 redis连接池活动数
      * @return
      */
-    public static int getNumActiveNew(){
-        return shardedJedisPoolNew.getNumActive();
+    public static int getNumActiveNewByClusterB(){
+        return shardedJedisPoolNew_B.getNumActive();
     }
 
     /**
      * 获取 新集群 redis连接池等待数
      * @return
      */
-    public static int getNumWaitersNew(){
-        return shardedJedisPoolNew.getNumWaiters();
+    public static int getNumWaitersNewByClusterB(){
+        return shardedJedisPoolNew_B.getNumWaiters();
     }
 
     /**
      * 获取 新集群 redis连接池空闲数
      * @return
      */
-    public static int getNumIdleNew(){
-        return shardedJedisPoolNew.getNumIdle();
+    public static int getNumIdleNewByClusterB(){
+        return shardedJedisPoolNew_B.getNumIdle();
+    }
+
+    /**
+     * 获取 ShardedJedis
+     * @return
+     */
+    public static ShardedJedis getSharedJedisByClusterE() {
+        return shardedJedisPool_E.getResource();
+    }
+
+    /**
+     * 获取redis连接池活动数
+     * @return
+     */
+    public static int getNumActiveByClusterE(){
+        return shardedJedisPool_E.getNumActive();
+    }
+
+    /**
+     * 获取redis连接池等待数
+     * @return
+     */
+    public static int getNumWaitersByClusterE(){
+        return shardedJedisPool_E.getNumWaiters();
+    }
+
+    /**
+     * 获取redis连接池空闲数
+     * @return
+     */
+    public static int getNumIdleByClusterE(){
+        return shardedJedisPool_E.getNumIdle();
     }
 
     /**
@@ -104,66 +142,71 @@ public class RedisPool {
     /**
      * 初始化redis pool
      * @param projectName
-     * @param channel
+     * @param cluster CLUSTER_B/CLUSTER_E
      */
-    public static void initRedisPool(String projectName, String channel){
-       if (null == shardedJedisPool){
-           synchronized (ShardedJedisPool.class) {
-               if (null == shardedJedisPool){
-                   initShardePool(projectName, channel);
-               }
-           }
+    public static void initRedisPool(String projectName, String[] cluster){
+       synchronized (ShardedJedisPool.class) {
+           initShardePool(projectName, cluster);
        }
     }
     /**
      * 初始化分片池
      * @param projectName 项目名称 admethod/partner/dfpcitv/dspdatalog_B/dspdatalog_E
-     * @param channel pc/wap
+     * @param cluster CLUSTER_B/CLUSTER_E
      */
-    private static void initShardePool(String projectName, String channel){
-        TreeSet<String> redisNodes = new TreeSet<>();
+    private static void initShardePool(String projectName, String[] cluster){
+        TreeSet<String> redisNodes_B = new TreeSet<>();
         //新集群节点
-        TreeSet<String> redisNewNodes = new TreeSet<>();
-        Map<String, String> redisConf = new HashMap<>(16);
+        TreeSet<String> redisNewNodes_B = new TreeSet<>();
+        TreeSet<String> redisNodes_E = new TreeSet<>();
+        Map<String, String> redisConf = new HashMap<>(128);
         Map<String, String> confMap = PropertyPlaceholder.getPropertyMap();
-        //获取pc/wap redis从节点信息
+        //获取 redis从节点信息
         for (String key : confMap.keySet()){
-            if ("pc".equalsIgnoreCase(channel)){
-                if (key.startsWith("PC_REDIS_NODE_")){
-                    redisNodes.add(confMap.get(key));
+            if (cluster.length >= 2){
+                if (key.startsWith("E_REDIS_NODE_")){
+                    redisNodes_E.add(confMap.get(key));
                 }
-            } else {//默认 wap
-                if (key.startsWith("REDIS_NODE_")){
-                    for (int i = 0; i <= 40; i++) {
-                        if (key.equals("REDIS_NODE_" + i)) {
-                            redisNodes.add(confMap.get(key));
-                            break;
-                        }
+                if (key.startsWith("B_REDIS_NODE_")){
+                    if (Integer.parseInt(key.substring(key.lastIndexOf("_")+1).trim()) <= 40){
+                        redisNodes_B.add(confMap.get(key));
                     }
-                    redisNewNodes.add(confMap.get(key));
+                    redisNewNodes_B.add(confMap.get(key));
+                }
+            } else {
+                String clusterName = cluster[0];
+                if (ClusterEnum.CLUSTER_E.name().equalsIgnoreCase(clusterName)){
+                    if (key.startsWith("E_REDIS_NODE_")){
+                        redisNodes_E.add(confMap.get(key));
+                    }
+                } else {
+                    if (key.startsWith("B_REDIS_NODE_")){
+                        if (Integer.parseInt(key.substring(key.lastIndexOf("_")+1).trim()) <= 40){
+                            redisNodes_B.add(confMap.get(key));
+                        }
+                        redisNewNodes_B.add(confMap.get(key));
+                    }
                 }
             }
         }
-        //获取pc/wap redis 主节点信息
-        if ("pc".equalsIgnoreCase(channel)){
-            redisConf.put("REDIS_MASTER_NAME", confMap.get("PC_REDIS_MASTER_NAME"));
-            redisConf.put("REDIS_MASTER_HOST", confMap.get("PC_REDIS_MASTER_HOST"));
-            redisConf.put("REDIS_MASTER_PORT", confMap.get("PC_REDIS_MASTER_PORT"));
-        } else {//默认wap
-            redisConf.put("REDIS_MASTER_NAME", confMap.get("REDIS_MASTER_NAME"));
-            redisConf.put("REDIS_MASTER_HOST", confMap.get("REDIS_MASTER_HOST"));
-            redisConf.put("REDIS_MASTER_PORT", confMap.get("REDIS_MASTER_PORT"));
-        }
         //获取各项目 redis pool 配置信息
-        if ("admethod".equalsIgnoreCase(projectName) || "partner".equalsIgnoreCase(projectName)){
-            redisConf.put("REDIS_MAX_TOTAL", confMap.get("REDIS_MAX_TOTAL"));
-            redisConf.put("REDIS_MAX_IDEL", confMap.get("REDIS_MAX_IDEL"));
-            redisConf.put("REDIS_MIN_IDEL", confMap.get("REDIS_MIN_IDEL"));
-            redisConf.put("REDIS_MAX_WAIT_MILLIS", confMap.get("REDIS_MAX_WAIT_MILLIS"));
-            redisConf.put("REDIS_TEST_ON_BORROW", confMap.get("REDIS_TEST_ON_BORROW"));
-            redisConf.put("REDIS_TEST_ON_RETURN", confMap.get("REDIS_TEST_ON_RETURN"));
-            redisConf.put("REDIS_TIMEOUT", confMap.get("REDIS_TIMEOUT"));
-        } else if ("dspdatalog_B".equalsIgnoreCase(projectName)){
+        if (ProjectEnum.APP.getProjectName().equalsIgnoreCase(projectName)){
+            redisConf.put("REDIS_MAX_TOTAL", confMap.get("APP_REDIS_MAX_TOTAL"));
+            redisConf.put("REDIS_MAX_IDEL", confMap.get("APP_REDIS_MAX_IDEL"));
+            redisConf.put("REDIS_MIN_IDEL", confMap.get("APP_REDIS_MIN_IDEL"));
+            redisConf.put("REDIS_MAX_WAIT_MILLIS", confMap.get("APP_REDIS_MAX_WAIT_MILLIS"));
+            redisConf.put("REDIS_TEST_ON_BORROW", confMap.get("APP_REDIS_TEST_ON_BORROW"));
+            redisConf.put("REDIS_TEST_ON_RETURN", confMap.get("APP_REDIS_TEST_ON_RETURN"));
+            redisConf.put("REDIS_TIMEOUT", confMap.get("APP_REDIS_TIMEOUT"));
+        } else if (ProjectEnum.H5.getProjectName().equalsIgnoreCase(projectName)) {
+            redisConf.put("REDIS_MAX_TOTAL", confMap.get("H5_REDIS_MAX_TOTAL"));
+            redisConf.put("REDIS_MAX_IDEL", confMap.get("H5_REDIS_MAX_IDEL"));
+            redisConf.put("REDIS_MIN_IDEL", confMap.get("H5_REDIS_MIN_IDEL"));
+            redisConf.put("REDIS_MAX_WAIT_MILLIS", confMap.get("H5_REDIS_MAX_WAIT_MILLIS"));
+            redisConf.put("REDIS_TEST_ON_BORROW", confMap.get("H5_REDIS_TEST_ON_BORROW"));
+            redisConf.put("REDIS_TEST_ON_RETURN", confMap.get("H5_REDIS_TEST_ON_RETURN"));
+            redisConf.put("REDIS_TIMEOUT", confMap.get("H5_REDIS_TIMEOUT"));
+        } else if (ProjectEnum.DSPDATALOG.getProjectName().equalsIgnoreCase(projectName)){
             redisConf.put("REDIS_MAX_TOTAL", confMap.get("LOG_REDIS_MAX_TOTAL"));
             redisConf.put("REDIS_MAX_IDEL", confMap.get("LOG_REDIS_MAX_IDEL"));
             redisConf.put("REDIS_MIN_IDEL", confMap.get("LOG_REDIS_MIN_IDEL"));
@@ -171,7 +214,7 @@ public class RedisPool {
             redisConf.put("REDIS_TEST_ON_BORROW", confMap.get("LOG_REDIS_TEST_ON_BORROW"));
             redisConf.put("REDIS_TEST_ON_RETURN", confMap.get("LOG_REDIS_TEST_ON_RETURN"));
             redisConf.put("REDIS_TIMEOUT", confMap.get("LOG_REDIS_TIMEOUT"));
-        } else if ("dfpcitv".equalsIgnoreCase(projectName)){
+        } else if (ProjectEnum.PC.getProjectName().equalsIgnoreCase(projectName)){
             redisConf.put("REDIS_MAX_TOTAL", confMap.get("PC_REDIS_MAX_TOTAL"));
             redisConf.put("REDIS_MAX_IDEL", confMap.get("PC_REDIS_MAX_IDEL"));
             redisConf.put("REDIS_MIN_IDEL", confMap.get("PC_REDIS_MIN_IDEL"));
@@ -179,28 +222,29 @@ public class RedisPool {
             redisConf.put("REDIS_TEST_ON_BORROW", confMap.get("PC_REDIS_TEST_ON_BORROW"));
             redisConf.put("REDIS_TEST_ON_RETURN", confMap.get("PC_REDIS_TEST_ON_RETURN"));
             redisConf.put("REDIS_TIMEOUT", confMap.get("PC_REDIS_TIMEOUT"));
-        } else if ("dspdatalog_E".equalsIgnoreCase(projectName)){
-            redisConf.put("REDIS_MAX_TOTAL", confMap.get("LOG_PC_REDIS_MAX_TOTAL"));
-            redisConf.put("REDIS_MAX_IDEL", confMap.get("LOG_PC_REDIS_MAX_IDEL"));
-            redisConf.put("REDIS_MIN_IDEL", confMap.get("LOG_PC_REDIS_MIN_IDEL"));
-            redisConf.put("REDIS_MAX_WAIT_MILLIS", confMap.get("LOG_PC_REDIS_MAX_WAIT_MILLIS"));
-            redisConf.put("REDIS_TEST_ON_BORROW", confMap.get("LOG_PC_REDIS_TEST_ON_BORROW"));
-            redisConf.put("REDIS_TEST_ON_RETURN", confMap.get("LOG_PC_REDIS_TEST_ON_RETURN"));
-            redisConf.put("REDIS_TIMEOUT", confMap.get("LOG_PC_REDIS_TIMEOUT"));
+        } else if (ProjectEnum.DATACENTER.getProjectName().equalsIgnoreCase(projectName)){
+            redisConf.put("REDIS_MAX_TOTAL", confMap.get("DATA_REDIS_MAX_TOTAL"));
+            redisConf.put("REDIS_MAX_IDEL", confMap.get("DATA_REDIS_MAX_IDEL"));
+            redisConf.put("REDIS_MIN_IDEL", confMap.get("DATA_REDIS_MIN_IDEL"));
+            redisConf.put("REDIS_MAX_WAIT_MILLIS", confMap.get("DATA_REDIS_MAX_WAIT_MILLIS"));
+            redisConf.put("REDIS_TEST_ON_BORROW", confMap.get("DATA_REDIS_TEST_ON_BORROW"));
+            redisConf.put("REDIS_TEST_ON_RETURN", confMap.get("DATA_REDIS_TEST_ON_RETURN"));
+            redisConf.put("REDIS_TIMEOUT", confMap.get("DATA_REDIS_TIMEOUT"));
         }
 
-        initPoolConfig(projectName, redisNodes, redisConf, redisNewNodes);
+        initPoolConfig(projectName, redisNodes_B, redisConf, redisNewNodes_B, redisNodes_E);
     }
 
     /**
      * 初始化redis池子配置
      * @param projectName
-     * @param redisNodes
+     * @param redisNodes_B
      * @param redisConf
-     * @param redisNewNodes
+     * @param redisNewNodes_B
+     * @param redisNodes_E
      */
-    private static void initPoolConfig(String projectName, TreeSet<String> redisNodes, Map<String, String> redisConf,
-                                       TreeSet<String> redisNewNodes){
+    private static void initPoolConfig(String projectName, TreeSet<String> redisNodes_B, Map<String, String> redisConf,
+                                       TreeSet<String> redisNewNodes_B, TreeSet<String> redisNodes_E){
         System.out.println("初始化 【"+projectName+"】 redis池子前");
         try {
             JedisPoolConfig config = new JedisPoolConfig();
@@ -218,39 +262,63 @@ public class RedisPool {
             config.setTestOnReturn(Boolean.parseBoolean(redisConf.get("REDIS_TEST_ON_RETURN")));
             //是否开启空闲资源监测,建议开启
             config.setTestWhileIdle(true);
-            List<JedisShardInfo> shardInfos = new ArrayList<>();
-            List<JedisShardInfo> shardInfosNew = new ArrayList<>();
-            JedisShardInfo master = new JedisShardInfo(redisConf.get("REDIS_MASTER_HOST"),
-                    Integer.parseInt(redisConf.get("REDIS_MASTER_PORT")), redisConf.get("REDIS_MASTER_NAME"));
-            master.setConnectionTimeout(Integer.parseInt(redisConf.get("REDIS_TIMEOUT")));
-            master.setSoTimeout(Integer.parseInt(redisConf.get("REDIS_TIMEOUT")));
 
-            shardInfos.add(master);
-            shardInfosNew.add(master);
-            for (String node : redisNodes){
+            List<JedisShardInfo> shardInfos_B = new ArrayList<>();
+            List<JedisShardInfo> shardInfosNew_B = new ArrayList<>();
+            if (StringUtils.isNotBlank(PropertyPlaceholder.getProperty("B_REDIS_MASTER_HOST"))){
+                JedisShardInfo master_B = new JedisShardInfo(PropertyPlaceholder.getProperty("B_REDIS_MASTER_HOST"),
+                        Integer.parseInt(PropertyPlaceholder.getProperty("B_REDIS_MASTER_PORT")),
+                        PropertyPlaceholder.getProperty("B_REDIS_MASTER_NAME"));
+                master_B.setConnectionTimeout(Integer.parseInt(redisConf.get("REDIS_TIMEOUT")));
+                master_B.setSoTimeout(Integer.parseInt(redisConf.get("REDIS_TIMEOUT")));
+                shardInfos_B.add(master_B);
+                shardInfosNew_B.add(master_B);
+            }
+            for (String node : redisNodes_B){
                 JedisShardInfo slaveInfo = new JedisShardInfo(node.split(":")[0],Integer.parseInt(node.split(":")[1]));
                 slaveInfo.setConnectionTimeout(Integer.parseInt(redisConf.get("REDIS_TIMEOUT")));
                 slaveInfo.setSoTimeout(Integer.parseInt(redisConf.get("REDIS_TIMEOUT")));
-                shardInfos.add(slaveInfo);
+                shardInfos_B.add(slaveInfo);
             }
-            shardedJedisPool = new ShardedJedisPool(config, shardInfos);
-
-            for (String newNode : redisNewNodes){
+            for (String newNode : redisNewNodes_B){
                 JedisShardInfo slaveInfoNew = new JedisShardInfo(newNode.split(":")[0],Integer.parseInt(newNode.split(":")[1]));
                 slaveInfoNew.setConnectionTimeout(Integer.parseInt(redisConf.get("REDIS_TIMEOUT")));
                 slaveInfoNew.setSoTimeout(Integer.parseInt(redisConf.get("REDIS_TIMEOUT")));
-                shardInfosNew.add(slaveInfoNew);
+                shardInfosNew_B.add(slaveInfoNew);
             }
-            shardedJedisPoolNew = new ShardedJedisPool(config, shardInfosNew);
+            if (shardInfos_B.size() > 0){
+                shardedJedisPool_B = new ShardedJedisPool(config, shardInfos_B);
+            }
+            if (shardInfosNew_B.size() > 0){
+                shardedJedisPoolNew_B = new ShardedJedisPool(config, shardInfosNew_B);
+            }
+            List<JedisShardInfo> shardInfos_E = new ArrayList<>();
+            if (StringUtils.isNotBlank(PropertyPlaceholder.getProperty("E_REDIS_MASTER_HOST"))){
+                JedisShardInfo master_E = new JedisShardInfo(PropertyPlaceholder.getProperty("E_REDIS_MASTER_HOST"),
+                        Integer.parseInt(PropertyPlaceholder.getProperty("E_REDIS_MASTER_PORT")),
+                        PropertyPlaceholder.getProperty("E_REDIS_MASTER_NAME"));
+                master_E.setConnectionTimeout(Integer.parseInt(redisConf.get("REDIS_TIMEOUT")));
+                master_E.setSoTimeout(Integer.parseInt(redisConf.get("REDIS_TIMEOUT")));
+                shardInfos_E.add(master_E);
+            }
+            for (String node : redisNodes_E){
+                JedisShardInfo slaveInfo = new JedisShardInfo(node.split(":")[0],Integer.parseInt(node.split(":")[1]));
+                slaveInfo.setConnectionTimeout(Integer.parseInt(redisConf.get("REDIS_TIMEOUT")));
+                slaveInfo.setSoTimeout(Integer.parseInt(redisConf.get("REDIS_TIMEOUT")));
+                shardInfos_E.add(slaveInfo);
+            }
+            if (shardInfos_E.size() > 0){
+                shardedJedisPool_E = new ShardedJedisPool(config, shardInfos_E);
+            }
         } catch (Exception e){
             e.printStackTrace();
         }
 
         System.out.println("【"+ DateUtils.dateFormat(new Date(), DateUtils.DATE_TIME_FORMAT_YYYY_MM_DD_HH_MI_SS)
-                +"】\t【"+projectName+"】\t【初始化redis连接池】\t【oldSlaves"+redisNodes+"】\t【newSlaves"+redisNewNodes+"】\t【"
-                +redisConf.get("REDIS_MASTER_HOST")+":"+redisConf.get("REDIS_MASTER_PORT")+"】");
+                +"】\t【"+projectName+"】\t【初始化redis连接池】\t【slaves_B"+redisNodes_B+"】\t【newSlaves_B"+redisNewNodes_B+"】\t【"
+                +PropertyPlaceholder.getProperty("B_REDIS_MASTER_HOST")+":"+PropertyPlaceholder.getProperty("B_REDIS_MASTER_PORT")+"】"
+                +"\t【slaves_E"+redisNodes_E+"】\t【"+PropertyPlaceholder.getProperty("E_REDIS_MASTER_HOST")
+                +":"+PropertyPlaceholder.getProperty("E_REDIS_MASTER_PORT")+"】");
     }
-
-
 
 }

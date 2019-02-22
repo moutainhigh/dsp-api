@@ -1,6 +1,8 @@
 package com.songheng.dsp.common.redis;
 
 import com.songheng.dsp.common.InitLoadConf;
+import com.songheng.dsp.common.enums.ClusterEnum;
+import com.songheng.dsp.common.enums.ProjectEnum;
 import com.songheng.dsp.common.utils.FileUtils;
 import com.songheng.dsp.common.utils.serialize.KryoSerialize;
 import org.apache.hadoop.hbase.Cell;
@@ -23,7 +25,7 @@ import java.util.List;
 public class RedisWriteBackTest {
     @BeforeClass
     public static void initLoad(){
-        InitLoadConf.init("partner", "wap");
+        InitLoadConf.init(ProjectEnum.H5);
     }
 
     @Before
@@ -33,7 +35,7 @@ public class RedisWriteBackTest {
 
     @Test
     public void serialWriteBackInfos(){
-        WriteBackObj writeBackObj = new WriteBackObj(RedisCommand.DEL, true, "123456");
+        WriteBackObj writeBackObj = new WriteBackObj(RedisCommand.DEL, ClusterEnum.CLUSTER_B, true, "1901020946160550001");
         RedisWriteBack.putWriteBackInfo(writeBackObj);
         RedisWriteBack redisWriteBack = new RedisWriteBack() {
             @Override
@@ -52,6 +54,8 @@ public class RedisWriteBackTest {
             }
         };
         redisWriteBack.serialWriteBackInfos();
+        redisWriteBack.deSerialWriteBackInfos();
+        redisWriteBack.writeBack(RedisWriteBack.getWriteBackInfo().poll());
     }
 
     @Test

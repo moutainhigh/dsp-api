@@ -1,6 +1,7 @@
 package com.songheng.dsp.common;
 
 import com.songheng.dsp.common.db.DruidConfiguration;
+import com.songheng.dsp.common.enums.ProjectEnum;
 import com.songheng.dsp.common.hbase.HbaseConnmini;
 import com.songheng.dsp.common.redis.RedisPool;
 import com.songheng.dsp.common.utils.PropertyPlaceholder;
@@ -14,11 +15,11 @@ public class InitLoadConf {
 
     /**
      * 初始化加载配置
-     * @param projectName 项目名称 admethod/partner/dfpcitv/dspdatalog_B/dspdatalog_E
-     * @param channel pc/wap
+     * 项目名称 admethod/partner/dfpcitv/dspdatalog_B/dspdatalog_E/datacenter_B/datacenter_E
+     * 集群 cluster_B/cluster_E
      */
-    public static void init(String projectName, String channel){
-        System.setProperty("dsp.project.name", projectName);
+    public static void init(ProjectEnum project){
+        System.setProperty("dsp.project.name", project.getProjectName());
         //加载配置文件
         PropertyPlaceholder.loadProperties("common-config.properties",
                 "common-db-config.properties",
@@ -27,8 +28,8 @@ public class InitLoadConf {
         //加载druid数据源
         DruidConfiguration.initDataSource();
         //初始化redis pool
-        RedisPool.initRedisPool(projectName, channel);
+        RedisPool.initRedisPool(project.getProjectName(), project.getCluster());
         //初始化创建hbase连接
-        HbaseConnmini.createHbaseLink(channel);
+        HbaseConnmini.createHbaseLink(project.getCluster());
     }
 }

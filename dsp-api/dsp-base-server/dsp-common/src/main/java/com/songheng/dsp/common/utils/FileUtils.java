@@ -8,6 +8,10 @@ import com.google.common.io.Files;
 import com.google.common.io.LineProcessor;
 import lombok.extern.slf4j.Slf4j;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,6 +86,59 @@ public final class FileUtils {
         }catch (Exception e){
             log.error("[copyFile]:origin={}&copy={}\t{}",originFilePath,copyFilePath,e);
             return false;
+        }
+    }
+
+    /**
+     * @description: 大文件复制 FileChannel
+     * @param originFilePath 原始文件路径
+     * @param copyFilePath   需要复制的文件路径
+     * @return 复制成功返回true 复制失败返回false
+     **/
+    public static boolean copyFileNio(String originFilePath,String copyFilePath){
+        return FileUtils.copyFileNio(new File(originFilePath), new File(copyFilePath));
+    }
+
+    /**
+     * @description: 大文件复制 FileChannel
+     * @param srcFile 原始文件
+     * @param dstFile   目标文件
+     * @return 复制成功返回true 复制失败返回false
+     **/
+    public static boolean copyFileNio(File srcFile,File dstFile){
+        if (srcFile == null || !srcFile.exists()
+                || dstFile == null || !dstFile.exists()) {
+            return false;
+        }
+        FileChannel source = null;
+        FileChannel destination = null;
+        try {
+            FileInputStream fileIns = new FileInputStream(srcFile);
+            FileOutputStream fileOuts = new FileOutputStream(dstFile);
+            source = fileIns.getChannel();
+            destination = fileOuts.getChannel();
+            destination.transferFrom(source, 0, source.size());
+            log.info("[copyFileNio]:src={}&dst={}",srcFile.toPath(),dstFile.toPath());
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("[copyFileNio]:src={}&dst={}\t{}",srcFile.toPath(),dstFile.toPath(),e);
+            return false;
+        } finally {
+            if (source != null) {
+                try {
+                    source.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (destination != null) {
+                try {
+                    destination.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

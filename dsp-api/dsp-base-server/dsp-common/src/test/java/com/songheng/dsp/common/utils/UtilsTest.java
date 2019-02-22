@@ -1,6 +1,7 @@
 package com.songheng.dsp.common.utils;
 
 import com.songheng.dsp.common.InitLoadConf;
+import com.songheng.dsp.common.enums.ProjectEnum;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -15,7 +16,7 @@ public class UtilsTest {
 
     @BeforeClass
     public static void initLoad(){
-        InitLoadConf.init("partner", "wap");
+        InitLoadConf.init(ProjectEnum.H5);
     }
 
     @Before

@@ -1,5 +1,6 @@
 package com.songheng.dsp.common.hbase;
 
+import com.songheng.dsp.common.enums.ClusterEnum;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.hadoop.hbase.client.Delete;
@@ -19,6 +20,10 @@ import java.util.List;
 @Setter
 public class HbaseExecArgs {
 
+    /**
+     *  所属集群
+     */
+    private ClusterEnum clusterEnum;
     /**
      * hbase 表名
      */
@@ -57,36 +62,41 @@ public class HbaseExecArgs {
     private Batch.Callback<Object> callBack;
 
 
-    public HbaseExecArgs(String tblName, String resourceKey, HbaseExecType hbaseExecType,  Put put){
+    public HbaseExecArgs(ClusterEnum clusterEnum,String tblName, String resourceKey, HbaseExecType hbaseExecType,  Put put){
+        this.clusterEnum = clusterEnum;
         this.tblName = tblName;
         this.resourceKey = resourceKey;
         this.hbaseExecType = hbaseExecType;
         this.put = put;
     }
 
-    public HbaseExecArgs(String tblName, String resourceKey, HbaseExecType hbaseExecType, Increment increment){
+    public HbaseExecArgs(ClusterEnum clusterEnum,String tblName, String resourceKey, HbaseExecType hbaseExecType, Increment increment){
+        this.clusterEnum = clusterEnum;
         this.tblName = tblName;
         this.resourceKey = resourceKey;
         this.hbaseExecType = hbaseExecType;
         this.increment = increment;
     }
 
-    public HbaseExecArgs(String tblName, String resourceKey, HbaseExecType hbaseExecType, Delete delete){
+    public HbaseExecArgs(ClusterEnum clusterEnum,String tblName, String resourceKey, HbaseExecType hbaseExecType, Delete delete){
+        this.clusterEnum = clusterEnum;
         this.tblName = tblName;
         this.resourceKey = resourceKey;
         this.hbaseExecType = hbaseExecType;
         this.delete = delete;
     }
 
-    public HbaseExecArgs(String tblName, String resourceKey, HbaseExecType hbaseExecType, List<? extends Row> batch){
+    public HbaseExecArgs(ClusterEnum clusterEnum,String tblName, String resourceKey, HbaseExecType hbaseExecType, List<? extends Row> batch){
+        this.clusterEnum = clusterEnum;
         this.tblName = tblName;
         this.resourceKey = resourceKey;
         this.hbaseExecType = hbaseExecType;
         this.batch = batch;
     }
 
-    public HbaseExecArgs(String tblName, String resourceKey, HbaseExecType hbaseExecType,
+    public HbaseExecArgs(ClusterEnum clusterEnum,String tblName, String resourceKey, HbaseExecType hbaseExecType,
                          List<? extends Row> batch, Object[] batchArgs){
+        this.clusterEnum = clusterEnum;
         this.tblName = tblName;
         this.resourceKey = resourceKey;
         this.hbaseExecType = hbaseExecType;
@@ -94,8 +104,9 @@ public class HbaseExecArgs {
         this.batchArgs = batchArgs;
     }
 
-    public HbaseExecArgs(String tblName, String resourceKey, HbaseExecType hbaseExecType,
+    public HbaseExecArgs(ClusterEnum clusterEnum,String tblName, String resourceKey, HbaseExecType hbaseExecType,
                          List<? extends Row> batch, Batch.Callback<Object> callBack){
+        this.clusterEnum = clusterEnum;
         this.tblName = tblName;
         this.resourceKey = resourceKey;
         this.hbaseExecType = hbaseExecType;
@@ -103,8 +114,9 @@ public class HbaseExecArgs {
         this.callBack = callBack;
     }
 
-    public HbaseExecArgs(String tblName, String resourceKey, HbaseExecType hbaseExecType,
+    public HbaseExecArgs(ClusterEnum clusterEnum,String tblName, String resourceKey, HbaseExecType hbaseExecType,
                          List<? extends Row> batch, Object[] batchArgs, Batch.Callback<Object> callBack){
+        this.clusterEnum = clusterEnum;
         this.tblName = tblName;
         this.resourceKey = resourceKey;
         this.hbaseExecType = hbaseExecType;

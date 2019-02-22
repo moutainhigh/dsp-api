@@ -1,10 +1,8 @@
 package com.songheng.dsp.common.redis;
 
+import com.songheng.dsp.common.enums.ClusterEnum;
 import lombok.extern.slf4j.Slf4j;
-import redis.clients.jedis.BinaryClient;
-import redis.clients.jedis.ShardedJedis;
-import redis.clients.jedis.ShardedJedisPipeline;
-import redis.clients.jedis.Tuple;
+import redis.clients.jedis.*;
 
 import java.util.*;
 
@@ -24,15 +22,11 @@ public class RedisCache {
      * @param key
      * @return
      */
-    public static boolean exists(boolean isNewSharedJedis, String key){
-        ShardedJedis sharedJedis = null;
+    public static boolean exists(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.exists(key);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.exists(key);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("exists");
@@ -41,8 +35,8 @@ public class RedisCache {
             log.error(sb.toString());
             return false;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -54,26 +48,22 @@ public class RedisCache {
      * @param seconds
      * @return
      */
-    public static Long expire(boolean isNewSharedJedis, String key, int seconds){
-        ShardedJedis sharedJedis = null;
+    public static Long expire(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, int seconds){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.expire(key, seconds);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.expire(key, seconds);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("expire");
             sb.append("\t").append(key).append("\t").append(seconds).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.EXPIRE,isNewSharedJedis,key,seconds));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.EXPIRE,clusterEnum,isNewSharedJedis,key,seconds));
             log.error(sb.toString());
             return -1L;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -85,26 +75,22 @@ public class RedisCache {
      * @param unixTime
      * @return
      */
-    public static Long expireAt(boolean isNewSharedJedis, String key, long unixTime){
-        ShardedJedis sharedJedis = null;
+    public static Long expireAt(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, long unixTime){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.expireAt(key, unixTime);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.expireAt(key, unixTime);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("expireAt");
             sb.append("\t").append(key).append("\t").append(unixTime).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.EXPIREAT,isNewSharedJedis,key,unixTime));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.EXPIREAT,clusterEnum,isNewSharedJedis,key,unixTime));
             log.error(sb.toString());
             return -1L;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -116,26 +102,22 @@ public class RedisCache {
      * @param milliseconds
      * @return
      */
-    public static Long pexpire(boolean isNewSharedJedis, String key, long milliseconds){
-        ShardedJedis sharedJedis = null;
+    public static Long pexpire(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, long milliseconds){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.pexpire(key ,milliseconds);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.pexpire(key ,milliseconds);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("pexpire");
             sb.append("\t").append(key).append("\t").append(milliseconds).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.PEXPIRE,isNewSharedJedis,key,milliseconds));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.PEXPIRE,clusterEnum,isNewSharedJedis,key,milliseconds));
             log.error(sb.toString());
             return -1L;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -147,26 +129,22 @@ public class RedisCache {
      * @param millisecondsTimestamp
      * @return
      */
-    public static Long pexpireAt(boolean isNewSharedJedis, String key, long millisecondsTimestamp){
-        ShardedJedis sharedJedis = null;
+    public static Long pexpireAt(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, long millisecondsTimestamp){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.pexpireAt(key, millisecondsTimestamp);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.pexpireAt(key, millisecondsTimestamp);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("pexpireAt");
             sb.append("\t").append(key).append("\t").append(millisecondsTimestamp).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.PEXPIREAT,isNewSharedJedis,key,millisecondsTimestamp));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.PEXPIREAT,clusterEnum,isNewSharedJedis,key,millisecondsTimestamp));
             log.error(sb.toString());
             return -1L;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -177,15 +155,11 @@ public class RedisCache {
      * @param key
      * @return
      */
-    public static Long getTTL(boolean isNewSharedJedis, String key){
-        ShardedJedis sharedJedis = null;
+    public static Long getTTL(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.ttl(key);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.ttl(key);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("ttl");
@@ -194,8 +168,8 @@ public class RedisCache {
             log.error(sb.toString());
             return -1L;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -206,25 +180,21 @@ public class RedisCache {
      * @param isNewSharedJedis
      * @param key
      */
-    public static void persist(boolean isNewSharedJedis, String key){
-        ShardedJedis sharedJedis = null;
+    public static void persist(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            sharedJedis.persist(key);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            shardedJedis.persist(key);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("persist");
             sb.append("\t").append(key).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.PERSIST,isNewSharedJedis,key));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.PERSIST,clusterEnum,isNewSharedJedis,key));
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -235,25 +205,21 @@ public class RedisCache {
      * @param isNewSharedJedis
      * @param key
      */
-    public static void del(boolean isNewSharedJedis, String key){
-        ShardedJedis sharedJedis = null;
+    public static void del(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            sharedJedis.del(key);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            shardedJedis.del(key);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("del");
             sb.append("\t").append(key).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.DEL,isNewSharedJedis,key));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.DEL,clusterEnum,isNewSharedJedis,key));
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -265,15 +231,11 @@ public class RedisCache {
      * @param key
      * @return
      */
-    public static Long strlen(boolean isNewSharedJedis, String key){
-        ShardedJedis sharedJedis = null;
+    public static Long strlen(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.strlen(key);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.strlen(key);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("strlen");
@@ -282,8 +244,8 @@ public class RedisCache {
             log.error(sb.toString());
             return 0L;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -298,25 +260,21 @@ public class RedisCache {
      * @param key
      * @param value
      */
-    public static void set(boolean isNewSharedJedis, String key, String value){
-        ShardedJedis sharedJedis = null;
+    public static void set(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, String value){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            sharedJedis.set(key, value);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            shardedJedis.set(key, value);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("set");
             sb.append("\t").append(key).append("\t").append(value).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.SET,isNewSharedJedis,key,value));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.SET,clusterEnum,isNewSharedJedis,key,value));
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -328,25 +286,21 @@ public class RedisCache {
      * @param key
      * @param value
      */
-    public static void setnx(boolean isNewSharedJedis, String key, String value){
-        ShardedJedis sharedJedis = null;
+    public static void setnx(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, String value){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            sharedJedis.setnx(key, value);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            shardedJedis.setnx(key, value);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("setnx");
             sb.append("\t").append(key).append("\t").append(value).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.SETNX,isNewSharedJedis,key,value));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.SETNX,clusterEnum,isNewSharedJedis,key,value));
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -357,15 +311,11 @@ public class RedisCache {
      * @param key
      * @return
      */
-    public static String get(boolean isNewSharedJedis, String key){
-        ShardedJedis sharedJedis = null;
+    public static String get(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.get(key);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.get(key);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("get");
@@ -374,8 +324,8 @@ public class RedisCache {
             log.error(sb.toString());
             return null;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -387,15 +337,11 @@ public class RedisCache {
      * @param value
      * @return
      */
-    public static String getSet(boolean isNewSharedJedis, String key, String value){
-        ShardedJedis sharedJedis = null;
+    public static String getSet(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, String value){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.getSet(key, value);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.getSet(key, value);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("getSet");
@@ -404,8 +350,8 @@ public class RedisCache {
             log.error(sb.toString());
             return null;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -417,26 +363,22 @@ public class RedisCache {
      * @param key
      * @return
      */
-    public static Long incr(boolean isNewSharedJedis, String key){
-        ShardedJedis sharedJedis = null;
+    public static Long incr(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.incr(key);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.incr(key);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("incr");
             sb.append("\t").append(key).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.INCR,isNewSharedJedis,key));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.INCR,clusterEnum,isNewSharedJedis,key));
             return 0L;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -449,26 +391,22 @@ public class RedisCache {
      * @param value
      * @return
      */
-    public static Long incrBy(boolean isNewSharedJedis, String key, long value){
-        ShardedJedis sharedJedis = null;
+    public static Long incrBy(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, long value){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.incrBy(key, value);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.incrBy(key, value);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("incrBy");
             sb.append("\t").append(key).append("\t").append(value).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.INCRBY,isNewSharedJedis,key,value));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.INCRBY,clusterEnum,isNewSharedJedis,key,value));
             return 0L;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -481,26 +419,22 @@ public class RedisCache {
      * @param value
      * @return
      */
-    public static Double incrByFloat(boolean isNewSharedJedis, String key, double value){
-        ShardedJedis sharedJedis = null;
+    public static Double incrByFloat(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, double value){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.incrByFloat(key, value);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.incrByFloat(key, value);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("incrByFloat");
             sb.append("\t").append(key).append("\t").append(value).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.INCRBYFLOAT,isNewSharedJedis,key,value));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.INCRBYFLOAT,clusterEnum,isNewSharedJedis,key,value));
             return 0D;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -512,26 +446,22 @@ public class RedisCache {
      * @param key
      * @return
      */
-    public static Long decr(boolean isNewSharedJedis, String key){
-        ShardedJedis sharedJedis = null;
+    public static Long decr(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.decr(key);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.decr(key);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("decr");
             sb.append("\t").append(key).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.DECR,isNewSharedJedis,key));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.DECR,clusterEnum,isNewSharedJedis,key));
             return 0L;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -544,26 +474,22 @@ public class RedisCache {
      * @param value
      * @return
      */
-    public static Long decrBy(boolean isNewSharedJedis, String key, long value){
-        ShardedJedis sharedJedis = null;
+    public static Long decrBy(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, long value){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.decrBy(key, value);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.decrBy(key, value);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("decrBy");
             sb.append("\t").append(key).append("\t").append(value).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.DECRBY,isNewSharedJedis,key,value));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.DECRBY,clusterEnum,isNewSharedJedis,key,value));
             return 0L;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -577,15 +503,11 @@ public class RedisCache {
      * @param field
      * @return
      */
-    public static String hget(boolean isNewSharedJedis, String key, String field){
-        ShardedJedis sharedJedis = null;
+    public static String hget(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, String field){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.hget(key, field);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.hget(key, field);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("hget");
@@ -594,8 +516,8 @@ public class RedisCache {
             log.error(sb.toString());
             return null;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -607,15 +529,11 @@ public class RedisCache {
      * @param fields
      * @return
      */
-    public static List<String> hmget(boolean isNewSharedJedis, String key, String... fields){
-        ShardedJedis sharedJedis = null;
+    public static List<String> hmget(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, String... fields){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.hmget(key, fields);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.hmget(key, fields);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("hmget");
@@ -624,8 +542,8 @@ public class RedisCache {
             log.error(sb.toString());
             return new ArrayList<>();
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -636,15 +554,11 @@ public class RedisCache {
      * @param key
      * @return
      */
-    public static Map<String, String> hgetAll(boolean isNewSharedJedis, String key){
-        ShardedJedis sharedJedis = null;
+    public static Map<String, String> hgetAll(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.hgetAll(key);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.hgetAll(key);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("hgetAll");
@@ -653,8 +567,8 @@ public class RedisCache {
             log.error(sb.toString());
             return new HashMap<>(16);
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -667,25 +581,21 @@ public class RedisCache {
      * @param field
      * @param value
      */
-    public static void hset(boolean isNewSharedJedis, String key, String field, String value){
-        ShardedJedis sharedJedis = null;
+    public static void hset(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, String field, String value){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            sharedJedis.hset(key, field, value);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            shardedJedis.hset(key, field, value);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("hset");
             sb.append("\t").append(key).append("\t").append(field).append("\t").append(value).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.HSET,isNewSharedJedis,key,field,value));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.HSET,clusterEnum,isNewSharedJedis,key,field,value));
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -698,25 +608,21 @@ public class RedisCache {
      * @param field
      * @param value
      */
-    public static void hsetnx(boolean isNewSharedJedis, String key, String field, String value){
-        ShardedJedis sharedJedis = null;
+    public static void hsetnx(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, String field, String value){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            sharedJedis.hsetnx(key, field, value);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            shardedJedis.hsetnx(key, field, value);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("hsetnx");
             sb.append("\t").append(key).append("\t").append(field).append("\t").append(value).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.HSETNX,isNewSharedJedis,key,field,value));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.HSETNX,clusterEnum,isNewSharedJedis,key,field,value));
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -727,25 +633,21 @@ public class RedisCache {
      * @param key
      * @param hash
      */
-    public static void hmset(boolean isNewSharedJedis, String key, Map<String, String> hash){
-        ShardedJedis sharedJedis = null;
+    public static void hmset(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, Map<String, String> hash){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            sharedJedis.hmset(key, hash);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            shardedJedis.hmset(key, hash);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("hmset");
             sb.append("\t").append(key).append("\t").append(hash).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.HMSET,isNewSharedJedis,key,hash));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.HMSET,clusterEnum,isNewSharedJedis,key,hash));
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -758,26 +660,22 @@ public class RedisCache {
      * @param value
      * @return
      */
-    public static Long hincrBy(boolean isNewSharedJedis, String key, String field, long value){
-        ShardedJedis sharedJedis = null;
+    public static Long hincrBy(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, String field, long value){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.hincrBy(key, field, value);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.hincrBy(key, field, value);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("hincrBy");
             sb.append("\t").append(key).append("\t").append(field).append("\t").append(value).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.HINCRBY,isNewSharedJedis,key,field,value));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.HINCRBY,clusterEnum,isNewSharedJedis,key,field,value));
             return 0L;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -790,26 +688,22 @@ public class RedisCache {
      * @param value
      * @return
      */
-    public static Double hincrByFloat(boolean isNewSharedJedis, String key, String field, double value){
-        ShardedJedis sharedJedis = null;
+    public static Double hincrByFloat(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, String field, double value){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.hincrByFloat(key, field, value);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.hincrByFloat(key, field, value);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("hincrByFloat");
             sb.append("\t").append(key).append("\t").append(field).append("\t").append(value).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.HINCRBYFLOAT,isNewSharedJedis,key,field,value));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.HINCRBYFLOAT,clusterEnum,isNewSharedJedis,key,field,value));
             return 0D;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -821,15 +715,11 @@ public class RedisCache {
      * @param field
      * @return
      */
-    public static boolean hexists(boolean isNewSharedJedis, String key, String field){
-        ShardedJedis sharedJedis = null;
+    public static boolean hexists(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, String field){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.hexists(key, field);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.hexists(key, field);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("hexists");
@@ -838,8 +728,8 @@ public class RedisCache {
             log.error(sb.toString());
             return false;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -850,25 +740,21 @@ public class RedisCache {
      * @param key
      * @param fields
      */
-    public static void hdel(boolean isNewSharedJedis, String key, String... fields){
-        ShardedJedis sharedJedis = null;
+    public static void hdel(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, String... fields){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            sharedJedis.hdel(key, fields);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            shardedJedis.hdel(key, fields);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("hdel");
             sb.append("\t").append(key).append("\t").append(fields).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.HDEL,isNewSharedJedis,key,fields));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.HDEL,clusterEnum,isNewSharedJedis,key,fields));
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -879,15 +765,11 @@ public class RedisCache {
      * @param key
      * @return
      */
-    public static Set<String> hkeys(boolean isNewSharedJedis, String key){
-        ShardedJedis sharedJedis = null;
+    public static Set<String> hkeys(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.hkeys(key);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.hkeys(key);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("hkeys");
@@ -896,8 +778,8 @@ public class RedisCache {
             log.error(sb.toString());
             return new HashSet<>();
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -908,15 +790,11 @@ public class RedisCache {
      * @param key
      * @return
      */
-    public static List<String> hvals(boolean isNewSharedJedis, String key){
-        ShardedJedis sharedJedis = null;
+    public static List<String> hvals(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.hvals(key);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.hvals(key);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("hvals");
@@ -925,8 +803,8 @@ public class RedisCache {
             log.error(sb.toString());
             return new ArrayList<>();
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -937,15 +815,11 @@ public class RedisCache {
      * @param key
      * @return
      */
-    public static Long hlen(boolean isNewSharedJedis, String key){
-        ShardedJedis sharedJedis = null;
+    public static Long hlen(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.hlen(key);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.hlen(key);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("hlen");
@@ -954,8 +828,8 @@ public class RedisCache {
             log.error(sb.toString());
             return 0L;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -969,32 +843,38 @@ public class RedisCache {
      * @param fields
      * @return
      */
-    public static List<Object> hmgetByPipeline(boolean isNewSharedJedis, List<String> keys, String... fields){
-        ShardedJedis sharedJedis = null;
+    public static Map<String,Map<String,String>> hmgetByPipeline(ClusterEnum clusterEnum, boolean isNewSharedJedis, List<String> keys, String... fields){
+        Map<String,Map<String,String>> result = new HashMap<>(keys.size());
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            ShardedJedisPipeline pipeline = sharedJedis.pipelined();
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            ShardedJedisPipeline pipeline = shardedJedis.pipelined();
+            Map<String,Response<List<String>>> responses = new HashMap<>(keys.size());
             for (String key : keys){
-                pipeline.hmget(key,fields);
+                responses.put(key, pipeline.hmget(key,fields));
             }
-            List<Object> result = pipeline.syncAndReturnAll();
-            return result;
+            pipeline.sync();
+            for(String key : responses.keySet()) {
+                List<String> values = responses.get(key).get();
+                Map<String,String> map = new HashMap<>(values.size());
+                for(int i=0; i<values.size(); i++){
+                    String value = values.get(i) == null ? "0" : values.get(i);
+                    map.put(fields[i], value);
+                }
+                result.put(key, map);
+            }
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("hmgetByPipeline");
             sb.append("\t").append(keys).append("\t").append(fields).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            return new ArrayList<>();
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
+        return result;
     }
 
     /**
@@ -1003,32 +883,38 @@ public class RedisCache {
      * @param keyAndFields
      * @return
      */
-    public static List<Object> hmgetByPipeline(boolean isNewSharedJedis, Map<String,String[]> keyAndFields){
-        ShardedJedis sharedJedis = null;
+    public static  Map<String,Map<String,String>> hmgetByPipeline(ClusterEnum clusterEnum, boolean isNewSharedJedis, Map<String,String[]> keyAndFields){
+        Map<String,Map<String,String>> result = new HashMap<>(keyAndFields.size());
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            ShardedJedisPipeline pipeline = sharedJedis.pipelined();
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            ShardedJedisPipeline pipeline = shardedJedis.pipelined();
+            Map<String,Response<List<String>>> responses = new HashMap<>(keyAndFields.size());
             for (String key : keyAndFields.keySet()){
-                pipeline.hmget(key, keyAndFields.get(key));
+                responses.put(key, pipeline.hmget(key, keyAndFields.get(key)));
             }
-            List<Object> result = pipeline.syncAndReturnAll();
-            return result;
+            pipeline.sync();
+            for(String key : responses.keySet()) {
+                List<String> values = responses.get(key).get();
+                Map<String,String> map = new HashMap<>(values.size());
+                for(int i=0; i<values.size(); i++){
+                    String value = values.get(i) == null ? "0" : values.get(i);
+                    map.put(keyAndFields.get(key)[i], value);
+                }
+                result.put(key, map);
+            }
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("hmgetByPipeline");
             sb.append("\t").append(keyAndFields).append("\t").append("read").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            return new ArrayList<>();
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
+        return result;
     }
 
     /**
@@ -1039,16 +925,12 @@ public class RedisCache {
      * @param field_vals_byincr
      * @param field_vals_byset
      */
-    public static void hmsetByPipeline(boolean isNewSharedJedis, String key, Map<String,Long> field_vals_byincr,
+    public static void hmsetByPipeline(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, Map<String,Long> field_vals_byincr,
                                        Map<String,String> field_vals_byset){
-        ShardedJedis sharedJedis = null;
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            ShardedJedisPipeline pipeline = sharedJedis.pipelined();
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            ShardedJedisPipeline pipeline = shardedJedis.pipelined();
             if (null != field_vals_byincr){
                 for (String field : field_vals_byincr.keySet()){
                     pipeline.hincrBy(key, field, field_vals_byincr.get(field));
@@ -1065,10 +947,10 @@ public class RedisCache {
                     .append(field_vals_byset).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.HMSETBYPIPELINE,isNewSharedJedis,key,field_vals_byincr,field_vals_byset));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.HMSETBYPIPELINE,clusterEnum,isNewSharedJedis,key,field_vals_byincr,field_vals_byset));
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -1081,16 +963,12 @@ public class RedisCache {
      * @param key_field_vals_byset
      * @param key_expire_times
      */
-    public static void hmsetByPipeline(boolean isNewSharedJedis, Map<String,Map<String,Long>> key_field_vals_byincr,
+    public static void hmsetByPipeline(ClusterEnum clusterEnum, boolean isNewSharedJedis, Map<String,Map<String,Long>> key_field_vals_byincr,
                                        Map<String,Map<String,String>> key_field_vals_byset, Map<String,Long> key_expire_times){
-        ShardedJedis sharedJedis = null;
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            ShardedJedisPipeline pipeline = sharedJedis.pipelined();
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            ShardedJedisPipeline pipeline = shardedJedis.pipelined();
             //自增Map
             if(null != key_field_vals_byincr && key_field_vals_byincr.size() > 0){
                 for(String key : key_field_vals_byincr.keySet()){
@@ -1128,11 +1006,11 @@ public class RedisCache {
             sb.append("\t").append(key_field_vals_byincr).append("\t").append(key_field_vals_byset).append("\t")
                     .append(key_expire_times).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.HMSETBYPIPELINE,isNewSharedJedis,key_field_vals_byincr,key_field_vals_byset,key_expire_times));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.HMSETBYPIPELINE,clusterEnum,isNewSharedJedis,key_field_vals_byincr,key_field_vals_byset,key_expire_times));
             log.error(sb.toString());
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -1142,16 +1020,12 @@ public class RedisCache {
      * @param isNewSharedJedis
      * @param keys
      */
-    public static void delByPipeline(boolean isNewSharedJedis, List<String> keys){
-        ShardedJedis sharedJedis = null;
+    public static void delByPipeline(ClusterEnum clusterEnum, boolean isNewSharedJedis, List<String> keys){
         long delNum = 0L;
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            ShardedJedisPipeline pipeline = sharedJedis.pipelined();
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            ShardedJedisPipeline pipeline = shardedJedis.pipelined();
             if (null != keys){
                 for (String key : keys){
                     pipeline.del(key);
@@ -1169,10 +1043,10 @@ public class RedisCache {
             sb.append("\t").append(keys).append("\t").append(delNum).append("\t").append("del").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.DELBYPIPELINE,isNewSharedJedis,keys));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.DELBYPIPELINE,clusterEnum,isNewSharedJedis,keys));
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -1185,25 +1059,21 @@ public class RedisCache {
      * @param key
      * @param lists
      */
-    public static void lpush(boolean isNewSharedJedis, String key, String... lists){
-        ShardedJedis sharedJedis = null;
+    public static void lpush(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, String... lists){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            sharedJedis.lpush(key, lists);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            shardedJedis.lpush(key, lists);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("lpush");
             sb.append("\t").append(key).append("\t").append(lists).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.LPUSH,isNewSharedJedis,key,lists));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.LPUSH,clusterEnum,isNewSharedJedis,key,lists));
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -1214,25 +1084,21 @@ public class RedisCache {
      * @param key
      * @param lists
      */
-    public static void rpush(boolean isNewSharedJedis, String key, String... lists){
-        ShardedJedis sharedJedis = null;
+    public static void rpush(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, String... lists){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            sharedJedis.rpush(key, lists);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            shardedJedis.rpush(key, lists);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("rpush");
             sb.append("\t").append(key).append("\t").append(lists).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.RPUSH,isNewSharedJedis,key,lists));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.RPUSH,clusterEnum,isNewSharedJedis,key,lists));
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -1243,15 +1109,11 @@ public class RedisCache {
      * @param key
      * @return
      */
-    public static String lpop(boolean isNewSharedJedis, String key){
-        ShardedJedis sharedJedis = null;
+    public static String lpop(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.lpop(key);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.lpop(key);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("lpop");
@@ -1260,8 +1122,8 @@ public class RedisCache {
             log.error(sb.toString());
             return null;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -1272,15 +1134,11 @@ public class RedisCache {
      * @param key
      * @return
      */
-    public static String rpop(boolean isNewSharedJedis, String key){
-        ShardedJedis sharedJedis = null;
+    public static String rpop(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.rpop(key);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.rpop(key);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("rpop");
@@ -1289,8 +1147,8 @@ public class RedisCache {
             log.error(sb.toString());
             return null;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -1306,26 +1164,22 @@ public class RedisCache {
      * @param value
      * @return
      */
-    public static Long lrem(boolean isNewSharedJedis, String key, long count, String value){
-        ShardedJedis sharedJedis = null;
+    public static Long lrem(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, long count, String value){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.lrem(key, count, value);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.lrem(key, count, value);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("lrem");
             sb.append("\t").append(key).append("\t").append(count).append("\t").append(value).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.LREM,isNewSharedJedis,key,count,value));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.LREM,clusterEnum,isNewSharedJedis,key,count,value));
             return 0L;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -1336,15 +1190,11 @@ public class RedisCache {
      * @param key
      * @return
      */
-    public static Long llen(boolean isNewSharedJedis, String key){
-        ShardedJedis sharedJedis = null;
+    public static Long llen(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.llen(key);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.llen(key);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("llen");
@@ -1353,8 +1203,8 @@ public class RedisCache {
             log.error(sb.toString());
             return 0L;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -1368,15 +1218,11 @@ public class RedisCache {
      * @param index
      * @return
      */
-    public static String lindex(boolean isNewSharedJedis, String key, long index){
-        ShardedJedis sharedJedis = null;
+    public static String lindex(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, long index){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.lindex(key, index);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.lindex(key, index);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("lindex");
@@ -1385,8 +1231,8 @@ public class RedisCache {
             log.error(sb.toString());
             return null;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -1401,15 +1247,11 @@ public class RedisCache {
      * @param pivot
      * @param value
      */
-    public static void linsert(boolean isNewSharedJedis, String key, BinaryClient.LIST_POSITION where, String pivot, String value){
-        ShardedJedis sharedJedis = null;
+    public static void linsert(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, BinaryClient.LIST_POSITION where, String pivot, String value){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            sharedJedis.linsert(key, where, pivot, value);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            shardedJedis.linsert(key, where, pivot, value);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("linsert");
@@ -1417,10 +1259,10 @@ public class RedisCache {
                     .append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.LINSERT,isNewSharedJedis,key,where,pivot,value));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.LINSERT,clusterEnum,isNewSharedJedis,key,where,pivot,value));
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -1434,26 +1276,22 @@ public class RedisCache {
      * @param value
      * @return
      */
-    public static String lset(boolean isNewSharedJedis, String key, long index, String value){
-        ShardedJedis sharedJedis = null;
+    public static String lset(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, long index, String value){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.lset(key, index, value);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.lset(key, index, value);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("lset");
             sb.append("\t").append(key).append("\t").append(index).append("\t").append(value).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.LSET,isNewSharedJedis,key,index,value));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.LSET,clusterEnum,isNewSharedJedis,key,index,value));
             return null;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -1468,15 +1306,11 @@ public class RedisCache {
      * @param end
      * @return
      */
-    public static List<String> lrange(boolean isNewSharedJedis, String key, long start, long end){
-        ShardedJedis sharedJedis = null;
+    public static List<String> lrange(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, long start, long end){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.lrange(key, start, end);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.lrange(key, start, end);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("lrange");
@@ -1485,8 +1319,8 @@ public class RedisCache {
             log.error(sb.toString());
             return new ArrayList<>();
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -1499,26 +1333,22 @@ public class RedisCache {
      * @param end
      * @return
      */
-    public static String ltrim(boolean isNewSharedJedis, String key, long start, long end){
-        ShardedJedis sharedJedis = null;
+    public static String ltrim(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, long start, long end){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.ltrim(key, start, end);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.ltrim(key, start, end);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("ltrim");
             sb.append("\t").append(key).append("\t").append(start).append("\t").append(end).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.LTRIM,isNewSharedJedis,key,start,end));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.LTRIM,clusterEnum,isNewSharedJedis,key,start,end));
             return null;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -1531,25 +1361,21 @@ public class RedisCache {
      * @param key
      * @param members
      */
-    public static void sadd(boolean isNewSharedJedis, String key, String... members){
-        ShardedJedis sharedJedis = null;
+    public static void sadd(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, String... members){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            sharedJedis.sadd(key, members);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            shardedJedis.sadd(key, members);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("sadd");
             sb.append("\t").append(key).append("\t").append(members).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.SADD,isNewSharedJedis,key,members));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.SADD,clusterEnum,isNewSharedJedis,key,members));
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -1561,15 +1387,11 @@ public class RedisCache {
      * @param member
      * @return
      */
-    public static boolean sismember(boolean isNewSharedJedis, String key, String member){
-        ShardedJedis sharedJedis = null;
+    public static boolean sismember(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, String member){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.sismember(key, member);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.sismember(key, member);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("sismember");
@@ -1578,8 +1400,8 @@ public class RedisCache {
             log.error(sb.toString());
             return false;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -1590,25 +1412,21 @@ public class RedisCache {
      * @param key
      * @param members
      */
-    public static void srem(boolean isNewSharedJedis, String key, String... members){
-        ShardedJedis sharedJedis = null;
+    public static void srem(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, String... members){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            sharedJedis.srem(key, members);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            shardedJedis.srem(key, members);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("srem");
             sb.append("\t").append(key).append("\t").append(members).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.SREM,isNewSharedJedis,key,members));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.SREM,clusterEnum,isNewSharedJedis,key,members));
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -1619,15 +1437,11 @@ public class RedisCache {
      * @param key
      * @return
      */
-    public static Long scard(boolean isNewSharedJedis, String key){
-        ShardedJedis sharedJedis = null;
+    public static Long scard(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.scard(key);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.scard(key);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("scard");
@@ -1636,8 +1450,8 @@ public class RedisCache {
             log.error(sb.toString());
             return 0L;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -1648,15 +1462,11 @@ public class RedisCache {
      * @param key
      * @return
      */
-    public static Set<String> smembers(boolean isNewSharedJedis, String key){
-        ShardedJedis sharedJedis = null;
+    public static Set<String> smembers(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.smembers(key);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.smembers(key);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("smembers");
@@ -1665,8 +1475,8 @@ public class RedisCache {
             log.error(sb.toString());
             return new HashSet<>();
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -1682,25 +1492,21 @@ public class RedisCache {
      * @param score
      * @param member
      */
-    public static void zadd(boolean isNewSharedJedis, String key, double score, String member){
-        ShardedJedis sharedJedis = null;
+    public static void zadd(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, double score, String member){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            sharedJedis.zadd(key, score, member);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            shardedJedis.zadd(key, score, member);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("zadd");
             sb.append("\t").append(key).append("\t").append(score).append("\t").append(member).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.ZADD,isNewSharedJedis,key,score,member));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.ZADD,clusterEnum,isNewSharedJedis,key,score,member));
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -1711,25 +1517,21 @@ public class RedisCache {
      * @param key
      * @param scoreMembers
      */
-    public static void zadd(boolean isNewSharedJedis, String key, Map<String, Double> scoreMembers){
-        ShardedJedis sharedJedis = null;
+    public static void zadd(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, Map<String, Double> scoreMembers){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            sharedJedis.zadd(key, scoreMembers);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            shardedJedis.zadd(key, scoreMembers);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("zadd");
             sb.append("\t").append(key).append("\t").append(scoreMembers).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.ZADD,isNewSharedJedis,scoreMembers,key));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.ZADD,clusterEnum,isNewSharedJedis,scoreMembers,key));
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -1741,15 +1543,11 @@ public class RedisCache {
      * @param member
      * @return
      */
-    public static Double zscore(boolean isNewSharedJedis, String key, String member){
-        ShardedJedis sharedJedis = null;
+    public static Double zscore(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, String member){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.zscore(key ,member);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.zscore(key ,member);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("zscore");
@@ -1758,8 +1556,8 @@ public class RedisCache {
             log.error(sb.toString());
             return 0D;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -1772,26 +1570,22 @@ public class RedisCache {
      * @param member
      * @return
      */
-    public static Double zincrby(boolean isNewSharedJedis, String key, double score, String member){
-        ShardedJedis sharedJedis = null;
+    public static Double zincrby(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, double score, String member){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.zincrby(key, score, member);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.zincrby(key, score, member);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("zincrby");
             sb.append("\t").append(key).append("\t").append(member).append("\t").append(score).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.ZINCRBY,isNewSharedJedis,key,score,member));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.ZINCRBY,clusterEnum,isNewSharedJedis,key,score,member));
             return 0D;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -1802,15 +1596,11 @@ public class RedisCache {
      * @param key
      * @return
      */
-    public static Long zcard(boolean isNewSharedJedis, String key){
-        ShardedJedis sharedJedis = null;
+    public static Long zcard(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.zcard(key);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.zcard(key);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("zcard");
@@ -1819,8 +1609,8 @@ public class RedisCache {
             log.error(sb.toString());
             return 0L;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -1833,15 +1623,11 @@ public class RedisCache {
      * @param max
      * @return
      */
-    public static Long zcount(boolean isNewSharedJedis, String key, double min, double max){
-        ShardedJedis sharedJedis = null;
+    public static Long zcount(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, double min, double max){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.zcount(key, min, max);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.zcount(key, min, max);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("zcount");
@@ -1850,8 +1636,8 @@ public class RedisCache {
             log.error(sb.toString());
             return 0L;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -1869,15 +1655,11 @@ public class RedisCache {
      * @param end
      * @return
      */
-    public static Set<String> zrange(boolean isNewSharedJedis, String key, long start, long end){
-        ShardedJedis sharedJedis = null;
+    public static Set<String> zrange(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, long start, long end){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.zrange(key, start, end);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.zrange(key, start, end);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("zrange");
@@ -1886,8 +1668,8 @@ public class RedisCache {
             log.error(sb.toString());
             return new HashSet<>();
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -1902,15 +1684,11 @@ public class RedisCache {
      * @param end
      * @return
      */
-    public static Set<Tuple> zrangeWithScores(boolean isNewSharedJedis, String key, long start, long end){
-        ShardedJedis sharedJedis = null;
+    public static Set<Tuple> zrangeWithScores(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, long start, long end){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.zrangeWithScores(key, start, end);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.zrangeWithScores(key, start, end);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("zrangeWithScores");
@@ -1919,8 +1697,8 @@ public class RedisCache {
             log.error(sb.toString());
             return new HashSet<>();
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -1935,15 +1713,11 @@ public class RedisCache {
      * @param end
      * @return
      */
-    public static Set<String> zrevrange(boolean isNewSharedJedis, String key, long start, long end){
-        ShardedJedis sharedJedis = null;
+    public static Set<String> zrevrange(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, long start, long end){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.zrevrange(key, start, end);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.zrevrange(key, start, end);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("zrevrange");
@@ -1952,8 +1726,8 @@ public class RedisCache {
             log.error(sb.toString());
             return new HashSet<>();
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -1968,15 +1742,11 @@ public class RedisCache {
      * @param end
      * @return
      */
-    public static Set<Tuple> zrevrangeWithScores(boolean isNewSharedJedis, String key, long start, long end){
-        ShardedJedis sharedJedis = null;
+    public static Set<Tuple> zrevrangeWithScores(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, long start, long end){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.zrevrangeWithScores(key, start, end);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.zrevrangeWithScores(key, start, end);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("zrevrangeWithScores");
@@ -1985,8 +1755,8 @@ public class RedisCache {
             log.error(sb.toString());
             return new HashSet<>();
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -2000,15 +1770,11 @@ public class RedisCache {
      * @param max
      * @return
      */
-    public static Set<String> zrangeByScore(boolean isNewSharedJedis, String key, double min, double max){
-        ShardedJedis sharedJedis = null;
+    public static Set<String> zrangeByScore(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, double min, double max){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.zrangeByScore(key, min, max);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.zrangeByScore(key, min, max);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("zrangeByScore");
@@ -2017,8 +1783,8 @@ public class RedisCache {
             log.error(sb.toString());
             return new HashSet<>();
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -2032,15 +1798,11 @@ public class RedisCache {
      * @param max
      * @return
      */
-    public static Set<Tuple> zrangeByScoreWithScores(boolean isNewSharedJedis, String key, double min, double max){
-        ShardedJedis sharedJedis = null;
+    public static Set<Tuple> zrangeByScoreWithScores(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, double min, double max){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.zrangeByScoreWithScores(key, min, max);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.zrangeByScoreWithScores(key, min, max);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("zrangeByScoreWithScores");
@@ -2049,8 +1811,8 @@ public class RedisCache {
             log.error(sb.toString());
             return new HashSet<>();
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -2068,16 +1830,12 @@ public class RedisCache {
      * @param count
      * @return
      */
-    public static Set<String> zrangeByScore(boolean isNewSharedJedis, String key, double min, double max,
+    public static Set<String> zrangeByScore(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, double min, double max,
                                             int offset, int count){
-        ShardedJedis sharedJedis = null;
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.zrangeByScore(key, min, max, offset, count);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.zrangeByScore(key, min, max, offset, count);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("zrangeByScore");
@@ -2087,8 +1845,8 @@ public class RedisCache {
             log.error(sb.toString());
             return new HashSet<>();
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -2106,16 +1864,12 @@ public class RedisCache {
      * @param count
      * @return
      */
-    public static Set<Tuple> zrangeByScoreWithScores(boolean isNewSharedJedis, String key, double min, double max,
+    public static Set<Tuple> zrangeByScoreWithScores(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, double min, double max,
                                             int offset, int count){
-        ShardedJedis sharedJedis = null;
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.zrangeByScoreWithScores(key, min, max, offset, count);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.zrangeByScoreWithScores(key, min, max, offset, count);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("zrangeByScoreWithScores");
@@ -2125,8 +1879,8 @@ public class RedisCache {
             log.error(sb.toString());
             return new HashSet<>();
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -2140,15 +1894,11 @@ public class RedisCache {
      * @param max
      * @return
      */
-    public static Set<String> zrevrangeByScore(boolean isNewSharedJedis, String key, double min, double max){
-        ShardedJedis sharedJedis = null;
+    public static Set<String> zrevrangeByScore(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, double min, double max){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.zrevrangeByScore(key, min, max);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.zrevrangeByScore(key, min, max);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("zrevrangeByScore");
@@ -2157,8 +1907,8 @@ public class RedisCache {
             log.error(sb.toString());
             return new HashSet<>();
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -2172,15 +1922,11 @@ public class RedisCache {
      * @param max
      * @return
      */
-    public static Set<Tuple> zrevrangeByScoreWithScores(boolean isNewSharedJedis, String key, double min, double max){
-        ShardedJedis sharedJedis = null;
+    public static Set<Tuple> zrevrangeByScoreWithScores(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, double min, double max){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.zrevrangeByScoreWithScores(key, min, max);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.zrevrangeByScoreWithScores(key, min, max);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("zrevrangeByScoreWithScores");
@@ -2189,8 +1935,8 @@ public class RedisCache {
             log.error(sb.toString());
             return new HashSet<>();
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -2208,16 +1954,12 @@ public class RedisCache {
      * @param count
      * @return
      */
-    public static Set<String> zrevrangeByScore(boolean isNewSharedJedis, String key, double min, double max,
+    public static Set<String> zrevrangeByScore(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, double min, double max,
                                             int offset, int count){
-        ShardedJedis sharedJedis = null;
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.zrevrangeByScore(key, min, max, offset, count);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.zrevrangeByScore(key, min, max, offset, count);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("zrevrangeByScore");
@@ -2227,8 +1969,8 @@ public class RedisCache {
             log.error(sb.toString());
             return new HashSet<>();
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -2246,16 +1988,12 @@ public class RedisCache {
      * @param count
      * @return
      */
-    public static Set<Tuple> zrevrangeByScoreWithScores(boolean isNewSharedJedis, String key, double min, double max,
+    public static Set<Tuple> zrevrangeByScoreWithScores(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, double min, double max,
                                                      int offset, int count){
-        ShardedJedis sharedJedis = null;
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.zrevrangeByScoreWithScores(key, min, max, offset, count);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.zrevrangeByScoreWithScores(key, min, max, offset, count);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("zrevrangeByScoreWithScores");
@@ -2265,8 +2003,8 @@ public class RedisCache {
             log.error(sb.toString());
             return new HashSet<>();
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -2279,15 +2017,11 @@ public class RedisCache {
      * @param member
      * @return
      */
-    public static Long zrank(boolean isNewSharedJedis, String key, String member){
-        ShardedJedis sharedJedis = null;
+    public static Long zrank(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, String member){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.zrank(key, member);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.zrank(key, member);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("zrank");
@@ -2296,8 +2030,8 @@ public class RedisCache {
             log.error(sb.toString());
             return -1L;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -2310,15 +2044,11 @@ public class RedisCache {
      * @param member
      * @return
      */
-    public static Long zrevrank(boolean isNewSharedJedis, String key, String member){
-        ShardedJedis sharedJedis = null;
+    public static Long zrevrank(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, String member){
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            return sharedJedis.zrevrank(key, member);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            return shardedJedis.zrevrank(key, member);
         } catch (Exception e) {
             String id = "r" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("zrevrank");
@@ -2327,8 +2057,8 @@ public class RedisCache {
             log.error(sb.toString());
             return -1L;
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -2339,26 +2069,22 @@ public class RedisCache {
      * @param key
      * @param members
      */
-    public static void zrem(boolean isNewSharedJedis, String key, String... members){
-        ShardedJedis sharedJedis = null;
+    public static void zrem(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, String... members){
         long remNum = 0L;
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            remNum = sharedJedis.zrem(key, members);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            remNum = shardedJedis.zrem(key, members);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("zrem");
             sb.append("\t").append(key).append("\t").append(members).append("\t").append(remNum).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.ZREM,isNewSharedJedis,key,members));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.ZREM,clusterEnum,isNewSharedJedis,key,members));
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -2374,16 +2100,12 @@ public class RedisCache {
      * @param start
      * @param end
      */
-    public static void zremrangeByRank(boolean isNewSharedJedis, String key, long start, long end){
-        ShardedJedis sharedJedis = null;
+    public static void zremrangeByRank(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, long start, long end){
         long remNum = 0L;
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            remNum = sharedJedis.zremrangeByRank(key, start, end);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            remNum = shardedJedis.zremrangeByRank(key, start, end);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("zremrangeByRank");
@@ -2391,10 +2113,10 @@ public class RedisCache {
                     .append("\t").append(remNum).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.ZREMRANGEBYRANK,isNewSharedJedis,key,start,end));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.ZREMRANGEBYRANK,clusterEnum,isNewSharedJedis,key,start,end));
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
@@ -2406,16 +2128,12 @@ public class RedisCache {
      * @param start
      * @param end
      */
-    public static void zremrangeByScore(boolean isNewSharedJedis, String key, double start, double end){
-        ShardedJedis sharedJedis = null;
+    public static void zremrangeByScore(ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, double start, double end){
         long remNum = 0L;
+        ShardedJedis shardedJedis = null;
         try {
-            if (isNewSharedJedis){
-                sharedJedis = RedisPool.getSharedJedisNew();
-            } else {
-                sharedJedis = RedisPool.getSharedJedis();
-            }
-            remNum = sharedJedis.zremrangeByScore(key, start, end);
+            shardedJedis = RedisCache.getShardedJedis(clusterEnum, isNewSharedJedis);
+            remNum = shardedJedis.zremrangeByScore(key, start, end);
         } catch (Exception e) {
             String id = "w" +(new Random().nextInt(10) + System.currentTimeMillis());
             StringBuffer sb = new StringBuffer("zremrangeByScore");
@@ -2423,13 +2141,39 @@ public class RedisCache {
                     .append("\t").append(remNum).append("\t").append("write").append("\t").append(id)
                     .append("\t").append(null==e.getMessage()?"message:【null】":"message:【"+e.getMessage().split("\r\n")[0]+"】");
             log.error(sb.toString());
-            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.ZREMRANGEBYSCORE,isNewSharedJedis,key,start,end));
+            RedisWriteBack.putWriteBackInfo(new WriteBackObj(RedisCommand.ZREMRANGEBYSCORE,clusterEnum,isNewSharedJedis,key,start,end));
         } finally{
-            if (null != sharedJedis) {
-                RedisPool.closeSharedJedis(sharedJedis);
+            if (null != shardedJedis) {
+                RedisPool.closeSharedJedis(shardedJedis);
             }
         }
     }
 
+    /**
+     * getShardedJedis
+     * @param clusterEnum
+     * @param isNewSharedJedis
+     * @return
+     */
+    public static ShardedJedis getShardedJedis(ClusterEnum clusterEnum, boolean isNewSharedJedis){
+        ShardedJedis shardedJedis = null;
+        switch (clusterEnum) {
+            case CLUSTER_B:
+                if (isNewSharedJedis){
+                    shardedJedis = RedisPool.getSharedJedisNewByClusterB();
+                } else {
+                    shardedJedis = RedisPool.getSharedJedisByClusterB();
+                }
+                break;
+            case CLUSTER_E:
+                shardedJedis = RedisPool.getSharedJedisByClusterE();
+                break;
+            default:
+                //默认B CLUSTER
+                shardedJedis = RedisPool.getSharedJedisByClusterB();
+                break;
+        }
+        return shardedJedis;
+    }
 
 }

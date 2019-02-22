@@ -7,14 +7,20 @@ package com.songheng.dsp.common.sentinel;
  */
 public enum HbaseSentinelResource {
 
-    ADX_USER_CONSUME("adx_user_consume"),
-    ADPLATFORM_ADSTATUS("adplatform_adstatus"),
-    ADPLATFORM_ADSTATUS_PC("adplatform_adstatus_pc"),
-    ADPLATFORM_ADAPPEARED("adplatform_adappeared"),
-    ADPLATFORM_ADTIMELIMIT("adplatform_adtimelimit"),
-    ADPLATFORM_ADORDER("adplatform_adorder"),
-    ADX_DSPRESPONSE("adx_dspresponse"),
-    ADPLATFORM_ADSTATUS_MONOPOLY("adplatform_adstatus_monopoly");
+    ADX_USER_CONSUME_B("adx_user_consume"),
+    ADPLATFORM_ADSTATUS_B("adplatform_adstatus"),
+    ADPLATFORM_ADAPPEARED_B("adplatform_adappeared"),
+    ADPLATFORM_ADTIMELIMIT_B("adplatform_adtimelimit"),
+    ADPLATFORM_ADORDER_B("adplatform_adorder"),
+    ADX_DSPRESPONSE_B("adx_dspresponse"),
+    ADPLATFORM_ADSTATUS_MONOPOLY_B("adplatform_adstatus_monopoly"),
+    ADX_USER_CONSUME_E("adx_user_consume"),
+    ADPLATFORM_ADSTATUS_E("adplatform_adstatus_pc"),
+    ADPLATFORM_ADAPPEARED_E("adplatform_adappeared"),
+    ADPLATFORM_ADTIMELIMIT_E("adplatform_adtimelimit"),
+    ADPLATFORM_ADORDER_E("adplatform_adorder"),
+    ADX_DSPRESPONSE_E("adx_dspresponse"),
+    ADPLATFORM_ADSTATUS_MONOPOLY_E("adplatform_adstatus_monopoly");
 
 
     private String name;

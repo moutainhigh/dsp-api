@@ -1,6 +1,7 @@
 package com.songheng.dsp.ssp.riskcontrol;
 
 import com.songheng.dsp.common.InitLoadConf;
+import com.songheng.dsp.common.enums.ProjectEnum;
 import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.model.flow.PcFlow;
 import com.songheng.dsp.ssp.RiskControlClient;
@@ -20,7 +21,7 @@ public class RiskControlClientTest {
 
     @BeforeClass
     public static void initLoad(){
-        InitLoadConf.init("partner", "wap");
+        InitLoadConf.init(ProjectEnum.H5);
     }
 
     BaseFlow baseFlow = new PcFlow();

@@ -1,12 +1,12 @@
 package com.songheng.dsp.adxbid.task;
 
 
+import com.songheng.dsp.common.enums.ProjectEnum;
 import com.songheng.dsp.common.utils.HttpClientUtils;
 import com.songheng.dsp.common.utils.serialize.FastJsonUtils;
 import com.songheng.dsp.model.adx.request.RequestBean;
 import com.songheng.dsp.model.adx.response.ResponseBean;
 import com.songheng.dsp.model.adx.user.DspUserInfo;
-import com.songheng.dsp.model.enums.Project;
 import com.songheng.dsp.model.flow.BaseFlow;
 import lombok.extern.slf4j.Slf4j;
 
@@ -58,13 +58,13 @@ public class SendAdxBidReq implements Callable<ResponseBean> {
      * @return   true :限流 ; false: 不限流
      * */
     private boolean limitOverQPS(){
-        if(Project.isApp(baseFlow.getTerminal()) && baseFlow.getCurrQps() <= user.getAppQps()){
+        if(ProjectEnum.isApp(baseFlow.getTerminal()) && baseFlow.getCurrQps() <= user.getAppQps()){
             return false;
         }
-        if(Project.isH5(baseFlow.getTerminal()) && baseFlow.getCurrQps() <= user.getH5Qps()){
+        if(ProjectEnum.isH5(baseFlow.getTerminal()) && baseFlow.getCurrQps() <= user.getH5Qps()){
             return false;
         }
-        if(Project.isPc(baseFlow.getTerminal()) && baseFlow.getCurrQps() <= user.getPcQps()){
+        if(ProjectEnum.isPc(baseFlow.getTerminal()) && baseFlow.getCurrQps() <= user.getPcQps()){
             return false;
         }
         log.info("[limit-qps],dspId={}&terminal={}&reqId={}=currQps={}",user.getDspid(),

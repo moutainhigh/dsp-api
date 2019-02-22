@@ -5,9 +5,7 @@ import com.alibaba.csp.sentinel.node.ClusterNode;
 import com.alibaba.csp.sentinel.slots.clusterbuilder.ClusterBuilderSlot;
 import com.songheng.dsp.common.redis.RedisWriteBack;
 import com.songheng.dsp.common.sentinel.HbaseSentinelResource;
-import com.songheng.dsp.common.utils.FileUtils;
-import com.songheng.dsp.common.utils.PropertyPlaceholder;
-import com.songheng.dsp.common.utils.ThreadPoolUtils;
+import com.songheng.dsp.common.utils.*;
 import com.songheng.dsp.common.utils.serialize.KryoSerialize;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -150,7 +148,6 @@ public abstract class HbaseWriteBack {
                         if (StringUtils.isNotBlank(fileName)){
                             String filePath = String.format("%s%s", RedisWriteBack.fileDir, fileName);
                             boolean serializeRet = FileUtils.writeFile(filePath, KryoSerialize.writeToString(wbRecord), false);
-
                             StringBuffer sb = new StringBuffer();
                             sb.append("【回写队列size大于上限值，序列化至文件】\t").append("【size: "+serializeSize+"】");
                             //序列化成功
@@ -168,15 +165,17 @@ public abstract class HbaseWriteBack {
                                         .append("【重新写入缓存队列】");
                             }
                             log.info(sb.toString());
+                            //钉钉报警
+                            StringBuffer msg = new StringBuffer("【ip:")
+                                    .append(HostIpUtils.getServerIp())
+                                    .append("】【")
+                                    .append(System.getProperty("dsp.project.name"))
+                                    .append("】【Hbase Sentinel 回写队列size大于上限值】【")
+                                    .append(resourceKey)
+                                    .append("】【size: ").append(serializeSize)
+                                    .append("】\r\n");
+                            MsgNotifyUtils.sendMsg(msg.toString());
                         }
-//                        StringBuffer msg = new StringBuffer("【ip:")
-//                                .append(OpUtils.getServerIp())
-//                                .append("】【dspdatalog】【Hbase Sentinel 回写队列size大于上限值】【")
-//                                .append(resourceKey)
-//                                .append("】【size: ").append(serializeSize)
-//                                .append("】\r\n");
-//                        MsgNotifyUtil.sendMsg(msg.toString());
-
                     }else{
                         //此时Hbase Sentinel Qps
                         int totalQps = 0;

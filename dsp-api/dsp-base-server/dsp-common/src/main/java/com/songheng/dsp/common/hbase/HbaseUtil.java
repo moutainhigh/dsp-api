@@ -4,6 +4,7 @@ import com.alibaba.csp.sentinel.Entry;
 import com.alibaba.csp.sentinel.EntryType;
 import com.alibaba.csp.sentinel.SphU;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
+import com.songheng.dsp.common.enums.ClusterEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.hbase.Cell;
@@ -19,7 +20,7 @@ import java.util.Map;
 /**
  * @author: luoshaobing
  * @date: 2019/2/20 15:30
- * @description:
+ * @description: HbaseUtil
  */
 @Slf4j
 public class HbaseUtil {
@@ -48,19 +49,48 @@ public class HbaseUtil {
     }
 
     /**
+     * getHbaseTable
+     * @param clusterEnum
+     * @param tblName
+     * @return
+     */
+    public static HTableInterface getHbaseTable(ClusterEnum clusterEnum, String tblName){
+        if (null == clusterEnum || StringUtils.isBlank(tblName)){
+            return  null;
+        }
+        HTableInterface htab = null;
+        try {
+            switch (clusterEnum) {
+                case CLUSTER_B:
+                    htab = HbaseConnmini.getHbaseTable_B(tblName);
+                    break;
+                case CLUSTER_E:
+                    htab = HbaseConnmini.getHbaseTable_E(tblName);
+                    break;
+                default:
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return htab;
+    }
+
+    /**
      * Hbase Get
+     * @param clusterEnum
      * @param tblName
      * @param args0
      * @return
      */
-    public static Map<String, byte[]> get(String tblName, Get args0){
+    public static Map<String, byte[]> get(ClusterEnum clusterEnum, String tblName, Get args0){
         Map<String, byte[]> rltMap = new HashMap<>(16);
         if (StringUtils.isBlank(tblName) || null == args0){
             return  rltMap;
         }
         HTableInterface htab = null;
         try {
-            htab = HbaseConnmini.getHbaseTable(tblName);
+            htab = HbaseUtil.getHbaseTable(clusterEnum, tblName);
             Result rs = htab.get(args0);
             rltMap.putAll(analysisRlt(rs));
         } catch (Exception e) {
@@ -83,18 +113,19 @@ public class HbaseUtil {
 
     /**
      * Hbase 批量 Get
+     * @param clusterEnum
      * @param tblName
      * @param args0
      * @return
      */
-    public static  Map<String, byte[]> get(String tblName, List<Get> args0){
+    public static  Map<String, byte[]> get(ClusterEnum clusterEnum,String tblName, List<Get> args0){
         Map<String, byte[]> rltMap = new HashMap<>(16);
         if (StringUtils.isBlank(tblName) || null == args0 || args0.size() == 0){
             return  rltMap;
         }
         HTableInterface htab = null;
         try {
-            htab = HbaseConnmini.getHbaseTable(tblName);
+            htab = HbaseUtil.getHbaseTable(clusterEnum, tblName);
             Result[] rs = htab.get(args0);
             for (Result r : rs){
                 rltMap.putAll(analysisRlt(r));
@@ -119,18 +150,19 @@ public class HbaseUtil {
 
     /**
      * Hbase Scan
+     * @param clusterEnum
      * @param tblName
      * @param args0
      * @return
      */
-    public static Map<String, byte[]> scan(String tblName, Scan args0){
+    public static Map<String, byte[]> scan(ClusterEnum clusterEnum,String tblName, Scan args0){
         Map<String, byte[]> rltMap = new HashMap<>(16);
         if (StringUtils.isBlank(tblName) || null == args0){
             return  rltMap;
         }
         HTableInterface htab = null;
         try {
-            htab = HbaseConnmini.getHbaseTable(tblName);
+            htab = HbaseUtil.getHbaseTable(clusterEnum, tblName);
             ResultScanner rltScan = htab.getScanner(args0);
             for (Result rs : rltScan){
                 rltMap.putAll(analysisRlt(rs));
@@ -170,7 +202,7 @@ public class HbaseUtil {
         try{
             //对指定资源名进行流量控制，EntryType.IN：“入站”方式
             entry = SphU.entry(args0.getResourceKey(), EntryType.IN);
-            htab = HbaseConnmini.getHbaseTable(args0.getTblName());
+            htab = HbaseUtil.getHbaseTable(args0.getClusterEnum(), args0.getTblName());
             switch (args0.getHbaseExecType()){
 
                 case PUT:

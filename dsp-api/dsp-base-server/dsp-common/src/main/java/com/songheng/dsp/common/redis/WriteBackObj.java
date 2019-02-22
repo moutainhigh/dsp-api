@@ -1,6 +1,7 @@
 package com.songheng.dsp.common.redis;
 
 
+import com.songheng.dsp.common.enums.ClusterEnum;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -23,6 +24,10 @@ public class WriteBackObj {
      * redis写操作类型 枚举
      */
     private RedisCommand command;
+    /**
+     * 所属集群
+     */
+    private ClusterEnum clusterEnum;
     /**
      * 是否redis新集群 true 新集群 false 老集群
      */
@@ -113,106 +118,120 @@ public class WriteBackObj {
     private double endD;
 
 
-    public WriteBackObj(RedisCommand command, boolean isNewSharedJedis, String key){
+    public WriteBackObj(RedisCommand command, ClusterEnum clusterEnum, boolean isNewSharedJedis, String key){
         this.command = command;
+        this.clusterEnum = clusterEnum;
         this.isNewSharedJedis = isNewSharedJedis;
         this.key = key;
     }
 
-    public WriteBackObj(RedisCommand command, boolean isNewSharedJedis, String key, int seconds){
+    public WriteBackObj(RedisCommand command, ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, int seconds){
         this.command = command;
+        this.clusterEnum = clusterEnum;
         this.isNewSharedJedis = isNewSharedJedis;
         this.key = key;
         this.seconds = seconds;
     }
 
-    public WriteBackObj(RedisCommand command, boolean isNewSharedJedis, String key, long valueL){
+    public WriteBackObj(RedisCommand command, ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, long valueL){
         this.command = command;
+        this.clusterEnum = clusterEnum;
         this.isNewSharedJedis = isNewSharedJedis;
         this.key = key;
         this.valueL = valueL;
     }
 
-    public WriteBackObj(RedisCommand command, boolean isNewSharedJedis, String key, String valueS){
+    public WriteBackObj(RedisCommand command, ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, String valueS){
         this.command = command;
+        this.clusterEnum = clusterEnum;
         this.isNewSharedJedis = isNewSharedJedis;
         this.key = key;
         this.valueS = valueS;
     }
 
-    public WriteBackObj(RedisCommand command, boolean isNewSharedJedis, String key, double valueD){
+    public WriteBackObj(RedisCommand command, ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, double valueD){
         this.command = command;
+        this.clusterEnum = clusterEnum;
         this.isNewSharedJedis = isNewSharedJedis;
         this.key = key;
         this.valueD = valueD;
     }
 
-    public WriteBackObj(RedisCommand command, boolean isNewSharedJedis, String key, String field, String valueS){
+    public WriteBackObj(RedisCommand command, ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, String field, String valueS){
         this.command = command;
+        this.clusterEnum = clusterEnum;
         this.isNewSharedJedis = isNewSharedJedis;
         this.key = key;
         this.field = field;
         this.valueS = valueS;
     }
 
-    public WriteBackObj(RedisCommand command, boolean isNewSharedJedis, String key, String field, double valueD){
+    public WriteBackObj(RedisCommand command, ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, String field, double valueD){
         this.command = command;
+        this.clusterEnum = clusterEnum;
         this.isNewSharedJedis = isNewSharedJedis;
         this.key = key;
         this.field = field;
         this.valueD = valueD;
     }
 
-    public WriteBackObj(RedisCommand command, boolean isNewSharedJedis, String key, String field, long valueL){
+    public WriteBackObj(RedisCommand command, ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, String field, long valueL){
         this.command = command;
+        this.clusterEnum = clusterEnum;
         this.isNewSharedJedis = isNewSharedJedis;
         this.key = key;
         this.field = field;
         this.valueL = valueL;
     }
 
-    public WriteBackObj(RedisCommand command, boolean isNewSharedJedis, String key, Map<String, String> hash){
+    public WriteBackObj(RedisCommand command, ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, Map<String, String> hash){
         this.command = command;
+        this.clusterEnum = clusterEnum;
         this.isNewSharedJedis = isNewSharedJedis;
         this.key = key;
         this.hash = hash;
     }
 
-    public WriteBackObj(RedisCommand command, boolean isNewSharedJedis, String key, String... valueArray){
+    public WriteBackObj(RedisCommand command, ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, String... valueArray){
         this.command = command;
+        this.clusterEnum = clusterEnum;
         this.isNewSharedJedis = isNewSharedJedis;
         this.key = key;
         this.valueArray = valueArray;
     }
 
-    public WriteBackObj(RedisCommand command, boolean isNewSharedJedis, String key, Map<String,Long> field_vals_byincr,
+    public WriteBackObj(RedisCommand command, ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, Map<String,Long> field_vals_byincr,
                         Map<String,String> field_vals_byset){
         this.command = command;
+        this.clusterEnum = clusterEnum;
         this.isNewSharedJedis = isNewSharedJedis;
         this.key = key;
         this.field_vals_byincr = field_vals_byincr;
         this.field_vals_byset = field_vals_byset;
     }
 
-    public WriteBackObj(RedisCommand command, boolean isNewSharedJedis, Map<String,Map<String,Long>> key_field_vals_byincr,
+    public WriteBackObj(RedisCommand command, ClusterEnum clusterEnum, boolean isNewSharedJedis, Map<String,Map<String,Long>> key_field_vals_byincr,
                         Map<String,Map<String,String>> key_field_vals_byset, Map<String,Long> key_expire_times){
         this.command = command;
+        this.clusterEnum = clusterEnum;
         this.isNewSharedJedis = isNewSharedJedis;
         this.key_field_vals_byincr = key_field_vals_byincr;
         this.key_field_vals_byset = key_field_vals_byset;
         this.key_expire_times = key_expire_times;
     }
 
-    public WriteBackObj(RedisCommand command, boolean isNewSharedJedis, String key, long valueL, String valueS){
+    public WriteBackObj(RedisCommand command, ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, long valueL, String valueS){
         this.command = command;
+        this.clusterEnum = clusterEnum;
         this.isNewSharedJedis = isNewSharedJedis;
         this.key = key;
         this.valueL = valueL;
         this.valueS = valueS;
     }
 
-    public WriteBackObj(RedisCommand command, boolean isNewSharedJedis, String key, BinaryClient.LIST_POSITION where, String pivot, String valueS){
+    public WriteBackObj(RedisCommand command, ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, BinaryClient.LIST_POSITION where, String pivot, String valueS){
         this.command = command;
+        this.clusterEnum = clusterEnum;
         this.isNewSharedJedis = isNewSharedJedis;
         this.key = key;
         this.where = where;
@@ -220,39 +239,44 @@ public class WriteBackObj {
         this.valueS = valueS;
     }
 
-    public WriteBackObj(RedisCommand command, boolean isNewSharedJedis, String key, long start, long end){
+    public WriteBackObj(RedisCommand command, ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, long start, long end){
         this.command = command;
+        this.clusterEnum = clusterEnum;
         this.isNewSharedJedis = isNewSharedJedis;
         this.key = key;
         this.startL = start;
         this.endL = end;
     }
 
-    public WriteBackObj(RedisCommand command, boolean isNewSharedJedis, String key, double valueD, String valueS){
+    public WriteBackObj(RedisCommand command, ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, double valueD, String valueS){
         this.command = command;
+        this.clusterEnum = clusterEnum;
         this.isNewSharedJedis = isNewSharedJedis;
         this.key = key;
         this.valueD = valueD;
         this.valueS = valueS;
     }
 
-    public WriteBackObj(RedisCommand command, boolean isNewSharedJedis, Map<String, Double> scoreMembers, String key){
+    public WriteBackObj(RedisCommand command, ClusterEnum clusterEnum, boolean isNewSharedJedis, Map<String, Double> scoreMembers, String key){
         this.command = command;
+        this.clusterEnum = clusterEnum;
         this.isNewSharedJedis = isNewSharedJedis;
         this.key = key;
         this.scoreMembers = scoreMembers;
     }
 
-    public WriteBackObj(RedisCommand command, boolean isNewSharedJedis, String key, double start, double end){
+    public WriteBackObj(RedisCommand command, ClusterEnum clusterEnum, boolean isNewSharedJedis, String key, double start, double end){
         this.command = command;
+        this.clusterEnum = clusterEnum;
         this.isNewSharedJedis = isNewSharedJedis;
         this.key = key;
         this.startD = start;
         this.endD = end;
     }
 
-    public WriteBackObj(RedisCommand command, boolean isNewSharedJedis, List<String> keys){
+    public WriteBackObj(RedisCommand command, ClusterEnum clusterEnum, boolean isNewSharedJedis, List<String> keys){
         this.command = command;
+        this.clusterEnum = clusterEnum;
         this.isNewSharedJedis = isNewSharedJedis;
         this.keys = keys;
     }

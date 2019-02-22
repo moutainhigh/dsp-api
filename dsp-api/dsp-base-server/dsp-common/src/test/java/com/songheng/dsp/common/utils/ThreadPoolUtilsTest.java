@@ -1,6 +1,7 @@
 package com.songheng.dsp.common.utils;
 
 import com.songheng.dsp.common.InitLoadConf;
+import com.songheng.dsp.common.enums.ProjectEnum;
 import com.songheng.dsp.common.model.AdplatformAdShowHistory;
 import org.junit.After;
 import org.junit.Before;
@@ -17,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 public class ThreadPoolUtilsTest {
     @BeforeClass
     public static void initLoad(){
-        InitLoadConf.init("partner", "wap");
+        InitLoadConf.init(ProjectEnum.H5);
     }
 
     @Before
