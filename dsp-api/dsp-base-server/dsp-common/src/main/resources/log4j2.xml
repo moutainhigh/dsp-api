@@ -22,9 +22,13 @@
         <Console name="Console" target="SYSTEM_OUT">
             <!--ThresholdFilter指定日志消息的输出最低层次-->
             <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss}\t%p\t%c\t%m\t%r%n"/>
+            <PatternLayout pattern="%d{UNIX_MILLIS}\t%d\t\t%p\t%c{1}\t%m\t%r%n"/>
         </Console>
-
+        <RollingFile name="utilsHtmlLog" fileName="${LOG_HOME}/${PROJECT_NAME}/${MODEL_UTILS}/html/utils.html" filePattern="${LOG_HOME}/${PROJECT_NAME}/${MODEL_UTILS}/html/utils-%d{yyyyMMddHH}.html">
+            <HTMLLayout title="日志信息"/>
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            <SizeBasedTriggeringPolicy size="1 MB"/>
+        </RollingFile>
         <!--Appender  输出到滚动保存的文件, 触发保存日志文件的条件是每天第一次的日志事件。ERROR日志是按每天产生日志 -->
         <!--<RollingFile name="errorLog" fileName="${LOG_HOME}/${ERROR_LOG}/error.log" filePattern="${LOG_HOME}/${ERROR_LOG}/error-%d{yyyyMMdd}.log">-->
             <!--<ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>-->
@@ -33,9 +37,9 @@
         <!--</RollingFile>-->
 
         <!--Appender  输出到滚动保存的文件, 触发保存日志文件的条件是每天第一次的日志事件。ERROR日志是按每天产生日志 -->
-        <RollingFile name="utilsLog" fileName="${LOG_HOME}/${PROJECT_NAME}/${MODEL_UTILS}/uitls.log" filePattern="${LOG_HOME}/${PROJECT_NAME}/${MODEL_UTILS}/utils-%d{yyyyMMdd}.log">
+        <RollingFile name="utilsLog" fileName="${LOG_HOME}/${PROJECT_NAME}/${MODEL_UTILS}/utils.log" filePattern="${LOG_HOME}/${PROJECT_NAME}/${MODEL_UTILS}/utils-%d{yyyyMMdd}.log">
             <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
-            <PatternLayout charset="UTF-8" pattern="%d{yyyy-MM-dd HH:mm:ss}\t%p\t%c\t%m\t%r%n"/>
+            <PatternLayout charset="UTF-8" pattern="%d{UNIX_MILLIS}\t%d\t%p\t%l\t%m\t%r%n"/>
             <TimeBasedTriggeringPolicy/>
         </RollingFile>
 
@@ -90,6 +94,7 @@
         <AsyncLogger name="com.songheng.dsp.common.utils" level="${LEVEL}" additivity="false">
             <appender-ref ref="Console"/>
             <appender-ref ref="utilsLog"/>
+            <appender-ref ref="utilsHtmlLog"/>
         </AsyncLogger>
         <AsyncLogger name="com.songheng.dsp.common.db" level="${LEVEL}" additivity="false">
             <appender-ref ref="dataBaseLog"/>

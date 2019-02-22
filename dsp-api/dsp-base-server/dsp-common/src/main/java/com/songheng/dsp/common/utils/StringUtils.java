@@ -40,6 +40,48 @@ public final class StringUtils {
     private final static String STR_TO_MAP_SPLIT_CHAR = "=";
 
     /**
+     * @description: 判断是否空字符串
+     * @param string 需要验空的参数
+     * @return 如果是空字符串则返回 <code>true</code> 否则返回 <code>false</code>
+     */
+    public static boolean isNullOrEmpty(String string){
+        return Strings.isNullOrEmpty(string);
+    }
+    /**
+     * @description: 判断是否非空字符串
+     * @param string 需要验空的参数
+     * @return 如果是空字符串则返回 <code>false</code> 否则返回 <code>ture</code>
+     */
+    public static boolean isNotNullOrEmpty(String string){
+        return !isNullOrEmpty(string);
+    }
+    /**
+     * @description: 判断是否空白字符串
+     * @param cs 需要验空的参数
+     * @return 如果是空字符串则返回 <code>true</code> 否则返回 <code>false</code>
+     */
+    public static boolean isBlank(CharSequence cs) {
+        int strLen;
+        if (cs != null && (strLen = cs.length()) != 0) {
+            for(int i = 0; i < strLen; ++i) {
+                if (!Character.isWhitespace(cs.charAt(i))) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return true;
+        }
+    }
+    /**
+     * @description: 判断是否非空白字符串
+     * @param cs 需要验空的参数
+     * @return 如果是空字符串则返回 <code>false</code> 否则返回 <code>true</code>
+     */
+    public static boolean isNotBlank(CharSequence cs) {
+        return !isBlank(cs);
+    }
+    /**
      * @description: 判断是否无效字符串(null, " ", " null ", " NULL ", " nan ", " NaN ", " NAN ", " undefined " ...)
      * @param string 需要验空的参数
      * @return 如果是无效字符串则返回 <code>true</code> 否则返回 <code>false</code>
@@ -188,6 +230,9 @@ public final class StringUtils {
         Map<String,String> maps = StringUtils.strToMap("k1=v1&k2=v2");
         System.out.println("strToMap:"+maps);
         System.out.println("mapToStr:"+mapToStr(maps));
+        System.out.println(StringUtils.isNullOrEmpty("\t"));
+        System.out.println(StringUtils.isNotNullOrEmpty("aaa"));
+        System.out.println(isBlank("  \t"));
 
     }
 }

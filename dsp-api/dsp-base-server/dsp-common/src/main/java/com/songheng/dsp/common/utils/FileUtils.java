@@ -245,4 +245,8 @@ public final class FileUtils {
             return result;
         }
     }
+
+    public static void main(String[] args) {
+        FileUtils.writeFile("/data/1.txt","fff",false);
+    }
 }
