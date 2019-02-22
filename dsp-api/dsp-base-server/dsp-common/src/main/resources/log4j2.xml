@@ -16,13 +16,14 @@
         <property name="MODEL_HBASE">/hbase</property><!--hbase模块 -->
         <property name="MODEL_REDIS">/redis</property><!--redis模块 -->
         <property name="PROJECT_NAME">/${sys:dsp.project.name}</property><!--等价于System.getProperty("dsp.project.name") -->
+        <property name="LAYOUT_PATTERN">%d{UNIX_MILLIS}\t%d\t\t%p\t%c{1}\t%m\t%r%n</property>
     </properties>
     <appenders>
         <!--Appender  输出到Console控制台，指定输出格式和过滤器等级为INFO -->
         <Console name="Console" target="SYSTEM_OUT">
             <!--ThresholdFilter指定日志消息的输出最低层次-->
             <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
-            <PatternLayout pattern="%d{UNIX_MILLIS}\t%d\t\t%p\t%c{1}\t%m\t%r%n"/>
+            <PatternLayout charset="UTF-8" pattern="${LAYOUT_PATTERN}"/>
         </Console>
         <RollingFile name="utilsHtmlLog" fileName="${LOG_HOME}/${PROJECT_NAME}/${MODEL_UTILS}/html/utils.html" filePattern="${LOG_HOME}/${PROJECT_NAME}/${MODEL_UTILS}/html/utils-%d{yyyyMMddHH}.html">
             <HTMLLayout title="日志信息"/>
@@ -39,25 +40,25 @@
         <!--Appender  输出到滚动保存的文件, 触发保存日志文件的条件是每天第一次的日志事件。ERROR日志是按每天产生日志 -->
         <RollingFile name="utilsLog" fileName="${LOG_HOME}/${PROJECT_NAME}/${MODEL_UTILS}/utils.log" filePattern="${LOG_HOME}/${PROJECT_NAME}/${MODEL_UTILS}/utils-%d{yyyyMMdd}.log">
             <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
-            <PatternLayout charset="UTF-8" pattern="%d{UNIX_MILLIS}\t%d\t%p\t%l\t%m\t%r%n"/>
+            <PatternLayout charset="UTF-8" pattern="${LAYOUT_PATTERN}"/>
             <TimeBasedTriggeringPolicy/>
         </RollingFile>
 
         <RollingFile name="dataBaseLog" fileName="${LOG_HOME}/${PROJECT_NAME}/${MODEL_DB}/dataBase.log" filePattern="${LOG_HOME}/${PROJECT_NAME}/${MODEL_DB}/dataBase-%d{yyyyMMdd}.log">
             <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
-            <PatternLayout charset="UTF-8" pattern="%d{yyyy-MM-dd HH:mm:ss}\t%p\t%c\t%m\t%r%n"/>
+            <PatternLayout charset="UTF-8" pattern="${LAYOUT_PATTERN}"/>
             <TimeBasedTriggeringPolicy/>
         </RollingFile>
 
         <RollingFile name="hbaseLog" fileName="${LOG_HOME}/${PROJECT_NAME}/${MODEL_HBASE}/hbaseExec.log" filePattern="${LOG_HOME}/${PROJECT_NAME}/${MODEL_HBASE}/hbaseExec-%d{yyyyMMdd}.log">
             <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
-            <PatternLayout charset="UTF-8" pattern="%d{yyyy-MM-dd HH:mm:ss}\t%p\t%c\t%m\t%r%n"/>
+            <PatternLayout charset="UTF-8" pattern="${LAYOUT_PATTERN}"/>
             <TimeBasedTriggeringPolicy/>
         </RollingFile>
 
         <RollingFile name="redisLog" fileName="${LOG_HOME}/${PROJECT_NAME}/${MODEL_REDIS}/redisExec.log" filePattern="${LOG_HOME}/${PROJECT_NAME}/${MODEL_REDIS}/redisExec-%d{yyyyMMdd}.log">
             <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
-            <PatternLayout charset="UTF-8" pattern="%d{yyyy-MM-dd HH:mm:ss}\t%p\t%c\t%m\t%r%n"/>
+            <PatternLayout charset="UTF-8" pattern="${LAYOUT_PATTERN}"/>
             <TimeBasedTriggeringPolicy/>
         </RollingFile>
 
