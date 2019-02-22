@@ -4,14 +4,22 @@ import lombok.Getter;
 
 /**
  * @author zhangshuai@021.com
- * 项目描述
+ * 项目信息
  * */
 @Getter
 public enum Project {
-
-    WAP("partner","wap","h5项目"),
-    APP("admethod","app","app项目"),
-    PC("dfpcitv","pc","pc项目");
+    /**
+     * h5项目
+     * */
+    H5("partner","h5","mobile",""),
+    /**
+     * app项目
+     * */
+    APP("admethod","app","mobile",""),
+    /**
+     * pc项目
+     * */
+    PC("dfpcitv","pc","computer","");
 
     /**
      * 项目名称
@@ -23,13 +31,19 @@ public enum Project {
     private String alis;
 
     /**
+     * 设备类型
+     * */
+    private String deviceType;
+
+    /**
      * 项目描述
      * */
     private String describe;
 
-    Project(String projectName,String alis,String describe){
+    Project(String projectName,String alis,String deviceType,String describe){
         this.projectName = projectName;
         this.alis = alis;
+        this.deviceType = deviceType;
         this.describe = describe;
     }
 
