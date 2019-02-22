@@ -1,22 +1,17 @@
 package com.songheng.dsp.adxbid.utils;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.songheng.dsp.common.utils.PropertyPlaceholder;
 import com.songheng.dsp.common.utils.RandomUtils;
 import com.songheng.dsp.common.utils.StringUtils;
-import com.songheng.dsp.common.utils.serialize.FastJsonUtils;
 import com.songheng.dsp.model.adx.request.Device;
 import com.songheng.dsp.model.adx.request.RequestBean;
 import com.songheng.dsp.model.adx.request.Site;
 import com.songheng.dsp.model.adx.request.User;
 import com.songheng.dsp.model.flow.AdvPositions;
 import com.songheng.dsp.model.flow.BaseFlow;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 构建请求bean
@@ -49,10 +44,6 @@ public final class BuildAdxBidRequestBean {
         buildImplInfo(baseFlow,requestBean);
 
         return requestBean;
-    }
-
-    public static String bidRequestBeanToJsonString(RequestBean requestBean){
-        return FastJsonUtils.toJSONString(requestBean);
     }
 
     /**
@@ -127,8 +118,7 @@ public final class BuildAdxBidRequestBean {
     public static void main(String[] args) {
         BaseFlow baseFlow = BaseFlow.getTestBaseFlow();
         RequestBean requestBean =  buildAdxBidRequestBean(baseFlow);
-        String json = bidRequestBeanToJsonString(requestBean);
-        System.out.println(json);
+        System.out.println(requestBean);
     }
 
 

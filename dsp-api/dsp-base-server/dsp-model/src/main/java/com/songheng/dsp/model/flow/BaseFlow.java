@@ -30,6 +30,11 @@ public class BaseFlow implements Serializable {
     private String terminal;
 
     /**
+     * 当前流量QPS
+     * */
+    private long currQps;
+
+    /**
      * 站点/应用名称:
      * h5/pc :site
      * app:apptypeid

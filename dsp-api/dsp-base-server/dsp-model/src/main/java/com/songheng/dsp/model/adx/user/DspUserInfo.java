@@ -1,50 +1,49 @@
 package com.songheng.dsp.model.adx.user;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class DspUserInfo {
 	private String dspid;
-	@JSONField(serialize=false)
 	private String token;
-	@JSONField(serialize=false)
 	private double banlance;
-	@JSONField(serialize=false)
 	private double point;
-	@JSONField(serialize=false)
 	private String mappingurl;
-	@JSONField(serialize=false)
 	private String bidurl	;
-	@JSONField(serialize=false)
 	private String winnoticeurl	;
-	@JSONField(serialize=false)
-	private String qps;
-	@JSONField(serialize=false)
+	private Integer h5Qps;
+	private Integer appQps;
+	private Integer pcQps;
 	private String nocmresponse	;
-	@JSONField(serialize=false)
 	private String usedfuserinfo;
-	@JSONField(serialize=false)
 	private String rtbmsgformat;
-	@JSONField(serialize=false)
 	private String priority;
-	@JSONField(serialize=false)
 	private String imei_sendreq;
-	@JSONField(serialize=false)
 	private String noimei_sendreq;
+	/**
+	 * 是否自家dsp
+	 **/
+	private boolean isOneselfDsp;
 
-	public DspUserInfo(){}
+
+	public DspUserInfo(){
+		this.isOneselfDsp = false;
+		//默认值
+		this.pcQps = 100;
+		this.h5Qps = 100;
+		this.appQps = 100;
+
+	}
 	public DspUserInfo(String dspid, String token, String bidurl) {
-		super();
+		this();
 		this.dspid = dspid;
 		this.token = token;
 		this.bidurl = bidurl;
 	}
-	@Override
-	public String toString() {
-		return this.dspid + "_" + this.banlance + "_" + this.bidurl;
-	}
+
 	
 }
