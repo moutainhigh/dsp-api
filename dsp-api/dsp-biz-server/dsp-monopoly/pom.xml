@@ -10,6 +10,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>dsp-monopoly</artifactId>
+    <packaging>jar</packaging>
 
+    <name>${project.artifactId}</name>
+    <description>The project of dsp-monopoly</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.songheng.dsp</groupId>
+            <artifactId>dsp-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.songheng.dsp</groupId>
+            <artifactId>dsp-model</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

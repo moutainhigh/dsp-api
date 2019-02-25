@@ -67,15 +67,13 @@
             <artifactId>zkclient</artifactId>
         </dependency>
 
-        <!--<dependency>-->
-            <!--<groupId>com.songheng.dsp</groupId>-->
-            <!--<artifactId>dsp-common</artifactId>-->
-            <!--<version>${dsp.common.version}</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>com.songheng.dsp</groupId>
+            <artifactId>dsp-common</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.songheng.dsp</groupId>
             <artifactId>dsp-dubbo-base-interface</artifactId>
-            <version>${dsp.dubbo.base.interface}</version>
         </dependency>
     </dependencies>
 

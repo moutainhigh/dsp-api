@@ -15,4 +15,10 @@
     <name>${project.artifactId}</name>
     <description>The project of dsp-dubbo-base-interface</description>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.songheng.dsp</groupId>
+            <artifactId>dsp-model</artifactId>
+        </dependency>
+    </dependencies>
 </project>
