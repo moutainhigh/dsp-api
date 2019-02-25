@@ -28,6 +28,10 @@ public class DspUserInfo {
 	 * 是否自家dsp
 	 **/
 	private boolean isOneselfDsp;
+	/**
+	 * 终端 h5/app
+	 */
+	private String terminal;
 
 
 	public DspUserInfo(){

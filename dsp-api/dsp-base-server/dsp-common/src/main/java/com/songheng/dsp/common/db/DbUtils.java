@@ -205,11 +205,19 @@ public class DbUtils {
                     default:
                         singleObject = cls.newInstance();
                         for(int i=0; i<columnCount; i++) {
-                            String columnName = rsmd.getColumnName(i+1);
+                            //获取查询sql别名字段
+                            String columnName = rsmd.getColumnLabel(i+1);
                             Object columnValue = rs.getObject(columnName);
-                            Field field = cls.getDeclaredField(columnName);
+                            Field field = null;
+                            try {
+                                field = cls.getDeclaredField(columnName);
+                            } catch (Exception e) {
+                                log.error("message:【"+e.getMessage().split("\r\n")[0]+"】");
+                                continue;
+                            }
                             field.setAccessible(true);
-                            switch (field.getType().getName()) {
+                            String fieldName = field.getType().getName();
+                            switch (fieldName) {
                                 case "java.lang.String":
                                     field.set(singleObject, String.valueOf(columnValue));
                                     break;
@@ -244,6 +252,9 @@ public class DbUtils {
                                     }
                                     field.set(singleObject, new Double(columnValue.toString()).intValue());
                                     break;
+                                case "int":
+                                    field.set(singleObject, new Double(columnValue.toString()).intValue());
+                                    break;
                                 case "java.lang.Long":
                                     if (columnValue instanceof java.lang.Long){
                                         field.set(singleObject, columnValue);
@@ -251,11 +262,23 @@ public class DbUtils {
                                     }
                                     field.set(singleObject, new Double(columnValue.toString()).longValue());
                                     break;
+                                case "long":
+                                    field.set(singleObject, new Double(columnValue.toString()).longValue());
+                                    break;
                                 case "java.lang.Double":
+                                    field.set(singleObject, Double.valueOf(columnValue.toString()));
+                                    break;
+                                case "double":
                                     field.set(singleObject, Double.valueOf(columnValue.toString()));
                                     break;
                                 case "java.lang.Float":
                                     field.set(singleObject, Float.valueOf(columnValue.toString()));
+                                    break;
+                                case "float":
+                                    field.set(singleObject, Float.valueOf(columnValue.toString()));
+                                    break;
+                                case "java.math.BigDecimal":
+                                    field.set(singleObject, Double.valueOf(columnValue.toString()));
                                     break;
                                 default:
                                     field.set(singleObject, columnValue);
