@@ -26,11 +26,19 @@ public class DspUserImpl implements DspUserService{
      * key: app,h5,pc
      * value: List<DspUserInfo>
      */
-    private volatile static Map<String, List<DspUserInfo>> dspUserInfoMap = new ConcurrentHashMap<>();
+    private volatile static Map<String, List<DspUserInfo>> dspUserInfoMap = new ConcurrentHashMap<>(6);
     /**
-     * dspUserInfoList
+     * dsp users cache
+     * key: app,h5,pc+dspId
+     * value: List<DspUserInfo>
      */
-    private static List<DspUserInfo> dspUserInfoList = new ArrayList<>();
+    private volatile static Map<String, List<DspUserInfo>> dspUserInfoDspIdMap = new ConcurrentHashMap<>(32);
+    /**
+     * dsp users cache
+     * key: app,h5,pc+priority
+     * value: List<DspUserInfo>
+     */
+    private volatile static Map<String, List<DspUserInfo>> dspUserInfoPriorityMap = new ConcurrentHashMap<>(32);
 
     /**
      * 更新dsp用户
@@ -56,37 +64,56 @@ public class DspUserImpl implements DspUserService{
                 "\tFROM adx_dspuser" +
                 "\tWHERE flag = 1" +
                 "\tAND banlance > 0", DspUserInfo.class);
-        if (null == users){
-            dspUserInfoList = new ArrayList<>();
-        } else {
-            dspUserInfoList = users;
-        }
         List<DspUserInfo> appUserList = new ArrayList<>();
         List<DspUserInfo> h5UserList = new ArrayList<>();
         List<DspUserInfo> pcUserList = new ArrayList<>();
-        for (DspUserInfo userInfo : dspUserInfoList){
-            if (userInfo.getTerminal().toLowerCase().indexOf("app") != -1){
+        String terminal = "", k_dspId = "", k_priority = "";
+        Map<String, List<DspUserInfo>> dspIdMapTmp = new ConcurrentHashMap<>(32);
+        Map<String, List<DspUserInfo>> priorityMapTmp = new ConcurrentHashMap<>(32);
+        for (DspUserInfo userInfo : users){
+            terminal = userInfo.getTerminal();
+            if (terminal.toLowerCase().indexOf("app") != -1){
                 //设置h5,pc qps初始值
                 userInfo.setH5Qps(100);
                 userInfo.setPcQps(100);
                 appUserList.add(userInfo);
             }
-            if (userInfo.getTerminal().toLowerCase().indexOf("h5") != -1){
+            if (terminal.toLowerCase().indexOf("h5") != -1){
                 //设置app,pc qps初始值
                 userInfo.setAppQps(100);
                 userInfo.setPcQps(100);
                 h5UserList.add(userInfo);
             }
-            if (userInfo.getTerminal().toLowerCase().indexOf("pc") != -1){
+            if (terminal.toLowerCase().indexOf("pc") != -1){
                 //设置app,h5 qps初始值
                 userInfo.setAppQps(100);
                 userInfo.setH5Qps(100);
                 pcUserList.add(userInfo);
             }
+            for (String tml : terminal.split(",|，")){
+                k_dspId = String.format("%s%s", tml, userInfo.getDspid());
+                k_priority = String.format("%s%s", tml, userInfo.getPriority());
+                if (dspIdMapTmp.containsKey(k_dspId)){
+                    dspIdMapTmp.get(k_dspId).add(userInfo);
+                } else {
+                    List<DspUserInfo> tmp_dspId = new ArrayList<>();
+                    tmp_dspId.add(userInfo);
+                    dspIdMapTmp.put(k_dspId, tmp_dspId);
+                }
+                if (!priorityMapTmp.containsKey(k_priority)){
+                    List<DspUserInfo> tmp_priority = new ArrayList<>();
+                    tmp_priority.add(userInfo);
+                    priorityMapTmp.put(k_priority, tmp_priority);
+                } else {
+                    priorityMapTmp.get(k_priority).add(userInfo);
+                }
+            }
         }
         dspUserInfoMap.put("app", appUserList);
         dspUserInfoMap.put("h5", h5UserList);
         dspUserInfoMap.put("pc", pcUserList);
+        dspUserInfoDspIdMap = dspIdMapTmp;
+        dspUserInfoPriorityMap = priorityMapTmp;
         log.debug("user: {}\tsize: {}", users, users.size());
     }
 
@@ -111,19 +138,11 @@ public class DspUserImpl implements DspUserService{
      */
     @Override
     public List<DspUserInfo> getDspUsersByDspId(String terminal, String dspId){
-        List<DspUserInfo> dspUserInfoList = new ArrayList<>();
-        if (StringUtils.isBlank(terminal) || StringUtils.isBlank(dspId)){
-            return dspUserInfoList;
+        String tml_dspId = String.format("%s%s", terminal, dspId);
+        if (StringUtils.isBlank(tml_dspId)){
+            return new ArrayList<>();
         }
-        List<DspUserInfo> tmp = dspUserInfoMap.get(terminal);
-        if (null != tmp && tmp.size() > 0){
-            for (DspUserInfo userInfo : tmp){
-                if (dspId.equals(userInfo.getDspid())){
-                    dspUserInfoList.add(userInfo);
-                }
-            }
-        }
-        return dspUserInfoList;
+        return dspUserInfoDspIdMap.get(tml_dspId);
     }
 
     /**
@@ -134,18 +153,10 @@ public class DspUserImpl implements DspUserService{
      */
     @Override
     public List<DspUserInfo> getDspUsersByPriority(String terminal, String priority){
-        List<DspUserInfo> dspUserInfoList = new ArrayList<>();
-        if (StringUtils.isBlank(terminal) || StringUtils.isBlank(priority)){
-            return dspUserInfoList;
+        String tml_priority = String.format("%s%s", terminal, priority);
+        if (StringUtils.isBlank(tml_priority)){
+            return new ArrayList<>();
         }
-        List<DspUserInfo> tmp = dspUserInfoMap.get(terminal);
-        if (null != tmp && tmp.size() > 0){
-            for (DspUserInfo userInfo : tmp){
-                if (priority.equals(userInfo.getPriority())){
-                    dspUserInfoList.add(userInfo);
-                }
-            }
-        }
-        return dspUserInfoList;
+        return dspUserInfoPriorityMap.get(tml_priority);
     }
 }

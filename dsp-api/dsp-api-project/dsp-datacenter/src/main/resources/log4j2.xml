@@ -12,7 +12,7 @@
         <property name="LEVEL">debug</property>
         <property name="LOG_HOME">/data/dsp-api/dsp-api-project/dsp-datacenter</property>
         <property name="MODEL_ADX">/common/adx</property>
-        <property name="MODEL_DFDSP">/common/dfdsp</property>
+        <property name="MODEL_DSP">/common/dsp</property>
         <property name="MODEL_APP">/admethod</property><!--APP模块 -->
         <property name="MODEL_H5">/partner</property><!--H5模块 -->
         <property name="MODEL_PC">/dfpcitv</property><!--PC模块 -->
@@ -40,7 +40,7 @@
             <TimeBasedTriggeringPolicy/>
         </RollingFile>
 
-        <RollingFile name="dfDspLog" fileName="${LOG_HOME}/${MODEL_DFDSP}/dfdsp.log" filePattern="${LOG_HOME}/${MODEL_DFDSP}/dfdsp-%d{yyyyMMdd}.log">
+        <RollingFile name="dspLog" fileName="${LOG_HOME}/${MODEL_DSP}/dsp.log" filePattern="${LOG_HOME}/${MODEL_DSP}/dsp-%d{yyyyMMdd}.log">
             <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout charset="UTF-8" pattern="${LAYOUT_PATTERN}"/>
             <TimeBasedTriggeringPolicy/>
@@ -104,9 +104,9 @@
             <appender-ref ref="Console"/>
             <appender-ref ref="adxLog"/>
         </AsyncLogger>
-        <AsyncLogger name="com.songheng.dsp.datacenter.common.dfdsp" level="${LEVEL}" additivity="false">
+        <AsyncLogger name="com.songheng.dsp.datacenter.common.dsp" level="${LEVEL}" additivity="false">
             <appender-ref ref="Console"/>
-            <appender-ref ref="dfDspLog"/>
+            <appender-ref ref="dspLog"/>
         </AsyncLogger>
         <AsyncLogger name="com.songheng.dsp.datacenter.service.admethod" level="${LEVEL}" additivity="false">
             <appender-ref ref="admethodLog"/>

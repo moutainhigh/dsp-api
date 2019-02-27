@@ -62,5 +62,17 @@ public class DspAdvInfo {
         private String src;
         private int imgwidth;
         private int imgheight;
+
+        public Img(){}
+
+        public Img(String src){
+            this.src = src;
+        }
+
+        public Img(String src, int imgwidth, int imgheight){
+            this.src = src;
+            this.imgwidth = imgwidth;
+            this.imgheight = imgheight;
+        }
     }
 }

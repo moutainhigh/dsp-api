@@ -3,11 +3,14 @@ package com.songheng.dsp.common.db;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import sun.reflect.annotation.ExceptionProxy;
 
 import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author: luoshaobing
@@ -294,6 +297,98 @@ public class DbUtils {
             log.error("analysisRst failure, ResultSet={}&className={}\t{}", rs, cls.getName(), e);
         }
         return list;
+    }
+
+    /**
+     * 解析查询结果集，返回Map
+     * @param rs
+     * @return
+     */
+    public static Map<String, Object> analysisRst2Map(ResultSet rs){
+        Map<String, Object> rltMap = new HashMap<>(16);
+        if (null == rs){
+            return rltMap;
+        }
+        try {
+            while (rs.next()) {
+                String key = rs.getString(1);
+                Object value = rs.getObject(2);
+                rltMap.put(key, value);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("analysisRst2Map failure, ResultSet={}&className={}\t{}", rs, "java.util.Map", e);
+        }
+
+        return rltMap;
+    }
+
+    /**
+     * 查询，返回Map
+     * @param sql
+     * @param paras
+     * @return
+     */
+    public static Map<String, Object> query2Map(String sql, Object... paras){
+        Connection conn = DruidConfiguration.getConnection();
+        if (null == conn) {
+            return null;
+        }
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        int index = 1;
+        Map<String, Object> rltMap = new HashMap<>(16);
+        try {
+            pst = conn.prepareStatement(sql);
+            if(paras != null && paras.length > 0) {
+                pst.clearParameters();
+                for(int i=0; i<paras.length; i++) {
+                    pst.setObject(index++, paras[i]);
+                }
+            }
+            rs = pst.executeQuery();
+            rltMap.putAll(analysisRst2Map(rs));
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("queryList failure, sql={}&parameters={}&className={}\t{}", sql, paras, "java.util.Map", e);
+        } finally {
+            DruidConfiguration.closeResource(conn, pst, rs);
+        }
+        return rltMap;
+    }
+
+    /**
+     * 存储过程调用，返回Map
+     * @param sql
+     * @param paras
+     * @return
+     */
+    public static Map<String, Object> callProcedure2Map(String sql, Object... paras){
+        Connection conn = DruidConfiguration.getConnection();
+        if (null == conn) {
+            return null;
+        }
+        CallableStatement cst = null;
+        ResultSet rs = null;
+        int index = 1;
+        Map<String, Object> rltMap = new HashMap<>(16);
+        try {
+            cst = conn.prepareCall(sql);
+            if(paras != null && paras.length > 0) {
+                cst.clearParameters();
+                for(int i=0; i<paras.length; i++) {
+                    cst.setObject(index++, paras[i]);
+                }
+            }
+            rs = cst.executeQuery();
+            rltMap.putAll(analysisRst2Map(rs));
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("callProcedure failure, sql={}&parameters={}&className={}\t{}", sql, paras, "java.util.Map", e);
+        } finally {
+            DruidConfiguration.closeResource(conn, cst, rs);
+        }
+        return rltMap;
     }
 
     /**
