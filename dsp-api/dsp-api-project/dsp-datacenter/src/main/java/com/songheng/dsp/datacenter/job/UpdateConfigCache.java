@@ -1,5 +1,6 @@
 package com.songheng.dsp.datacenter.job;
 
+import com.songheng.dsp.datacenter.common.config.DbConfigLoader;
 import com.songheng.dsp.datacenter.common.config.PropertiesLoader;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -19,14 +20,29 @@ public class UpdateConfigCache {
      * 60秒更新一次
      */
     @Scheduled(initialDelay = 1000 * 5, fixedDelay = 1000 * 60)
-    public void updateAllConfig(){
+    public void updatePropertiesConfig(){
         log.debug("开始更新配置文件缓存数据...");
         try {
             PropertiesLoader.loadAllProperties("conf/adxpro.properties");
         } catch (Exception e) {
-            log.error("更新配置文件缓存数据失败\t\n{}",e);
+            log.error("更新配置文件缓存数据失败\n{}",e);
         }
         log.debug("更新配置文件缓存数据成功！");
+    }
+
+    /**
+     * 定时任务更新DBCONFIG缓存
+     * 60秒更新一次
+     */
+    @Scheduled(initialDelay = 1000 * 5, fixedDelay = 1000 * 60)
+    public void updateDbConfig(){
+        log.debug("开始更新DBCONFIG缓存数据...");
+        try {
+            DbConfigLoader.loadAllDBConfig();
+        } catch (Exception e) {
+            log.error("更新DBCONFIG缓存数据失败\n{}",e);
+        }
+        log.debug("更新DBCONFIG缓存数据成功！");
     }
 
 }

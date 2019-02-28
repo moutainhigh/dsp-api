@@ -32,7 +32,7 @@ public class PropertiesLoaderTest {
 
     @Test
     public void getAdxConfigTest(){
-        updateConfigCache.updateAllConfig();
+        updateConfigCache.updatePropertiesConfig();
         Map<String, String> map = PropertiesLoader.getAllProperty();
         System.out.println(map);
     }
