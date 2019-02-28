@@ -19,7 +19,7 @@ public class PropertiesLoader {
     /**
      * propertiesMap
      */
-    private volatile static Map<String, String> propertiesMap = new ConcurrentHashMap<>(128);
+    private volatile static Map<String, String> propertiesMap = new ConcurrentHashMap<>(16);
     /**
      * 临时缓存 propertiesTmp
      */

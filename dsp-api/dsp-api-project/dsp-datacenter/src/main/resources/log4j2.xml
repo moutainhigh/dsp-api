@@ -13,6 +13,7 @@
         <property name="LOG_HOME">/data/dsp-api/dsp-api-project/dsp-datacenter</property>
         <property name="MODEL_ADX">/common/adx</property>
         <property name="MODEL_DSP">/common/dsp</property>
+        <property name="MODEL_CONF">/common/config</property>
         <property name="MODEL_APP">/admethod</property><!--APP模块 -->
         <property name="MODEL_H5">/partner</property><!--H5模块 -->
         <property name="MODEL_PC">/dfpcitv</property><!--PC模块 -->
@@ -41,6 +42,12 @@
         </RollingFile>
 
         <RollingFile name="dspLog" fileName="${LOG_HOME}/${MODEL_DSP}/dsp.log" filePattern="${LOG_HOME}/${MODEL_DSP}/dsp-%d{yyyyMMdd}.log">
+            <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout charset="UTF-8" pattern="${LAYOUT_PATTERN}"/>
+            <TimeBasedTriggeringPolicy/>
+        </RollingFile>
+
+        <RollingFile name="confLog" fileName="${LOG_HOME}/${MODEL_CONF}/config.log" filePattern="${LOG_HOME}/${MODEL_CONF}/config-%d{yyyyMMdd}.log">
             <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout charset="UTF-8" pattern="${LAYOUT_PATTERN}"/>
             <TimeBasedTriggeringPolicy/>
@@ -101,12 +108,13 @@
             <!--<appender-ref ref="systemLog"/>-->
         <!--</Logger>-->
         <AsyncLogger name="com.songheng.dsp.datacenter.common.adx" level="${LEVEL}" additivity="false">
-            <appender-ref ref="Console"/>
             <appender-ref ref="adxLog"/>
         </AsyncLogger>
         <AsyncLogger name="com.songheng.dsp.datacenter.common.dsp" level="${LEVEL}" additivity="false">
-            <appender-ref ref="Console"/>
             <appender-ref ref="dspLog"/>
+        </AsyncLogger>
+        <AsyncLogger name="com.songheng.dsp.datacenter.common.config" level="${LEVEL}" additivity="false">
+            <appender-ref ref="confLog"/>
         </AsyncLogger>
         <AsyncLogger name="com.songheng.dsp.datacenter.service.admethod" level="${LEVEL}" additivity="false">
             <appender-ref ref="admethodLog"/>
