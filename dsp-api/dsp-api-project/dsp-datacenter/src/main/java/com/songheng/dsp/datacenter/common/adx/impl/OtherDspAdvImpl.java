@@ -32,12 +32,12 @@ public class OtherDspAdvImpl implements OtherDspAdvService{
      * key: app,h5,pc+advid+dspid
      * value DspAdvExtend
      */
-    private volatile static Map<String, DspAdvExtend> advidAds = new ConcurrentHashMap<>(32);
+    private volatile static Map<String, DspAdvExtend> advidAds = new ConcurrentHashMap<>(16);
     /**
      * key: app,h5,pc+deliveryid+dspid
      * value DspAdvExtend
      */
-    private volatile static Map<String, DspAdvExtend> deliveryIdAds = new ConcurrentHashMap<>(32);
+    private volatile static Map<String, DspAdvExtend> deliveryIdAds = new ConcurrentHashMap<>(16);
 
     /**
      * 更新第三方DSP广告池
@@ -73,29 +73,29 @@ public class OtherDspAdvImpl implements OtherDspAdvService{
         List<DspAdvExtend> appAdvList = new ArrayList<>();
         List<DspAdvExtend> h5AdvList = new ArrayList<>();
         List<DspAdvExtend> pcAdvList = new ArrayList<>();
-        String terminal = "", adType = "", k_advId = "", k_deliveryId = "";
-        Map<String, DspAdvExtend> advIdMapTmp = new ConcurrentHashMap<>(32);
-        Map<String, DspAdvExtend> deliveryIdMapTmp = new ConcurrentHashMap<>(32);
+        String terminal = "", adStyle = "", k_advId = "", k_deliveryId = "";
+        Map<String, DspAdvExtend> advIdMapTmp = new ConcurrentHashMap<>(1024);
+        Map<String, DspAdvExtend> deliveryIdMapTmp = new ConcurrentHashMap<>(1024);
         for (DspAdvExtend dspAdvExtend : dspAdvs){
             terminal = dspAdvExtend.getTerminal();
-            adType = PropertiesLoader.getProperty(dspAdvExtend.getAdStyle());
+            adStyle = PropertiesLoader.getProperty(dspAdvExtend.getAdStyle());
             List<DspAdvExtend.Img> imglist = new ArrayList<>();
             DspAdvExtend.Img img = dspAdvExtend.new Img(dspAdvExtend.getImg1Path(),320, 240);
             imglist.add(img);
             //group
-            if ("3".equals(adType)) {
+            if ("3".equals(adStyle)) {
                 img = dspAdvExtend.new Img(dspAdvExtend.getImg2Path(),320, 240);
                 imglist.add(img);
                 img = dspAdvExtend.new Img(dspAdvExtend.getImg3Path(),320, 240);
                 imglist.add(img);
-            } else if(!"2".equals(adType)) {
+            } else if(!"2".equals(adStyle)) {
                 img.setImgwidth(500);
                 img.setImgheight(250);
                 imglist.add(img);
             }
             dspAdvExtend.setLbimg(imglist);
             dspAdvExtend.setMiniimg(imglist);
-            if ("1".equals(adType)){
+            if ("1".equals(adStyle)){
                 dspAdvExtend.setIspicnews("1");
             } else {
                 dspAdvExtend.setIspicnews("0");
@@ -105,16 +105,19 @@ public class OtherDspAdvImpl implements OtherDspAdvService{
             dspAdvExtend.setPlatform("dongfang");
             dspAdvExtend.setChargeway("CPM");
             if (terminal.toLowerCase().indexOf("app") != -1){
+                dspAdvExtend.setType(adStyle);
                 dspAdvExtend.setAllowStations("北京,安徽,福建,甘肃,广东,广西,贵州,海南,河北,河南,黑龙江,湖北,湖南,吉林,江苏,江西,辽宁,内蒙古,宁夏,青海,山东,山西,陕西,上海,四川,天津,西藏,新疆,云南,浙江,重庆,香港,澳门,台湾");
                 dspAdvExtend.setIscustomtime(0);
                 dspAdvExtend.setSex(-1);
                 dspAdvExtend.setDeliveryOs("Android,iOS");
+                dspAdvExtend.setAdtype(0);
                 dspAdvExtend.setShowtime(3);
                 dspAdvExtend.setShowrep(Arrays.asList(dspAdvExtend.getShowbackurl().split("@_@")));
                 dspAdvExtend.setClickrep(Arrays.asList(dspAdvExtend.getClickbackurl().split("@_@")));
                 appAdvList.add(dspAdvExtend);
             }
             if (terminal.toLowerCase().indexOf("h5") != -1){
+                dspAdvExtend.setAdStyle("1".equals(adStyle)?"big":("2".equals(adStyle)?"one":("3".equals(adStyle)?"group":"full")));
                 dspAdvExtend.setAllowStations("all");
                 dspAdvExtend.setDeliveryOs("all");
                 dspAdvExtend.setInviewbackurl(dspAdvExtend.getShowbackurl());
@@ -133,12 +136,23 @@ public class OtherDspAdvImpl implements OtherDspAdvService{
             }
 
         }
-        terminalAds.put("app", appAdvList);
-        terminalAds.put("h5", h5AdvList);
-        terminalAds.put("pc", pcAdvList);
-        advidAds = advIdMapTmp;
-        deliveryIdAds = deliveryIdMapTmp;
-        log.debug("dspAdvs: {}\tsize: {}", dspAdvs, dspAdvs.size());
+        if (appAdvList.size() > 0){
+            terminalAds.put("app", appAdvList);
+        }
+        if (h5AdvList.size() > 0){
+            terminalAds.put("h5", h5AdvList);
+        }
+        if (pcAdvList.size() > 0){
+            terminalAds.put("pc", pcAdvList);
+        }
+        if (advIdMapTmp.size() > 0){
+            advidAds = advIdMapTmp;
+        }
+        if (deliveryIdMapTmp.size() > 0){
+            deliveryIdAds = deliveryIdMapTmp;
+        }
+        log.debug("otherDspAdvSize: {}\tappAdvSize: {}\th5AdvSize: {}\tpcAdvSize: {}",
+                dspAdvs.size(), appAdvList.size(), h5AdvList.size(), pcAdvList.size());
     }
 
 
@@ -147,7 +161,7 @@ public class OtherDspAdvImpl implements OtherDspAdvService{
         if (StringUtils.isBlank(terminal)){
             return new ArrayList<>();
         }
-        return terminalAds.get(terminal);
+        return terminalAds.get(terminal.toLowerCase());
     }
 
     @Override

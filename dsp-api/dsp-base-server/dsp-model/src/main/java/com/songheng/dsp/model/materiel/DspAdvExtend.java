@@ -63,21 +63,28 @@ public class DspAdvExtend extends DspAdvInfo {
      * 终端
      */
     private String terminal;
-    /*
+    /**
      * 进屏上报
      */
     private List<String> inviewrep;
-    /*
+    /**
      * 点击上报
      */
     private List<String> clickrep;
-    /*
+    /**
      * 展现上报
      */
     private List<String> showrep;
-    /*
+    /**
      * dsp下载安装上报
      */
     private List<String> downloadrep;
-
+    /**
+     * 0:普通广告 1:视频游戏广告  2:gif动图 -1:文字链
+     */
+    private int adtype;
+    /**
+     * 推广样式类型
+     */
+    private String bigpic;
 }

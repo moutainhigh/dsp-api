@@ -109,12 +109,23 @@ public class DspUserImpl implements DspUserService{
                 }
             }
         }
-        dspUserInfoMap.put("app", appUserList);
-        dspUserInfoMap.put("h5", h5UserList);
-        dspUserInfoMap.put("pc", pcUserList);
-        dspUserInfoDspIdMap = dspIdMapTmp;
-        dspUserInfoPriorityMap = priorityMapTmp;
-        log.debug("user: {}\tsize: {}", users, users.size());
+        if (appUserList.size() > 0){
+            dspUserInfoMap.put("app", appUserList);
+        }
+        if (h5UserList.size() > 0){
+            dspUserInfoMap.put("h5", h5UserList);
+        }
+        if (pcUserList.size() > 0){
+            dspUserInfoMap.put("pc", pcUserList);
+        }
+        if (dspIdMapTmp.size() > 0){
+            dspUserInfoDspIdMap = dspIdMapTmp;
+        }
+        if (priorityMapTmp.size() > 0){
+            dspUserInfoPriorityMap = priorityMapTmp;
+        }
+        log.debug("dspUserSize: {}\tappUserSize: {}\th5UserSize: {}\tpcUserSize: {}",
+                users.size(), appUserList.size(), h5UserList.size(), pcUserList.size());
     }
 
     /**
@@ -127,7 +138,7 @@ public class DspUserImpl implements DspUserService{
         if (StringUtils.isBlank(terminal)){
             return new ArrayList<>();
         }
-        return dspUserInfoMap.get(terminal);
+        return dspUserInfoMap.get(terminal.toLowerCase());
     }
 
     /**

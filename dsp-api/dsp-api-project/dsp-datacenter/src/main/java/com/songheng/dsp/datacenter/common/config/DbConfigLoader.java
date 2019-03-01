@@ -95,10 +95,18 @@ public class DbConfigLoader {
                 logsDbConf.put(key.substring(5), dbConfigMapTmp.get(key));
             }
         }
-        tmlDbConfigMap.put("app", appDbConf);
-        tmlDbConfigMap.put("h5", h5DbConf);
-        tmlDbConfigMap.put("pc", pcDbConf);
-        tmlDbConfigMap.put("logs", logsDbConf);
+        if (appDbConf.size() > 0){
+            tmlDbConfigMap.put("app", appDbConf);
+        }
+        if (h5DbConf.size() > 0){
+            tmlDbConfigMap.put("h5", h5DbConf);
+        }
+        if (pcDbConf.size() > 0){
+            tmlDbConfigMap.put("pc", pcDbConf);
+        }
+        if (logsDbConf.size() > 0){
+            tmlDbConfigMap.put("logs", logsDbConf);
+        }
         log.debug("loadAllDBConfig successful, size: {}", dbConfigMapTmp.size());
     }
 
