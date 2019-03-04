@@ -17,8 +17,6 @@
     <modules>
         <module>dsp-common</module>
         <module>dsp-dubbo-base-interface</module>
-        <module>dsp-dubbo-provider</module>
-        <module>dsp-dubbo-consumer</module>
         <module>dsp-model</module>
     </modules>
 
