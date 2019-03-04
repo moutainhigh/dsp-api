@@ -11,12 +11,12 @@
     <properties>
         <property name="LEVEL">debug</property>
         <property name="LOG_HOME">/data/dsp-api/dsp-api-project/dsp-datacenter</property>
-        <property name="MODEL_ADX">/common/adx</property>
-        <property name="MODEL_DSP">/common/dsp</property>
-        <property name="MODEL_CONF">/common/config</property>
-        <property name="MODEL_APP">/admethod</property><!--APP模块 -->
-        <property name="MODEL_H5">/partner</property><!--H5模块 -->
-        <property name="MODEL_PC">/dfpcitv</property><!--PC模块 -->
+        <property name="MODEL_CONF">/config</property><!--CONFIG模块 -->
+        <property name="MODEL_CTR">/ctr</property><!--CTR模块 -->
+        <property name="MODEL_DICT">/dict</property><!--DICT模块 -->
+        <property name="MODEL_MATERIEL">/materiel</property><!--MATERIEL模块 -->
+        <property name="MODEL_SHIELD">/shield</property><!--SHIELD模块 -->
+        <property name="MODEL_USER">/user</property><!--USER模块 -->
         <property name="MODEL_JOB">/job</property><!--JOB模块 -->
         <property name="LAYOUT_PATTERN">%d{UNIX_MILLIS}\t%d\t\t%p\t%c{1}\t%m\t%r%n</property>
     </properties>
@@ -35,37 +35,37 @@
         <!--</RollingFile>-->
 
         <!--Appender  输出到滚动保存的文件, 触发保存日志文件的条件是每天第一次的日志事件。ERROR日志是按每天产生日志 -->
-        <RollingFile name="adxLog" fileName="${LOG_HOME}/${MODEL_ADX}/adx.log" filePattern="${LOG_HOME}/${MODEL_ADX}/adx-%d{yyyyMMdd}.log">
+        <RollingFile name="confLog" fileName="${LOG_HOME}/${MODEL_CONF}/confLog.log" filePattern="${LOG_HOME}/${MODEL_CONF}/confLog-%d{yyyyMMdd}.log">
             <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout charset="UTF-8" pattern="${LAYOUT_PATTERN}"/>
             <TimeBasedTriggeringPolicy/>
         </RollingFile>
 
-        <RollingFile name="dspLog" fileName="${LOG_HOME}/${MODEL_DSP}/dsp.log" filePattern="${LOG_HOME}/${MODEL_DSP}/dsp-%d{yyyyMMdd}.log">
+        <RollingFile name="ctrLog" fileName="${LOG_HOME}/${MODEL_CTR}/ctrLog.log" filePattern="${LOG_HOME}/${MODEL_CTR}/ctrLog-%d{yyyyMMdd}.log">
             <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout charset="UTF-8" pattern="${LAYOUT_PATTERN}"/>
             <TimeBasedTriggeringPolicy/>
         </RollingFile>
 
-        <RollingFile name="confLog" fileName="${LOG_HOME}/${MODEL_CONF}/config.log" filePattern="${LOG_HOME}/${MODEL_CONF}/config-%d{yyyyMMdd}.log">
+        <RollingFile name="dictLog" fileName="${LOG_HOME}/${MODEL_DICT}/dictLog.log" filePattern="${LOG_HOME}/${MODEL_DICT}/dictLog-%d{yyyyMMdd}.log">
             <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout charset="UTF-8" pattern="${LAYOUT_PATTERN}"/>
             <TimeBasedTriggeringPolicy/>
         </RollingFile>
 
-        <RollingFile name="admethodLog" fileName="${LOG_HOME}/${MODEL_APP}/admethod.log" filePattern="${LOG_HOME}/${MODEL_APP}/admethod-%d{yyyyMMdd}.log">
+        <RollingFile name="materielLog" fileName="${LOG_HOME}/${MODEL_MATERIEL}/materielLog.log" filePattern="${LOG_HOME}/${MODEL_MATERIEL}/materielLog-%d{yyyyMMdd}.log">
             <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout charset="UTF-8" pattern="${LAYOUT_PATTERN}"/>
             <TimeBasedTriggeringPolicy/>
         </RollingFile>
 
-        <RollingFile name="partnerLog" fileName="${LOG_HOME}/${MODEL_H5}/partner.log" filePattern="${LOG_HOME}/${MODEL_H5}/partner-%d{yyyyMMdd}.log">
+        <RollingFile name="shieldLog" fileName="${LOG_HOME}/${MODEL_SHIELD}/shieldLog.log" filePattern="${LOG_HOME}/${MODEL_SHIELD}/shieldLog-%d{yyyyMMdd}.log">
             <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout charset="UTF-8" pattern="${LAYOUT_PATTERN}"/>
             <TimeBasedTriggeringPolicy/>
         </RollingFile>
 
-        <RollingFile name="dfpcitvLog" fileName="${LOG_HOME}/${MODEL_PC}/dfpcitv.log" filePattern="${LOG_HOME}/${MODEL_PC}/dfpcitv-%d{yyyyMMdd}.log">
+        <RollingFile name="userLog" fileName="${LOG_HOME}/${MODEL_USER}/userLog.log" filePattern="${LOG_HOME}/${MODEL_USER}/userLog-%d{yyyyMMdd}.log">
             <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout charset="UTF-8" pattern="${LAYOUT_PATTERN}"/>
             <TimeBasedTriggeringPolicy/>
@@ -107,23 +107,23 @@
             <!--<appender-ref ref="Console"/>-->
             <!--<appender-ref ref="systemLog"/>-->
         <!--</Logger>-->
-        <AsyncLogger name="com.songheng.dsp.datacenter.common.adx" level="${LEVEL}" additivity="false">
-            <appender-ref ref="adxLog"/>
-        </AsyncLogger>
-        <AsyncLogger name="com.songheng.dsp.datacenter.common.dsp" level="${LEVEL}" additivity="false">
-            <appender-ref ref="dspLog"/>
-        </AsyncLogger>
-        <AsyncLogger name="com.songheng.dsp.datacenter.common.config" level="${LEVEL}" additivity="false">
+        <AsyncLogger name="com.songheng.dsp.datacenter.config" level="${LEVEL}" additivity="false">
             <appender-ref ref="confLog"/>
         </AsyncLogger>
-        <AsyncLogger name="com.songheng.dsp.datacenter.service.admethod" level="${LEVEL}" additivity="false">
-            <appender-ref ref="admethodLog"/>
+        <AsyncLogger name="com.songheng.dsp.datacenter.dict" level="${LEVEL}" additivity="false">
+            <appender-ref ref="dictLog"/>
         </AsyncLogger>
-        <AsyncLogger name="com.songheng.dsp.datacenter.service.partner" level="${LEVEL}" additivity="false">
-            <appender-ref ref="partnerLog"/>
+        <AsyncLogger name="com.songheng.dsp.datacenter.materiel" level="${LEVEL}" additivity="false">
+            <appender-ref ref="materielLog"/>
         </AsyncLogger>
-        <AsyncLogger name="com.songheng.dsp.datacenter.service.dfpcitv" level="${LEVEL}" additivity="false">
-            <appender-ref ref="dfpcitvLog"/>
+        <AsyncLogger name="com.songheng.dsp.datacenter.ctr" level="${LEVEL}" additivity="false">
+            <appender-ref ref="ctrLog"/>
+        </AsyncLogger>
+        <AsyncLogger name="com.songheng.dsp.datacenter.shield" level="${LEVEL}" additivity="false">
+            <appender-ref ref="shieldLog"/>
+        </AsyncLogger>
+        <AsyncLogger name="com.songheng.dsp.datacenter.user" level="${LEVEL}" additivity="false">
+            <appender-ref ref="userLog"/>
         </AsyncLogger>
         <AsyncLogger name="com.songheng.dsp.datacenter.job" level="${LEVEL}" additivity="false">
             <appender-ref ref="jobLog"/>

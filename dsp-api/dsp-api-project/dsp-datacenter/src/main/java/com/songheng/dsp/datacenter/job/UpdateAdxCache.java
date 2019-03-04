@@ -1,7 +1,7 @@
 package com.songheng.dsp.datacenter.job;
 
-import com.songheng.dsp.datacenter.common.adx.impl.AdxPositionImpl;
-import com.songheng.dsp.datacenter.common.adx.impl.IpCityImpl;
+import com.songheng.dsp.datacenter.dict.AdxPositionImpl;
+import com.songheng.dsp.datacenter.dict.IpCityImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;

@@ -1,7 +1,7 @@
 package com.songheng.dsp.datacenter.job;
 
-import com.songheng.dsp.datacenter.common.adx.impl.DspUserImpl;
-import com.songheng.dsp.datacenter.common.adx.impl.OtherDspAdvImpl;
+import com.songheng.dsp.datacenter.materiel.adx.OtherDspAdvImpl;
+import com.songheng.dsp.datacenter.user.adx.DspUserImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;

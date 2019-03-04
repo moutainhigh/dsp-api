@@ -1,7 +1,7 @@
 package com.songheng.dsp.datacenter.job;
 
-import com.songheng.dsp.datacenter.common.config.DbConfigLoader;
-import com.songheng.dsp.datacenter.common.config.PropertiesLoader;
+import com.songheng.dsp.datacenter.config.db.DbConfigLoader;
+import com.songheng.dsp.datacenter.config.props.PropertiesLoader;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
