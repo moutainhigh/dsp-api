@@ -3,12 +3,11 @@ package com.songheng.dsp.common.db;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
-import sun.reflect.annotation.ExceptionProxy;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -187,6 +186,9 @@ public class DbUtils {
                     case "java.sql.Date":
                         list.add((T) rs.getDate(1));
                         break;
+                    case "java.util.Date":
+                        list.add((T) new java.util.Date(rs.getDate(1).getTime()));
+                        break;
                     case "java.sql.Time":
                         list.add((T) rs.getTime(1));
                         break;
@@ -204,6 +206,9 @@ public class DbUtils {
                         break;
                     case "java.lang.Float":
                         list.add((T) Float.valueOf(rs.getFloat(1)));
+                        break;
+                    case "java.math.BigDecimal":
+                        list.add((T) rs.getBigDecimal(1));
                         break;
                     default:
                         singleObject = cls.newInstance();
@@ -238,6 +243,13 @@ public class DbUtils {
                                     }
                                     field.set(singleObject, columnValue);
                                     break;
+                                case "java.util.Date":
+                                    if (columnValue instanceof java.sql.Date){
+                                        field.set(singleObject, new java.util.Date(((java.sql.Date) columnValue).getTime()));
+                                    } else if (columnValue instanceof java.sql.Timestamp){
+                                        field.set(singleObject, new java.util.Date(((Timestamp) columnValue).getTime()));
+                                    }
+                                    break;
                                 case "java.sql.Time":
                                     if (columnValue instanceof java.sql.Timestamp){
                                         field.set(singleObject, new Time(((Timestamp) columnValue).getTime()));
@@ -253,20 +265,20 @@ public class DbUtils {
                                         field.set(singleObject, columnValue);
                                         break;
                                     }
-                                    field.set(singleObject, new Double(columnValue.toString()).intValue());
+                                    field.set(singleObject, Double.valueOf(columnValue.toString()).intValue());
                                     break;
                                 case "int":
-                                    field.set(singleObject, new Double(columnValue.toString()).intValue());
+                                    field.set(singleObject, Double.valueOf(columnValue.toString()).intValue());
                                     break;
                                 case "java.lang.Long":
                                     if (columnValue instanceof java.lang.Long){
                                         field.set(singleObject, columnValue);
                                         break;
                                     }
-                                    field.set(singleObject, new Double(columnValue.toString()).longValue());
+                                    field.set(singleObject, Double.valueOf(columnValue.toString()).longValue());
                                     break;
                                 case "long":
-                                    field.set(singleObject, new Double(columnValue.toString()).longValue());
+                                    field.set(singleObject, Double.valueOf(columnValue.toString()).longValue());
                                     break;
                                 case "java.lang.Double":
                                     field.set(singleObject, Double.valueOf(columnValue.toString()));
@@ -280,8 +292,14 @@ public class DbUtils {
                                 case "float":
                                     field.set(singleObject, Float.valueOf(columnValue.toString()));
                                     break;
+                                case "java.lang.Boolean":
+                                    field.set(singleObject, Boolean.valueOf(columnValue.toString()));
+                                    break;
+                                case "boolean":
+                                    field.set(singleObject, Boolean.valueOf(columnValue.toString()));
+                                    break;
                                 case "java.math.BigDecimal":
-                                    field.set(singleObject, Double.valueOf(columnValue.toString()));
+                                    field.set(singleObject, new BigDecimal(columnValue.toString()));
                                     break;
                                 default:
                                     field.set(singleObject, columnValue);
