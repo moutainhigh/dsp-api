@@ -13,15 +13,25 @@ import java.util.List;
 @Getter
 @Setter
 public class DspAdvExtend extends DspAdvInfo {
-
+    /**
+     * dspId
+     */
     private String dspId;
-
+    /**
+     * 图片宽度
+     */
     private Integer imgWidth;
-
+    /**
+     * 图片高度
+     */
     private Integer imgHeight;
-
+    /**
+     * 图片路径 imgPath
+     */
     private String imgPath;
-
+    /**
+     * 图片路径 img1Path, img2Path, img3Path
+     */
     private String img1Path,img2Path,img3Path;
     /**
      * 广告针对用户的性别;0:女 ,1：男 ,-1：不限
@@ -64,10 +74,6 @@ public class DspAdvExtend extends DspAdvInfo {
      */
     private String terminal;
     /**
-     * 进屏上报
-     */
-    private List<String> inviewrep;
-    /**
      * 点击上报
      */
     private List<String> clickrep;
@@ -87,4 +93,18 @@ public class DspAdvExtend extends DspAdvInfo {
      * 推广样式类型
      */
     private String bigpic;
+    /**
+     * 控价
+     */
+    private double realunitprice;
+
+    /**
+     * 获取控价
+     * 返回 原值*100
+     * @return
+     */
+    public long getRealUnitPrice(){
+        //(cpm/1000)*100000——为保证单次展现价格为整数，扩大倍数乘以十万
+        return Double.valueOf(this.realunitprice*100).longValue();
+    }
 }

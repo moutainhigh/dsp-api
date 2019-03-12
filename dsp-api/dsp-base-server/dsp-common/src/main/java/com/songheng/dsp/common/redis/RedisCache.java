@@ -859,7 +859,9 @@ public class RedisCache {
                 Map<String,String> map = new HashMap<>(values.size());
                 for(int i=0; i<values.size(); i++){
                     String value = values.get(i) == null ? "0" : values.get(i);
-                    map.put(fields[i], value);
+                    if (i < fields.length){
+                        map.put(fields[i], value);
+                    }
                 }
                 result.put(key, map);
             }
@@ -899,7 +901,10 @@ public class RedisCache {
                 Map<String,String> map = new HashMap<>(values.size());
                 for(int i=0; i<values.size(); i++){
                     String value = values.get(i) == null ? "0" : values.get(i);
-                    map.put(keyAndFields.get(key)[i], value);
+                    String[] fields = keyAndFields.get(key);
+                    if (null != fields && i < fields.length){
+                        map.put(fields[i], value);
+                    }
                 }
                 result.put(key, map);
             }

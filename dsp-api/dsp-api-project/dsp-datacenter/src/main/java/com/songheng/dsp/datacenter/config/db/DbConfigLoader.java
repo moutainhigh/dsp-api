@@ -69,11 +69,11 @@ public class DbConfigLoader {
                 "     (SELECT 'positionkey' dspkey, group_concat(a.dspkey ORDER BY a.remark = '', a.remark+0, a.id) dspvalue " +
                 "           FROM (SELECT id, dspkey, remark " +
                 "               FROM adplatform_dsp_sysconf " +
-                "               WHERE flag = 1 AND conftype = 'pcposition' AND confgroup = 'positionstyle' ORDER BY remark = '', remark+0, id) a) #广告位\n" +
+                "               WHERE flag = 1 AND conftype = 'pcposition' AND confgroup = 'positionstyle' ORDER BY remark = '', remark+0, id) a) \n" +
                 "      UNION ALL\n" +
                 "     (SELECT 'news_site_type' dspkey, group_concat(substring(dspkey,8)) dspvalue " +
                 "           FROM adplatform_dsp_sysconf " +
-                "           WHERE flag = 1 AND conftype='pcposition' AND confgroup = 'sitepagetype' ORDER BY remark,id) # 站点\n" +
+                "           WHERE flag = 1 AND conftype='pcposition' AND confgroup = 'sitepagetype' ORDER BY remark,id) \n" +
                 "      UNION ALL\n" +
                 "     (SELECT dspkey,dspvalue FROM adplatform_dsp_sysconf WHERE flag = 1 AND conftype='pcposition')\n" +
                 "  ) b ", dbConfigMapTmp);

@@ -25,12 +25,12 @@ public class AdxPositionImpl implements AdxPositionService {
      * key: app,h5,pc
      * value: List<AdPosition>
      */
-    private volatile static Map<String, List<AdPosition>> tmlAdPositions = new ConcurrentHashMap<>(6);
+    private volatile Map<String, List<AdPosition>> tmlAdPositions = new ConcurrentHashMap<>(6);
     /**
      * key: app,h5,pc+locationId/locationName
      * value AdPosition
      */
-    private volatile static Map<String, AdPosition> locationIdsMap = new ConcurrentHashMap<>(16);
+    private volatile Map<String, AdPosition> locationIdsMap = new ConcurrentHashMap<>(16);
 
 
     /**
@@ -167,7 +167,8 @@ public class AdxPositionImpl implements AdxPositionService {
         if (StringUtils.isBlank(terminal)){
             return new ArrayList<>();
         }
-        return tmlAdPositions.get(terminal.toLowerCase());
+        List<AdPosition> result = tmlAdPositions.get(terminal);
+        return null != result ? result : new ArrayList<AdPosition>();
     }
 
     /**
@@ -182,7 +183,8 @@ public class AdxPositionImpl implements AdxPositionService {
         if (StringUtils.isBlank(tml_locationId)){
             return new AdPosition();
         }
-        return locationIdsMap.get(tml_locationId);
+        AdPosition adPosition = locationIdsMap.get(tml_locationId);
+        return null != adPosition ? adPosition : new AdPosition();
     }
 
     /**

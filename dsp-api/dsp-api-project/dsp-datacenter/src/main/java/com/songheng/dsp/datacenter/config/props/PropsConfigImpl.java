@@ -1,6 +1,7 @@
 package com.songheng.dsp.datacenter.config.props;
 
 import com.songheng.dsp.dubbo.baseinterface.config.props.PropsConfigService;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import java.util.Map;
  * @date: 2019/3/4 14:37
  * @description: PropsConfig缓存接口实现类
  */
+@Component
 public class PropsConfigImpl implements PropsConfigService {
 
     /**

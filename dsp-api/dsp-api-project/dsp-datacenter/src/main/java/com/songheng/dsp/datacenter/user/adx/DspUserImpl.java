@@ -26,19 +26,19 @@ public class DspUserImpl implements DspUserService {
      * key: app,h5,pc
      * value: List<DspUserInfo>
      */
-    private volatile static Map<String, List<DspUserInfo>> dspUserInfoMap = new ConcurrentHashMap<>(6);
+    private volatile Map<String, List<DspUserInfo>> dspUserInfoMap = new ConcurrentHashMap<>(6);
     /**
      * dsp users cache
      * key: app,h5,pc+dspId
      * value: List<DspUserInfo>
      */
-    private volatile static Map<String, List<DspUserInfo>> dspUserInfoDspIdMap = new ConcurrentHashMap<>(32);
+    private volatile Map<String, List<DspUserInfo>> dspUserInfoDspIdMap = new ConcurrentHashMap<>(32);
     /**
      * dsp users cache
      * key: app,h5,pc+priority
      * value: List<DspUserInfo>
      */
-    private volatile static Map<String, List<DspUserInfo>> dspUserInfoPriorityMap = new ConcurrentHashMap<>(32);
+    private volatile Map<String, List<DspUserInfo>> dspUserInfoPriorityMap = new ConcurrentHashMap<>(32);
 
     /**
      * 更新dsp用户
@@ -138,7 +138,8 @@ public class DspUserImpl implements DspUserService {
         if (StringUtils.isBlank(terminal)){
             return new ArrayList<>();
         }
-        return dspUserInfoMap.get(terminal.toLowerCase());
+        List<DspUserInfo> result = dspUserInfoMap.get(terminal);
+        return null != result ? result : new ArrayList<DspUserInfo>();
     }
 
     /**
@@ -153,7 +154,8 @@ public class DspUserImpl implements DspUserService {
         if (StringUtils.isBlank(tml_dspId)){
             return new ArrayList<>();
         }
-        return dspUserInfoDspIdMap.get(tml_dspId);
+        List<DspUserInfo> result = dspUserInfoDspIdMap.get(tml_dspId);
+        return null != result ? result : new ArrayList<DspUserInfo>();
     }
 
     /**
@@ -168,6 +170,7 @@ public class DspUserImpl implements DspUserService {
         if (StringUtils.isBlank(tml_priority)){
             return new ArrayList<>();
         }
-        return dspUserInfoPriorityMap.get(tml_priority);
+        List<DspUserInfo> result = dspUserInfoPriorityMap.get(tml_priority);
+        return null != result ? result : new ArrayList<DspUserInfo>();
     }
 }

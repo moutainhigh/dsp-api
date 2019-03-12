@@ -27,17 +27,17 @@ public class OtherDspAdvImpl implements OtherDspAdvService {
      * key: app,h5,pc
      * value: List<DspAdvExtend>
      */
-    private volatile static Map<String, List<DspAdvExtend>> terminalAds = new ConcurrentHashMap<>(6);
+    private volatile Map<String, List<DspAdvExtend>> terminalAds = new ConcurrentHashMap<>(6);
     /**
      * key: app,h5,pc+advid+dspid
      * value DspAdvExtend
      */
-    private volatile static Map<String, DspAdvExtend> advidAds = new ConcurrentHashMap<>(16);
+    private volatile Map<String, DspAdvExtend> advidAds = new ConcurrentHashMap<>(16);
     /**
      * key: app,h5,pc+deliveryid+dspid
      * value DspAdvExtend
      */
-    private volatile static Map<String, DspAdvExtend> deliveryIdAds = new ConcurrentHashMap<>(16);
+    private volatile Map<String, DspAdvExtend> deliveryIdAds = new ConcurrentHashMap<>(16);
 
     /**
      * 更新第三方DSP广告池
@@ -93,18 +93,18 @@ public class OtherDspAdvImpl implements OtherDspAdvService {
                 img.setImgheight(250);
                 imglist.add(img);
             }
-            dspAdvExtend.setLbimg(imglist);
-            dspAdvExtend.setMiniimg(imglist);
-            if ("1".equals(adStyle)){
-                dspAdvExtend.setIspicnews("1");
-            } else {
-                dspAdvExtend.setIspicnews("0");
-            }
             dspAdvExtend.setIsadv("1");
             dspAdvExtend.setIsmonopolyad(false);
             dspAdvExtend.setPlatform("dongfang");
             dspAdvExtend.setChargeway("CPM");
             if (terminal.toLowerCase().indexOf("app") != -1){
+                if ("1".equals(adStyle)){
+                    dspAdvExtend.setBigpic("1");
+                    dspAdvExtend.setLbimg(imglist);
+                } else {
+                    dspAdvExtend.setBigpic("0");
+                    dspAdvExtend.setMiniimg(imglist);
+                }
                 dspAdvExtend.setType(adStyle);
                 dspAdvExtend.setAllowStations("北京,安徽,福建,甘肃,广东,广西,贵州,海南,河北,河南,黑龙江,湖北,湖南,吉林,江苏,江西,辽宁,内蒙古,宁夏,青海,山东,山西,陕西,上海,四川,天津,西藏,新疆,云南,浙江,重庆,香港,澳门,台湾");
                 dspAdvExtend.setIscustomtime(0);
@@ -117,7 +117,17 @@ public class OtherDspAdvImpl implements OtherDspAdvService {
                 appAdvList.add(dspAdvExtend);
             }
             if (terminal.toLowerCase().indexOf("h5") != -1){
-                dspAdvExtend.setAdStyle("1".equals(adStyle)?"big":("2".equals(adStyle)?"one":("3".equals(adStyle)?"group":"full")));
+                dspAdvExtend.setIspicnews("1".equals(adStyle)?"1":"0");
+                switch (adStyle) {
+                    case "1": adStyle = "big";break;
+                    case "2": adStyle = "one";break;
+                    case "3": adStyle = "group";break;
+                    case "6": adStyle = "full";break;
+                    default: adStyle = "big";break;
+                }
+                dspAdvExtend.setAdStyle(adStyle);
+                dspAdvExtend.setLbimg(imglist);
+                dspAdvExtend.setMiniimg(imglist);
                 dspAdvExtend.setAllowStations("all");
                 dspAdvExtend.setDeliveryOs("all");
                 dspAdvExtend.setInviewbackurl(dspAdvExtend.getShowbackurl());
@@ -161,7 +171,8 @@ public class OtherDspAdvImpl implements OtherDspAdvService {
         if (StringUtils.isBlank(terminal)){
             return new ArrayList<>();
         }
-        return terminalAds.get(terminal.toLowerCase());
+        List<DspAdvExtend> result = terminalAds.get(terminal);
+        return null != result ? result : new ArrayList<DspAdvExtend>();
     }
 
     @Override
@@ -170,7 +181,8 @@ public class OtherDspAdvImpl implements OtherDspAdvService {
         if (StringUtils.isBlank(tml_hisId_dspId)){
             return new DspAdvExtend();
         }
-        return deliveryIdAds.get(tml_hisId_dspId);
+        DspAdvExtend dspAdvExtend = deliveryIdAds.get(tml_hisId_dspId);
+        return null != dspAdvExtend ? dspAdvExtend : new DspAdvExtend();
     }
 
     @Override
@@ -179,7 +191,8 @@ public class OtherDspAdvImpl implements OtherDspAdvService {
         if (StringUtils.isBlank(tml_advId_dspId)){
             return new DspAdvExtend();
         }
-        return advidAds.get(tml_advId_dspId);
+        DspAdvExtend dspAdvExtend = advidAds.get(tml_advId_dspId);
+        return null != dspAdvExtend ? dspAdvExtend : new DspAdvExtend();
     }
 
 }

@@ -1,7 +1,9 @@
 package com.songheng.dsp.datacenter.config.db;
 
 import com.songheng.dsp.dubbo.baseinterface.config.db.DbConfigService;
+import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -9,6 +11,7 @@ import java.util.Map;
  * @date: 2019/3/4 14:35
  * @description: DbConfig缓存接口实现类
  */
+@Component
 public class DbConfigImpl implements DbConfigService {
 
     /**
@@ -31,7 +34,8 @@ public class DbConfigImpl implements DbConfigService {
      */
     @Override
     public Map<String, String> getDbConfigMap(String terminal) {
-        return DbConfigLoader.getDbConfigMap(terminal);
+        Map<String, String> result = DbConfigLoader.getDbConfigMap(terminal);
+        return null != result ? result : new HashMap<String, String>(16);
     }
 
 }

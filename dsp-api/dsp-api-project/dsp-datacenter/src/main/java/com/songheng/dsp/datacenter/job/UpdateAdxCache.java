@@ -1,7 +1,7 @@
 package com.songheng.dsp.datacenter.job;
 
-import com.songheng.dsp.datacenter.dict.AdxPositionImpl;
-import com.songheng.dsp.datacenter.dict.IpCityImpl;
+import com.songheng.dsp.datacenter.materiel.adx.OtherDspAdvImpl;
+import com.songheng.dsp.datacenter.user.adx.DspUserImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,44 +17,45 @@ import org.springframework.stereotype.Component;
 public class UpdateAdxCache {
 
     /**
-     * adxPositionImpl
+     * dspUserImpl
      */
     @Autowired
-    private AdxPositionImpl adxPositionImpl;
-    /**
-     * ipCityImpl
-     */
-    @Autowired
-    private IpCityImpl ipCityImpl;
+    private DspUserImpl dspUserImpl;
 
     /**
-     * 定时任务更新ADX广告位置缓存
+     * otherDspAdvImpl
+     */
+    @Autowired
+    private OtherDspAdvImpl otherDspAdvImpl;
+
+    /**
+     * 定时任务更新DSP用户缓存
      * 60秒更新一次
      */
     @Scheduled(initialDelay = 1000 * 5, fixedDelay = 1000 * 60)
-    public void updateAdxPosition(){
-        log.debug("开始更新ADX广告位置缓存数据...");
+    public void updateDspUsers(){
+        log.debug("开始更新DSP用户缓存数据...");
         try {
-            adxPositionImpl.updateAdPosition();
+            dspUserImpl.updateDspUsers();
         } catch (Exception e) {
-            log.error("更新ADX广告位置缓存数据失败\n{}",e);
+            log.error("更新DSP用户缓存数据失败\n{}",e);
         }
-        log.debug("更新ADX广告位置缓存数据成功！");
+        log.debug("更新DSP用户缓存数据成功！");
     }
 
     /**
-     * 定时任务更新IpCity缓存
+     * 定时任务更新第三方DSP广告缓存
      * 60秒更新一次
      */
     @Scheduled(initialDelay = 1000 * 5, fixedDelay = 1000 * 60)
-    public void updateIpCity(){
-        log.debug("开始更新IpCity缓存数据...");
+    public void updateOtherDspAdvs(){
+        log.debug("开始更新第三方DSP广告缓存数据...");
         try {
-            ipCityImpl.updateIpCityInfo();
+            otherDspAdvImpl.updateDspAdvs();
         } catch (Exception e) {
-            log.error("更新IpCity缓存数据失败\n{}",e);
+            log.error("更新第三方DSP广告缓存数据失败\n{}",e);
         }
-        log.debug("更新IpCity缓存数据成功！");
+        log.debug("更新第三方DSP广告缓存数据成功！");
     }
 
 }

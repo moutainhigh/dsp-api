@@ -17,6 +17,7 @@
         <property name="MODEL_MATERIEL">/materiel</property><!--MATERIEL模块 -->
         <property name="MODEL_SHIELD">/shield</property><!--SHIELD模块 -->
         <property name="MODEL_USER">/user</property><!--USER模块 -->
+        <property name="MODEL_SSP">/ssp</property><!--SSP模块 -->
         <property name="MODEL_JOB">/job</property><!--JOB模块 -->
         <property name="LAYOUT_PATTERN">%d{UNIX_MILLIS}\t%d\t\t%p\t%c{1}\t%m\t%r%n</property>
     </properties>
@@ -66,6 +67,12 @@
         </RollingFile>
 
         <RollingFile name="userLog" fileName="${LOG_HOME}/${MODEL_USER}/userLog.log" filePattern="${LOG_HOME}/${MODEL_USER}/userLog-%d{yyyyMMdd}.log">
+            <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout charset="UTF-8" pattern="${LAYOUT_PATTERN}"/>
+            <TimeBasedTriggeringPolicy/>
+        </RollingFile>
+
+        <RollingFile name="sspLog" fileName="${LOG_HOME}/${MODEL_SSP}/sspLog.log" filePattern="${LOG_HOME}/${MODEL_SSP}/sspLog-%d{yyyyMMdd}.log">
             <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout charset="UTF-8" pattern="${LAYOUT_PATTERN}"/>
             <TimeBasedTriggeringPolicy/>
@@ -124,6 +131,9 @@
         </AsyncLogger>
         <AsyncLogger name="com.songheng.dsp.datacenter.user" level="${LEVEL}" additivity="false">
             <appender-ref ref="userLog"/>
+        </AsyncLogger>
+        <AsyncLogger name="com.songheng.dsp.datacenter.ssp" level="${LEVEL}" additivity="false">
+            <appender-ref ref="sspLog"/>
         </AsyncLogger>
         <AsyncLogger name="com.songheng.dsp.datacenter.job" level="${LEVEL}" additivity="false">
             <appender-ref ref="jobLog"/>

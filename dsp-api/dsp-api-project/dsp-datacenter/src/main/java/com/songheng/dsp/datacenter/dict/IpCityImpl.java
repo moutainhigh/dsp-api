@@ -23,7 +23,7 @@ public class IpCityImpl implements IpCityService {
     /**
      * ipCityMap
      */
-    private volatile static Map<String,IpCityInfo> ipCityMap = new ConcurrentHashMap<>(16);
+    private volatile Map<String,IpCityInfo> ipCityMap = new ConcurrentHashMap<>(16);
 
     /**
      * 更新IpCity
@@ -61,6 +61,7 @@ public class IpCityImpl implements IpCityService {
         if (StringUtils.isBlank(ip)){
             return new IpCityInfo();
         }
-        return ipCityMap.get(ip);
+        IpCityInfo ipCityInfo = ipCityMap.get(ip);
+        return null != ipCityInfo ? ipCityInfo : new IpCityInfo();
     }
 }

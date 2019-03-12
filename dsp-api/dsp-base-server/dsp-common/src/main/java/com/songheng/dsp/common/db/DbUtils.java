@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
-import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +14,7 @@ import java.util.Map;
  * @author: luoshaobing
  * @date: 2019/1/22 22:54
  * @description: DB工具类
+ * 注：保持Bean属性名与查询sql别名一致
  */
 @Slf4j
 public class DbUtils {
@@ -212,97 +212,68 @@ public class DbUtils {
                         break;
                     default:
                         singleObject = cls.newInstance();
-                        for(int i=0; i<columnCount; i++) {
+                        for(int i=1; i<=columnCount; i++) {
                             //获取查询sql别名字段
-                            String columnName = rsmd.getColumnLabel(i+1);
-                            Object columnValue = rs.getObject(columnName);
+                            String columnName = rsmd.getColumnLabel(i);
                             Field field = null;
                             try {
                                 field = cls.getDeclaredField(columnName);
                             } catch (Exception e) {
-                                log.error("message:【"+e.getMessage().split("\r\n")[0]+"】");
                                 continue;
                             }
                             field.setAccessible(true);
                             String fieldName = field.getType().getName();
                             switch (fieldName) {
                                 case "java.lang.String":
-                                    field.set(singleObject, String.valueOf(columnValue));
+                                    field.set(singleObject, rs.getString(i));
                                     break;
                                 case "java.sql.Timestamp":
-                                    if (columnValue instanceof java.sql.Date){
-                                        field.set(singleObject, new Timestamp(((Date) columnValue).getTime()));
-                                        break;
-                                    }
-                                    field.set(singleObject, columnValue);
+                                    field.set(singleObject, rs.getTimestamp(i));
                                     break;
                                 case "java.sql.Date":
-                                    if (columnValue instanceof java.sql.Timestamp){
-                                        field.set(singleObject, new Date(((Timestamp) columnValue).getTime()));
-                                        break;
-                                    }
-                                    field.set(singleObject, columnValue);
+                                    field.set(singleObject, rs.getDate(i));
                                     break;
                                 case "java.util.Date":
-                                    if (columnValue instanceof java.sql.Date){
-                                        field.set(singleObject, new java.util.Date(((java.sql.Date) columnValue).getTime()));
-                                    } else if (columnValue instanceof java.sql.Timestamp){
-                                        field.set(singleObject, new java.util.Date(((Timestamp) columnValue).getTime()));
-                                    }
+                                    field.set(singleObject, new java.util.Date(rs.getDate(i).getTime()));
                                     break;
                                 case "java.sql.Time":
-                                    if (columnValue instanceof java.sql.Timestamp){
-                                        field.set(singleObject, new Time(((Timestamp) columnValue).getTime()));
-                                        break;
-                                    } else if (columnValue instanceof java.sql.Date){
-                                        field.set(singleObject, new Time(((Date) columnValue).getTime()));
-                                        break;
-                                    }
-                                    field.set(singleObject, columnValue);
+                                    field.set(singleObject, rs.getTime(i));
                                     break;
                                 case "java.lang.Integer":
-                                    if (columnValue instanceof java.lang.Integer){
-                                        field.set(singleObject, columnValue);
-                                        break;
-                                    }
-                                    field.set(singleObject, Double.valueOf(columnValue.toString()).intValue());
+                                    field.set(singleObject, rs.getInt(i));
                                     break;
                                 case "int":
-                                    field.set(singleObject, Double.valueOf(columnValue.toString()).intValue());
+                                    field.set(singleObject, rs.getInt(i));
                                     break;
                                 case "java.lang.Long":
-                                    if (columnValue instanceof java.lang.Long){
-                                        field.set(singleObject, columnValue);
-                                        break;
-                                    }
-                                    field.set(singleObject, Double.valueOf(columnValue.toString()).longValue());
+                                    field.set(singleObject, rs.getLong(i));
                                     break;
                                 case "long":
-                                    field.set(singleObject, Double.valueOf(columnValue.toString()).longValue());
+                                    field.set(singleObject, rs.getLong(i));
                                     break;
                                 case "java.lang.Double":
-                                    field.set(singleObject, Double.valueOf(columnValue.toString()));
+                                    field.set(singleObject, rs.getDouble(i));
                                     break;
                                 case "double":
-                                    field.set(singleObject, Double.valueOf(columnValue.toString()));
+                                    field.set(singleObject, rs.getDouble(i));
                                     break;
                                 case "java.lang.Float":
-                                    field.set(singleObject, Float.valueOf(columnValue.toString()));
+                                    field.set(singleObject, rs.getFloat(i));
                                     break;
                                 case "float":
-                                    field.set(singleObject, Float.valueOf(columnValue.toString()));
+                                    field.set(singleObject, rs.getFloat(i));
                                     break;
                                 case "java.lang.Boolean":
-                                    field.set(singleObject, Boolean.valueOf(columnValue.toString()));
+                                    field.set(singleObject, rs.getBoolean(i));
                                     break;
                                 case "boolean":
-                                    field.set(singleObject, Boolean.valueOf(columnValue.toString()));
+                                    field.set(singleObject, rs.getBoolean(i));
                                     break;
                                 case "java.math.BigDecimal":
-                                    field.set(singleObject, new BigDecimal(columnValue.toString()));
+                                    field.set(singleObject, rs.getBigDecimal(i));
                                     break;
                                 default:
-                                    field.set(singleObject, columnValue);
+                                    field.set(singleObject, rs.getObject(i));
                                     break;
                             }
                         }
