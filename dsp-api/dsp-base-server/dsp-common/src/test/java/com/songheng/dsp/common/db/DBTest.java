@@ -41,6 +41,15 @@ public class DBTest {
         System.out.println(list);
     }
 
+    @Test
+    public void callProcedure(){
+        String sql = "{call proc_advinfo_showlist_bychannel_new_v1(?,?)}";
+        List<String> list = DbUtils.callProcedure(sql, String.class, "pc", "pc");
+        for (String str : list){
+            System.out.println(str);
+        }
+    }
+
     @After
     public void after() {
         System.out.println("测试结束-----------------");

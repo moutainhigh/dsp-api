@@ -31,7 +31,6 @@
         <log4j2.version>2.4.1</log4j2.version>
         <slf4j.version>1.7.12</slf4j.version>
 
-
         <!-- Test libs -->
         <junit.version>4.12</junit.version>
         <mockito.version>2.21.0</mockito.version>
@@ -69,6 +68,8 @@
         <httpclient.version>4.5.1</httpclient.version>
         <!--hbase client -->
         <hbase.client.version>0.96.2-hadoop2</hbase.client.version>
+        <!--dom4j -->
+        <dom4j.version>1.6.1</dom4j.version>
 
         <!-- Build -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

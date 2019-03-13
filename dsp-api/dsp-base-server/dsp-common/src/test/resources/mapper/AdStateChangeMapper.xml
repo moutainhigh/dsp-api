@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<mapper namespace="AdStateChangeMapper">
+	<!--xml实体符号 -->
+	<select id="getMonopolyFloorPrice">
+		SELECT locationName FROM
+			adplatform_monopoly_floor_price
+			where dt &gt;= ?
+			AND dt &lt;= ?
+			ORDER BY createtime DESC
+	</select>
+	<!--xml实体符号 -->
+	<select id="getMonopolyFloorPrice2">
+		<![CDATA[
+			SELECT locationName FROM
+		adplatform_monopoly_floor_price
+		where dt >= '2019-02-12'
+		AND dt <= '2019-03-13'
+		ORDER BY createtime DESC
+		]]>
+	</select>
+    <select id="getAdvTfList">
+    	{
+    	  call sp_get_adv_tflist_bydt()
+    	}
+	</select>
+    <select id="adStateChangeForTimesExpire">
+    	{
+    	  call sp_modify_adstate_for_timesexpire()
+    	}
+	</select>
+	<select id="adStateChangeForBalEnough">
+    	{
+    	  call sp_modify_adstate_for_balenough()
+    	}
+	</select>
+    <select id="adStateChangeForYusuanType">
+    	{
+    	  call sp_modify_adstate_for_yusuantype(
+            ?,?
+    	  )
+    	}
+	</select>
+    <select id="adStateChangeForApprovalFailed">
+    	{
+    	  call sp_modify_adstate_for_approval_failed()
+    	}
+	</select>
+	<!--每天凌晨00:00:00 执行 将已开启、状态为日消耗完 变更为：待投放 -->
+	<update id="updateAdStateForConsumesDay" >
+		UPDATE adplatform_adShowHistory his
+			INNER JOIN adplatform_adInfo ad
+				ON his.adId = ad.adId
+		SET his.adstate = 0
+		WHERE
+			his.adstate = 2
+			AND ad.switch = 1
+	</update>
+</mapper>

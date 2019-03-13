@@ -200,7 +200,6 @@ public final class FileUtils {
      * @param removeDuplicate 是否去掉重复数据
      * @return 读取的集合
      **/
-
     public static List<String> readColInLines(String filePath,String splitSymbol,int index,boolean removeDuplicate){
         try {
             List<String> strings = Files.readLines(new File(filePath), Charsets.UTF_8,
@@ -225,7 +224,6 @@ public final class FileUtils {
      * @param matchStr 需要查找的字符串
      * @return 读取的集合
      **/
-
     public static List<String> readFormatLinesByMatchCol(String filePath,String splitSymbol,int index,
                                                       boolean removeDuplicate,String replaceSymbol,String matchStr){
         try {
@@ -239,6 +237,39 @@ public final class FileUtils {
         }catch (Exception e){
             log.error("[readFormatLinesByMatchCol]:path={}&removeDuplicate={}\t{}",filePath,removeDuplicate,e);
             return new ArrayList<>(0);
+        }
+    }
+
+    /**
+     * 获取指定文件夹下所有文件
+     * @param filePath 文件夹路径
+     * @param fileList List<File>
+     */
+    public static void getFilesByPath(String filePath, List<File> fileList){
+        if (StringUtils.isBlank(filePath)){
+            return;
+        }
+        try {
+            File file = new File(filePath);
+            if (file.isFile()){
+                fileList.add(file);
+                return;
+            } else if (file.isDirectory()) {
+                File[] allFiles = file.listFiles();
+                if (null == allFiles){
+                    return;
+                }
+                for (File files : allFiles){
+                    if (files.isFile()){
+                        fileList.add(files);
+                    } else {
+                        //递归查找子目录
+                        FileUtils.getFilesByPath(files.getAbsolutePath(), fileList);
+                    }
+                }
+            }
+        } catch (Exception e){
+            log.error("[getFilesByPath]:path={}", filePath);
         }
     }
 
