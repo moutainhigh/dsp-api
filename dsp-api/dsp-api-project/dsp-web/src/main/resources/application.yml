@@ -1,0 +1,10 @@
+server:
+  port: 8088
+spring:
+  profiles:
+    active : dev
+  application:
+    name: dsp-web
+logging:
+  level:
+#    com.dftoutiao.dal.db : debug

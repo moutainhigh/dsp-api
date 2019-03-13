@@ -28,7 +28,11 @@ public enum ProjectEnum {
     /**
      * datacenter项目
      */
-    DATACENTER("datacenter","dc",new String[]{"CLUSTER_B","CLUSTER_E"},"","");
+    DATACENTER("datacenter","dc",new String[]{"CLUSTER_B","CLUSTER_E"},"",""),
+    /**
+     * dsp-web项目
+     */
+    DSPWEB("dspweb","web",new String[]{"CLUSTER_B","CLUSTER_E"},"","");
 
     /**
      * 项目名称
@@ -67,13 +71,13 @@ public enum ProjectEnum {
         return H5.getTerminal().equalsIgnoreCase(terminal);
     }
     /**
-     * 是否h5项目
+     * 是否app项目
      * */
     public static boolean isApp(String terminal){
         return APP.getTerminal().equalsIgnoreCase(terminal);
     }
     /**
-     * 是否h5项目
+     * 是否pc项目
      * */
     public static boolean isPc(String terminal){
         return PC.getTerminal().equalsIgnoreCase(terminal);

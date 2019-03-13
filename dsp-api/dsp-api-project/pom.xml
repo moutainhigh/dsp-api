@@ -16,6 +16,7 @@
     <description>The project of dsp-api-project</description>
     <modules>
         <module>dsp-datacenter</module>
+        <module>dsp-web</module>
     </modules>
 
     <!--注：不确定每个子项目都会依赖的jar包，放至 dependencyManagement下，再由子项目重写引入，减少不必要的开销-->
