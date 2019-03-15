@@ -2,6 +2,7 @@ package com.songheng.dsp.datacenter.ssp;
 
 import com.songheng.dsp.common.db.DbUtils;
 import com.songheng.dsp.common.utils.StringUtils;
+import com.songheng.dsp.datacenter.config.db.SqlMapperLoader;
 import com.songheng.dsp.datacenter.materiel.dsp.DfDspAdvCache;
 import com.songheng.dsp.dubbo.baseinterface.ssp.AdvSspSlotService;
 import com.songheng.dsp.model.materiel.ExtendNews;
@@ -106,69 +107,12 @@ public class AdvSspSlotImpl implements AdvSspSlotService {
      * 并映射slotId对应广告池
      */
     public void updateAdvSspSlot(){
-        List<AdvSspSlot> advSspSlotList = DbUtils.queryList(
-                "SELECT " +
-                "\ta.id AS sspAppId, \n" +
-                "\ta.appName, \n" +
-                "\ta.terminal, \n" +
-                "\ta.appType, \n" +
-                "\ta.appId, \n" +
-                "\ta.bosshead,\n" +
-                "\ta.validateQid,\n" +
-                "\ta.remark,\n" +
-                "\ts.slotId,\n" +
-                "\ts.slotName,\n" +
-                "\ts.pgtype,\n" +
-                "\ts.slotDesc,\n" +
-                "\ts.slotImgs,\n" +
-                "\ts.adnum,\n" +
-                "\ts.slotSort,\n" +
-                "\ts.styleIds,\n" +
-                "\ts.floorPrice,\n" +
-                "\tss.sellSeatId\n" +
-                "\tFROM adv_ssp_slot s\n" +
-                "\tINNER JOIN adv_ssp_application a\n" +
-                "\tON s.appId = a.Id\n" +
-                "\tAND a.status = 1 \n" +//启用
-                "\tAND a.validateQid = 0 \n" +//不验证
-                "\tINNER JOIN adv_dict_adstyle d\n" +
-                "\tON FIND_IN_SET(d.id,s.styleIds) \n" +//样式过滤
-                "\tAND d.status = 1 \n"+
-                "\tLEFT JOIN adv_ssp_slot_seal ss\n" +
-                "\tON s.slotId = ss.slotId\n" +
-                "\tWHERE s.status = 1 \n" +//启用
-                "\tUNION ALL\n" +
-                "\tSELECT a.id AS sspAppId, \n" +
-                "\ta.appName, \n" +
-                "\ta.terminal, \n" +
-                "\ta.appType, \n" +
-                "\ta.appId, \n" +
-                "\ta.bosshead,\n" +
-                "\ta.validateQid,\n" +
-                "\ta.remark,\n" +
-                "\ts.slotId,\n" +
-                "\ts.slotName,\n" +
-                "\ts.pgtype,\n" +
-                "\ts.slotDesc,\n" +
-                "\ts.slotImgs,\n" +
-                "\ts.adnum,\n" +
-                "\ts.slotSort,\n" +
-                "\ts.styleIds,\n" +
-                "\ts.floorPrice,\n" +
-                "\tss.sellSeatId\n" +
-                "\tFROM adv_ssp_slot s\n" +
-                "\tINNER JOIN adv_ssp_application a\n" +
-                "\tON s.appId = a.Id\n" +
-                "\tAND a.status = 1 \n" +//启用
-                "\tAND a.validateQid = 1 \n" +//验证
-                "\tINNER JOIN adv_dict_adstyle d\n" +
-                "\tON FIND_IN_SET(d.id,s.styleIds) \n" +//样式过滤
-                "\tAND d.status = 1 \n"+
-                "\tLEFT JOIN adv_ssp_slot_seal ss\n" +
-                "\tON s.slotId = ss.slotId\n" +
-                "\tWHERE s.status = 1 \n" +//启用
-                "\tAND a.id IN " +//渠道白名单过滤
-                        "\t(SELECT q.appId FROM adv_ssp_qid q WHERE q.status = 1)", AdvSspSlot.class);
+        String sql = SqlMapperLoader.getSql("AdvSsp", "queryAdvSspSlot");
+        if (StringUtils.isBlank(sql)){
+            log.error("updateAdvSspSlot error sql is null, namespace: AdvSsp, id: queryAdvSspSlot");
+            return;
+        }
+        List<AdvSspSlot> advSspSlotList = DbUtils.queryList(sql, AdvSspSlot.class);
         //映射slotId对应广告池
         Map<String, Set<ExtendNews>> slot_extendNews = new ConcurrentHashMap<>(64);
         Map<String, AdvSspSlot> advSspSlotTmp = new ConcurrentHashMap<>(64);

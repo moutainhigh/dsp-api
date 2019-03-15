@@ -2,6 +2,7 @@ package com.songheng.dsp.datacenter.ssp;
 
 import com.songheng.dsp.common.db.DbUtils;
 import com.songheng.dsp.common.utils.StringUtils;
+import com.songheng.dsp.datacenter.config.db.SqlMapperLoader;
 import com.songheng.dsp.dubbo.baseinterface.ssp.AdvDictSellSeatService;
 import com.songheng.dsp.model.ssp.AdvDictSellSeat;
 import lombok.extern.slf4j.Slf4j;
@@ -77,21 +78,12 @@ public class AdvDictSellSeatImpl implements AdvDictSellSeatService {
      * 更新 dsp售卖位置
      */
     public void updateAdvDictSellSeat(){
-
-        List<AdvDictSellSeat> advDictSellSeatList = DbUtils.queryList("SELECT \n" +
-                "\tds.sellSeatId,\n" +
-                "\tGROUP_CONCAT(ss.slotId) AS slotIds,\n" +
-                "\tds.shellSeatName,\n" +
-                "\tds.priority,\n" +
-                "\tds.styleIds,\n" +
-                "\tds.terminals,\n" +
-                "\tds.perCode,\n" +
-                "\tds.perType\n" +
-                "\tFROM adv_dict_sell_seat ds\n" +
-                "\tLEFT JOIN adv_ssp_slot_seal ss\n" +
-                "\tON ds.sellSeatId = ss.sellSeatId\n" +
-                "\tWHERE ds.status = 1\n" +
-                "\tGROUP BY ss.sellSeatId", AdvDictSellSeat.class);
+        String sql = SqlMapperLoader.getSql("AdvSsp", "queryAdvDictSellSeat");
+        if (StringUtils.isBlank(sql)){
+            log.error("updateAdvDictSellSeat error sql is null, namespace: AdvSsp, id: queryAdvDictSellSeat");
+            return;
+        }
+        List<AdvDictSellSeat> advDictSellSeatList = DbUtils.queryList(sql, AdvDictSellSeat.class);
         Map<String, AdvDictSellSeat> sellSeatIdTmp = new ConcurrentHashMap<>(32);
         Map<Integer, AdvDictSellSeat> priorityTmp = new ConcurrentHashMap<>(32);
         for (AdvDictSellSeat advDictSellSeat : advDictSellSeatList){

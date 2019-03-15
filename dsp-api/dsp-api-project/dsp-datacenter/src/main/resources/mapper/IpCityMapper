@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mapper namespace="IpCity">
+    <select id="queryIpCityInfo">
+        SELECT
+            ip,
+            province,
+            city
+        FROM
+            adplatform_ip_manage
+        WHERE
+            ENABLE = 'Y'
+    </select>
+</mapper>

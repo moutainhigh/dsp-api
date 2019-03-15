@@ -2,6 +2,7 @@ package com.songheng.dsp.datacenter.dict;
 
 import com.songheng.dsp.common.db.DbUtils;
 import com.songheng.dsp.common.utils.StringUtils;
+import com.songheng.dsp.datacenter.config.db.SqlMapperLoader;
 import com.songheng.dsp.dubbo.baseinterface.dict.AdxPositionService;
 import com.songheng.dsp.model.dict.AdPosition;
 import lombok.extern.slf4j.Slf4j;
@@ -37,95 +38,12 @@ public class AdxPositionImpl implements AdxPositionService {
      * 更新DSP广告位信息
      */
     public void updateAdPosition(){
-        List<AdPosition> adPositions = DbUtils.queryList("SELECT\n" +
-                "\ta.location_id,\n" +
-                "\ta.location_name AS location_name_original,\n" +
-                "\ta.isbottomad,\n" +
-                "\tCONCAT( a.site, '_', a.qid, '_', a.location_name ) AS location_name,\n" +
-                "\ta.cpm_start_price,\n" +
-                "\ta.cpm_start_price_1,\n" +
-                "\ta.cpm_start_price_2,\n" +
-                "\ta.cpm_start_price_f,\n" +
-                "\ta.block_vocation,\n" +
-                "\ta.allow_file,\n" +
-                "\ta.screen,\n" +
-                "\ta.type,\n" +
-                "\tMAX(\n" +
-                "\tCASE a.style_id \n" +
-                "\tWHEN 'big' THEN\n" +
-                "\tCONCAT( a.style_name, ':', a.imgwidth, '*', a.imgheight, '*', a.imgnum ) \n" +
-                "\tEND \n" +
-                "\t) AS bigstyle,\n" +
-                "\tMAX(\n" +
-                "\tCASE\n" +
-                "\ta.style_id \n" +
-                "\tWHEN 'small' THEN\n" +
-                "\tCONCAT( a.style_name, ':', a.imgwidth, '*', a.imgheight, '*', a.imgnum ) \n" +
-                "\tEND \n" +
-                "\t) AS smallstyle,\n" +
-                "\tMAX(\n" +
-                "\tCASE\n" +
-                "\ta.style_id \n" +
-                "\tWHEN 'group' THEN\n" +
-                "\tCONCAT( a.style_name, ':', a.imgwidth, '*', a.imgheight, '*', a.imgnum ) \n" +
-                "\tEND \n" +
-                "\t) AS groupstyle,\n" +
-                "\tMAX(\n" +
-                "\tCASE\n" +
-                "\ta.style_id \n" +
-                "\tWHEN 'banner' THEN\n" +
-                "\tCONCAT( a.style_name, ':', a.imgwidth, '*', a.imgheight, '*', a.imgnum ) \n" +
-                "\tEND \n" +
-                "\t) AS bannerstyle,\n" +
-                "\tMAX(\n" +
-                "\tCASE\n" +
-                "\ta.style_id \n" +
-                "\tWHEN 'wzl' THEN\n" +
-                "\tCONCAT( a.style_name, ':', a.imgwidth, '*', a.imgheight, '*', a.imgnum ) \n" +
-                "\tEND \n" +
-                "\t) AS wzlstyle,\n" +
-                "\tMAX(\n" +
-                "\tCASE\n" +
-                "\ta.style_id \n" +
-                "\tWHEN 'icon' THEN\n" +
-                "\tCONCAT( a.style_name, ':', a.imgwidth, '*', a.imgheight, '*', a.imgnum ) \n" +
-                "\tEND \n" +
-                "\t) AS iconstyle,\n" +
-                "\ta.c_ad_price,\n" +
-                "\ta.k_rate\n" +
-                "\tFROM\n" +
-                "\t(\n" +
-                "\tSELECT\n" +
-                "\tp.location_id,\n" +
-                "\tp.location_name,\n" +
-                "\tp.isbottomad,\n" +
-                "\tp.site,\n" +
-                "\tp.qid,\n" +
-                "\tp.cpm_start_price,\n" +
-                "\tp.cpm_start_price_1,\n" +
-                "\tp.cpm_start_price_2,\n" +
-                "\tp.cpm_start_price_f,\n" +
-                "\tp.block_vocation,\n" +
-                "\tp.allow_file,\n" +
-                "\tp.screen,\n" +
-                "\tp.review_pic,\n" +
-                "\tp.type,\n" +
-                "\tp.c_ad_price,\n" +
-                "\tp.k_rate,\n" +
-                "\tb.style_id,\n" +
-                "\tb.imgwidth,\n" +
-                "\tb.imgheight,\n" +
-                "\tb.imgnum,\n" +
-                "\tb.style_name \n" +
-                "\tFROM\n" +
-                "\tadx_floor_price p\n" +
-                "\tLEFT JOIN adx_adStyle b ON FIND_IN_SET( b.style_id, p.styles ) \n" +
-                "\tWHERE\n" +
-                "\tp.ENABLE = 'Y' \n" +
-                "\tORDER BY\n" +
-                "\tp.location_name DESC \n" +
-                "\t) a \n" +
-                "\tGROUP BY a.site,a.qid,a.location_name", AdPosition.class);
+        String sql = SqlMapperLoader.getSql("AdPosition", "queryAdPositions");
+        if (StringUtils.isBlank(sql)){
+            log.error("updateAdPosition error sql is null, namespace: AdPosition, id: queryAdPositions");
+            return;
+        }
+        List<AdPosition> adPositions = DbUtils.queryList(sql, AdPosition.class);
         List<AdPosition> appAdPosit = new ArrayList<>();
         List<AdPosition> h5AdPosit = new ArrayList<>();
         List<AdPosition> pcAdPosit = new ArrayList<>();

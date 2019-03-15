@@ -8,6 +8,7 @@ import com.songheng.dsp.common.utils.DateUtils;
 import com.songheng.dsp.common.utils.PropertyPlaceholder;
 import com.songheng.dsp.common.utils.StringUtils;
 import com.songheng.dsp.datacenter.config.db.DbConfigLoader;
+import com.songheng.dsp.datacenter.config.db.SqlMapperLoader;
 import com.songheng.dsp.datacenter.config.props.PropertiesLoader;
 import com.songheng.dsp.model.materiel.ExtendNews;
 import lombok.extern.slf4j.Slf4j;
@@ -63,181 +64,12 @@ public class DfDspAdvCache {
      *
      */
     public void updateDfDspAdv(){
-
-        List<ExtendNews> extendNewsList = DbUtils.queryList("SELECT\n" +
-                "\ta.hisId AS deliveryId,\n" +
-                "\tCASE\n" +
-                "\tWHEN a.positionType = 'pc' THEN\n" +
-                "\tb.positionType ELSE a.positionType\n" +
-                "\tEND AS pgtype,\n" +
-                "\ta.unitprice AS money,\n" +
-                "\ta.showTime AS maxShowTime,\n" +
-                "\ta.chargeway,\n" +
-                "\ta.position,\n" +
-                "\ta.money AS totalmoney,\n" +
-                "\ta.realendTime,\n" +
-                "\ta.intervalTime,\n" +
-                "\ta.limitshowtime,\n" +
-                "\ta.limitclicktime,\n" +
-                "\ta.groupid,\n" +
-                "\ta.ocpcunitprice,\n" +
-                "\ta.subhisidnum,\n" +
-                "\ta.yusuanType,\n" +
-                "\tb.adId,\n" +
-                "\tb.channel,\n" +
-                "\tb.adurl AS url,\n" +
-                "\tb.advertiser AS source,\n" +
-                "\tb.isdown AS isdownload,\n" +
-                "\tb.isaccurate,\n" +
-                "\tb.isadv AS isAdv,\n" +
-                "\tb.islimittime,\n" +
-                "\tb.switch AS switchTag,\n" +
-                "\tb.apptypeid,\n" +
-                "\tb.isfake,\n" +
-                "\tb.isgrayav,\n" +
-                "\tb.iscustomtime,\n" +
-                "\tb.appstoreid,\n" +
-                "\tb.channelnames,\n" +
-                "\tb.videourl AS video_link,\n" +
-                "\tb.videoalltime,\n" +
-                "\tb.isfullscreen,\n" +
-                "\tb.positionType AS pcadposition,\n" +
-                "\tb.download AS downloadurl,\n" +
-                "\tb.summary,\n" +
-                "\tb.isretreatad,\n" +
-                "\tb.packagename,\n" +
-                "\tb.userId,\n" +
-                "\tb.interest,\n" +
-                "\tb.cpcfactor,\n" +
-                "\tb.isfirstbrush,\n" +
-                "\tb.extra1,\n" +
-                "\tb.extra2,\n" +
-                "\tb.extra3,\n" +
-                "\tb.extra4,\n" +
-                "\tb.extra5,\n" +
-                "\tb.shieldarea,\n" +
-                "\tb.adIntroduction AS title,\n" +
-                "\tb.sex,\n" +
-                "\tb.province AS allowStations,\n" +
-                "\tb.ageGroup,\n" +
-                "\tb.positionId AS isBigImgNews,\n" +
-                "\td.typeName AS adType,\n" +
-                "\tGROUP_CONCAT( DISTINCT e.imgPath ORDER BY e.imgId ASC ) AS imgJson,\n" +
-                "\tGROUP_CONCAT( DISTINCT f.formName ) AS os,\n" +
-                "\tc.imgWidth,\n" +
-                "\tCASE\n" +
-                "\tWHEN b.isfullscreen = 1 THEN\n" +
-                "\t1136 ELSE c.imgHeight \n" +
-                "\tEND AS imgHeight,\n" +
-                "\tg.stdate,\n" +
-                "\tg.eddate,\n" +
-                "\tg.realunitprice,\n" +
-                "\ti.installIds,\n" +
-                "\ti.notInstallIds,\n" +
-                "\ti.remark,\n" +
-                "\tj.budget,\n" +
-                "\tr.issupplement,\n" +
-                "\tr.supplementrate,\n" +
-                "\tr.vendor,\n" +
-                "\tr.operator,\n" +
-                "\tr.interesttendency AS interestTendency,\n" +
-                "\tr.clickHisLabel,\n" +
-                "\tr.totalnum,\n" +
-                "\tr.refreshnum,\n" +
-                "\tr.monopolyposition,\n" +
-                "\tr.sectors,\n" +
-                "\tr.subadstyle,\n" +
-                "\tr.gdLabel,\n" +
-                "\tr.putinway,\n" +
-                "\tr.appredirect AS redirect,\n" +
-                "\tmax( o.childrenId ) AS orderId,\n" +
-                "\tmax( o.createTime ) AS orderCreateTime \n" +
-                "\tFROM\n" +
-                "\t(\n" +
-                "\tSELECT\n" +
-                "\t\thisId,\n" +
-                "\t\tadId,\n" +
-                "\t\tmoney,\n" +
-                "\t\tshowTime,\n" +
-                "\t\tchargeway,\n" +
-                "\t\tstartTime,\n" +
-                "\t\tPOSITION,\n" +
-                "\t\tunitprice,\n" +
-                "\t\trealendTime,\n" +
-                "\t\tintervalTime,\n" +
-                "\t\tlimitshowtime,\n" +
-                "\t\tlimitclicktime,\n" +
-                "\t\tgroupid,\n" +
-                "\t\tocpcunitprice,\n" +
-                "\t\tsubhisidnum,\n" +
-                "\t\tyusuanType,\n" +
-                "\t\tpositionType \n" +
-                "\tFROM\n" +
-                "\t\tadvertise.adplatform_adShowHistory \n" +
-                "\tWHERE\n" +
-                "\t\tstartTime <= NOW( ) AND endTime >= NOW( ) \n" +
-                "\t\tAND adstate = 1\n" +
-                "\tUNION ALL\n" +
-                "\tSELECT\n" +
-                "\t\thisId,\n" +
-                "\t\tadId,\n" +
-                "\t\tmoney,\n" +
-                "\t\tshowTime,\n" +
-                "\t\tchargeway,\n" +
-                "\t\tstartTime,\n" +
-                "\t\tPOSITION,\n" +
-                "\t\tunitprice,\n" +
-                "\t\trealendTime,\n" +
-                "\t\tintervalTime,\n" +
-                "\t\tlimitshowtime,\n" +
-                "\t\tlimitclicktime,\n" +
-                "\t\tgroupid,\n" +
-                "\t\tocpcunitprice,\n" +
-                "\t\tsubhisidnum,\n" +
-                "\t\tyusuanType,\n" +
-                "\t\tpositionType \n" +
-                "\tFROM\n" +
-                "\t\tadvertise.adplatform_adShowHistory \n" +
-                "\tWHERE\n" +
-                "\t\tstartTime <= NOW( ) AND endTime >= NOW( ) \n" +
-                "\t\tAND ( adstate =- 1 AND statusflag IN ( 1, 2 ) )\n" +
-                "\t) AS a\n" +
-                "\tLEFT JOIN advertise.adplatform_adInfo b ON a.adId = b.adId\n" +
-                "\tLEFT JOIN advertise.adplatform_adPosition c ON b.positionId = c.positionId\n" +
-                "\tLEFT JOIN advertise.adplatform_adType d ON b.adType = d.adType\n" +
-                "\tLEFT JOIN advertise.adplatform_adImgInfo e ON e.adId = b.adId\n" +
-                "\tLEFT JOIN advertise.adplatform_formType f ON FIND_IN_SET( f.formId, b.formId )\n" +
-                "\tLEFT JOIN (\n" +
-                "\tSELECT\n" +
-                "\t\tadId,\n" +
-                "\t\tstdate,\n" +
-                "\t\teddate,\n" +
-                "\t\trealunitprice \n" +
-                "\tFROM\n" +
-                "\t\tadvertise.adplatform_adInfo_extend \n" +
-                "\tWHERE\n" +
-                "\t\tflag = 1 \n" +
-                "\t\tAND stdate <= NOW( ) AND eddate >= NOW( ) \n" +
-                "\t) g ON b.adId = g.adId\n" +
-                "\tLEFT JOIN advertise.adplatform_banlance h ON b.userId = h.userId\n" +
-                "\tLEFT JOIN advertise.adplatform_installappinfo i ON a.adId = i.adId\n" +
-                "\tLEFT JOIN advertise.adplatform_adInfo_reviewextend r ON r.adId = a.adId\n" +
-                "\tLEFT JOIN advertise.adplatform_adInfo_group j ON a.groupid = j.id\n" +
-                "\tLEFT JOIN advertise.adplatform_delivery_order o ON a.hisId = o.hisId \n" +
-                "\tAND o.statusFlag = 1 \n" +
-                "\tWHERE\n" +
-                "\t( b.switch = 1 OR ( b.switch = - 1 AND b.deleteflag IN ( 1, 5 ) ) ) \n" +
-                "\tAND j.flag = 1 \n" +
-                "\tAND b.checked = 1 \n" +
-                "\tAND b.platform = 'dongfang' \n" +
-                "\tAND ( h.banlance > 0 OR h.virtualBalance > 0 ) \n" +
-                "\tGROUP BY\n" +
-                "\ta.adId \n" +
-                "\tORDER BY\n" +
-                "\tb.iscustomtime DESC,\n" +
-                "\ta.unitprice DESC,\n" +
-                "\tb.isaccurate DESC,\n" +
-                "\ta.startTime ASC", ExtendNews.class);
+        String sql = SqlMapperLoader.getSql("DfDspAdv", "queryDfDspAdvs");
+        if (StringUtils.isBlank(sql)){
+            log.error("updateDfDspAdv error sql is null, namespace: DfDspAdv, id: queryDfDspAdvs");
+            return;
+        }
+        List<ExtendNews> extendNewsList = DbUtils.queryList(sql, ExtendNews.class);
         Map<String, ExtendNews> extendNewsMap = new HashMap<>(256);
         //deliveryid --> groupRowKey映射
         Map<String, String> groupRowKeyMap = new HashMap<>(256);

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mapper namespace="OtherDspAdv">
+    <select id="queryOtherDspAdvs">
+        SELECT
+        adStyle,
+        adId AS deliveryid,
+        adv_adId AS adv_id,
+        showrep AS showbackurl,
+        clickrep AS clickbackurl,
+        dsp_id AS dspId,
+        advertiser AS source,
+        adTitle AS topic,
+        adurl AS url,
+        isgrayav,
+        isdownload,
+        downloadlink AS downloadurl,
+        deepLinkUrl AS deeplink,
+        appStoreId AS appstoreid,
+        packageName,
+        img1Path,
+        img2Path,
+        img3Path,
+        terminal
+        FROM
+        adx_adinfo_sync
+        WHERE
+        STATUS = 1
+        AND reviewstatus = 1
+        AND startTime &lt;= NOW( ) AND endTime &gt;= NOW( )
+    </select>
+</mapper>

@@ -2,6 +2,7 @@ package com.songheng.dsp.datacenter.user.adx;
 
 import com.songheng.dsp.common.db.DbUtils;
 import com.songheng.dsp.common.utils.StringUtils;
+import com.songheng.dsp.datacenter.config.db.SqlMapperLoader;
 import com.songheng.dsp.dubbo.baseinterface.user.adx.DspUserService;
 import com.songheng.dsp.model.adx.user.DspUserInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -44,26 +45,12 @@ public class DspUserImpl implements DspUserService {
      * 更新dsp用户
      */
     public void updateDspUsers(){
-        List<DspUserInfo> users = DbUtils.queryList("SELECT" +
-                "\tdspid," +
-                "\ttoken," +
-                "\tbanlance," +
-                "\tpoint," +
-                "\tmappingurl," +
-                "\tbidurl," +
-                "\twinnoticeurl," +
-                "\tqps AS h5Qps," +
-                "\tapp_qps AS appQps," +
-                "\tnocmresponse," +
-                "\tusedfuserinfo," +
-                "\trtbmsgformat," +
-                "\tpriority," +
-                "\tterminal," +
-                "\timei_sendreq," +
-                "\tnoimei_sendreq" +
-                "\tFROM adx_dspuser" +
-                "\tWHERE flag = 1" +
-                "\tAND banlance > 0", DspUserInfo.class);
+        String sql = SqlMapperLoader.getSql("DspUser", "queryDspUsers");
+        if (StringUtils.isBlank(sql)){
+            log.error("updateDspUsers error sql is null, namespace: DspUser, id: queryDspUsers");
+            return;
+        }
+        List<DspUserInfo> users = DbUtils.queryList(sql, DspUserInfo.class);
         List<DspUserInfo> appUserList = new ArrayList<>();
         List<DspUserInfo> h5UserList = new ArrayList<>();
         List<DspUserInfo> pcUserList = new ArrayList<>();

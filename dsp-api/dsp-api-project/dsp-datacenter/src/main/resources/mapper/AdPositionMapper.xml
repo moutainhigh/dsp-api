@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<mapper namespace="AdPosition">
+    <select id="queryAdPositions">
+        SELECT
+            a.location_id,
+            a.location_name AS location_name_original,
+            a.isbottomad,
+            CONCAT( a.site, '_', a.qid, '_', a.location_name ) AS location_name,
+            a.cpm_start_price,
+            a.cpm_start_price_1,
+            a.cpm_start_price_2,
+            a.cpm_start_price_f,
+            a.block_vocation,
+            a.allow_file,
+            a.screen,
+            a.type,
+            MAX(
+            CASE a.style_id
+            WHEN 'big' THEN
+            CONCAT( a.style_name, ':', a.imgwidth, '*', a.imgheight, '*', a.imgnum )
+            END
+            ) AS bigstyle,
+            MAX(
+            CASE
+            a.style_id
+            WHEN 'small' THEN
+            CONCAT( a.style_name, ':', a.imgwidth, '*', a.imgheight, '*', a.imgnum )
+            END
+            ) AS smallstyle,
+            MAX(
+            CASE
+            a.style_id
+            WHEN 'group' THEN
+            CONCAT( a.style_name, ':', a.imgwidth, '*', a.imgheight, '*', a.imgnum )
+            END
+            ) AS groupstyle,
+            MAX(
+            CASE
+            a.style_id
+            WHEN 'banner' THEN
+            CONCAT( a.style_name, ':', a.imgwidth, '*', a.imgheight, '*', a.imgnum )
+            END
+            ) AS bannerstyle,
+            MAX(
+            CASE
+            a.style_id
+            WHEN 'wzl' THEN
+            CONCAT( a.style_name, ':', a.imgwidth, '*', a.imgheight, '*', a.imgnum )
+            END
+            ) AS wzlstyle,
+            MAX(
+            CASE
+            a.style_id
+            WHEN 'icon' THEN
+            CONCAT( a.style_name, ':', a.imgwidth, '*', a.imgheight, '*', a.imgnum )
+            END
+            ) AS iconstyle,
+            a.c_ad_price,
+            a.k_rate
+        FROM
+        (
+            SELECT
+                p.location_id,
+                p.location_name,
+                p.isbottomad,
+                p.site,
+                p.qid,
+                p.cpm_start_price,
+                p.cpm_start_price_1,
+                p.cpm_start_price_2,
+                p.cpm_start_price_f,
+                p.block_vocation,
+                p.allow_file,
+                p.screen,
+                p.review_pic,
+                p.type,
+                p.c_ad_price,
+                p.k_rate,
+                b.style_id,
+                b.imgwidth,
+                b.imgheight,
+                b.imgnum,
+                b.style_name
+            FROM
+            adx_floor_price p
+            LEFT JOIN adx_adStyle b ON FIND_IN_SET( b.style_id, p.styles )
+            WHERE
+            p.ENABLE = 'Y'
+            ORDER BY
+            p.location_name DESC
+        ) a
+        GROUP BY a.site,a.qid,a.location_name
+    </select>
+</mapper>

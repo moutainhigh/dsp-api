@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<mapper namespace="DfDspAdv">
+    <select id="queryDfDspAdvs">
+        <![CDATA[
+            SELECT
+                a.hisId AS deliveryId,
+                CASE
+                WHEN a.positionType = 'pc' THEN
+                b.positionType ELSE a.positionType
+                END AS pgtype,
+                a.unitprice AS money,
+                a.showTime AS maxShowTime,
+                a.chargeway,
+                a.position,
+                a.money AS totalmoney,
+                a.realendTime,
+                a.intervalTime,
+                a.limitshowtime,
+                a.limitclicktime,
+                a.groupid,
+                a.ocpcunitprice,
+                a.subhisidnum,
+                a.yusuanType,
+                b.adId,
+                b.channel,
+                b.adurl AS url,
+                b.advertiser AS source,
+                b.isdown AS isdownload,
+                b.isaccurate,
+                b.isadv AS isAdv,
+                b.islimittime,
+                b.switch AS switchTag,
+                b.apptypeid,
+                b.isfake,
+                b.isgrayav,
+                b.iscustomtime,
+                b.appstoreid,
+                b.channelnames,
+                b.videourl AS video_link,
+                b.videoalltime,
+                b.isfullscreen,
+                b.positionType AS pcadposition,
+                b.download AS downloadurl,
+                b.summary,
+                b.isretreatad,
+                b.packagename,
+                b.userId,
+                b.interest,
+                b.cpcfactor,
+                b.isfirstbrush,
+                b.extra1,
+                b.extra2,
+                b.extra3,
+                b.extra4,
+                b.extra5,
+                b.shieldarea,
+                b.adIntroduction AS title,
+                b.sex,
+                b.province AS allowStations,
+                b.ageGroup,
+                b.positionId AS isBigImgNews,
+                d.typeName AS adType,
+                GROUP_CONCAT( DISTINCT e.imgPath ORDER BY e.imgId ASC ) AS imgJson,
+                GROUP_CONCAT( DISTINCT f.formName ) AS os,
+                c.imgWidth,
+                CASE
+                WHEN b.isfullscreen = 1 THEN
+                1136 ELSE c.imgHeight
+                END AS imgHeight,
+                g.stdate,
+                g.eddate,
+                g.realunitprice,
+                i.installIds,
+                i.notInstallIds,
+                i.remark,
+                j.budget,
+                r.issupplement,
+                r.supplementrate,
+                r.vendor,
+                r.operator,
+                r.interesttendency AS interestTendency,
+                r.clickHisLabel,
+                r.totalnum,
+                r.refreshnum,
+                r.monopolyposition,
+                r.sectors,
+                r.subadstyle,
+                r.gdLabel,
+                r.putinway,
+                r.appredirect AS redirect,
+                max( o.childrenId ) AS orderId,
+                max( o.createTime ) AS orderCreateTime
+            FROM
+            (
+                SELECT
+                    hisId,
+                    adId,
+                    money,
+                    showTime,
+                    chargeway,
+                    startTime,
+                    POSITION,
+                    unitprice,
+                    realendTime,
+                    intervalTime,
+                    limitshowtime,
+                    limitclicktime,
+                    groupid,
+                    ocpcunitprice,
+                    subhisidnum,
+                    yusuanType,
+                    positionType
+                FROM
+                advertise.adplatform_adShowHistory
+                WHERE
+                startTime <= NOW( ) AND endTime >= NOW( )
+                AND adstate = 1
+
+                UNION ALL
+
+                SELECT
+                    hisId,
+                    adId,
+                    money,
+                    showTime,
+                    chargeway,
+                    startTime,
+                    POSITION,
+                    unitprice,
+                    realendTime,
+                    intervalTime,
+                    limitshowtime,
+                    limitclicktime,
+                    groupid,
+                    ocpcunitprice,
+                    subhisidnum,
+                    yusuanType,
+                    positionType
+                FROM
+                advertise.adplatform_adShowHistory
+                WHERE
+                startTime <= NOW( ) AND endTime >= NOW( )
+                AND ( adstate =- 1 AND statusflag IN ( 1, 2 ) )
+            ) AS a
+            LEFT JOIN advertise.adplatform_adInfo b ON a.adId = b.adId
+            LEFT JOIN advertise.adplatform_adPosition c ON b.positionId = c.positionId
+            LEFT JOIN advertise.adplatform_adType d ON b.adType = d.adType
+            LEFT JOIN advertise.adplatform_adImgInfo e ON e.adId = b.adId
+            LEFT JOIN advertise.adplatform_formType f ON FIND_IN_SET( f.formId, b.formId )
+            LEFT JOIN (
+                SELECT
+                    adId,
+                    stdate,
+                    eddate,
+                    realunitprice
+                FROM
+                advertise.adplatform_adInfo_extend
+                WHERE
+                flag = 1
+                AND stdate <= NOW( ) AND eddate >= NOW( )
+            ) g ON b.adId = g.adId
+            LEFT JOIN advertise.adplatform_banlance h ON b.userId = h.userId
+            LEFT JOIN advertise.adplatform_installappinfo i ON a.adId = i.adId
+            LEFT JOIN advertise.adplatform_adInfo_reviewextend r ON r.adId = a.adId
+            LEFT JOIN advertise.adplatform_adInfo_group j ON a.groupid = j.id
+            LEFT JOIN advertise.adplatform_delivery_order o ON a.hisId = o.hisId
+            AND o.statusFlag = 1
+            WHERE
+            ( b.switch = 1 OR ( b.switch = - 1 AND b.deleteflag IN ( 1, 5 ) ) )
+            AND j.flag = 1
+            AND b.checked = 1
+            AND b.platform = 'dongfang'
+            AND ( h.banlance > 0 OR h.virtualBalance > 0 )
+            GROUP BY
+            a.adId
+            ORDER BY
+            b.iscustomtime DESC,
+            a.unitprice DESC,
+            b.isaccurate DESC,
+            a.startTime ASC
+        ]]>
+    </select>
+</mapper>

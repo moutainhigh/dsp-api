@@ -2,6 +2,7 @@ package com.songheng.dsp.datacenter.dict;
 
 import com.songheng.dsp.common.db.DbUtils;
 import com.songheng.dsp.common.utils.StringUtils;
+import com.songheng.dsp.datacenter.config.db.SqlMapperLoader;
 import com.songheng.dsp.dubbo.baseinterface.dict.IpCityService;
 import com.songheng.dsp.model.dict.IpCityInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -29,9 +30,12 @@ public class IpCityImpl implements IpCityService {
      * 更新IpCity
      */
     public void updateIpCityInfo(){
-        List<IpCityInfo> ipCityInfoList = DbUtils.queryList(
-                "SELECT ip, province, city FROM adplatform_ip_manage WHERE enable = 'Y'",
-                IpCityInfo.class);
+        String sql = SqlMapperLoader.getSql("IpCity", "queryIpCityInfo");
+        if (StringUtils.isBlank(sql)){
+            log.error("updateIpCityInfo error sql is null, namespace: IpCity, id: queryIpCityInfo");
+            return;
+        }
+        List<IpCityInfo> ipCityInfoList = DbUtils.queryList(sql, IpCityInfo.class);
         Map<String,IpCityInfo> ipcityTmp = new ConcurrentHashMap<>(16);
         for (IpCityInfo ipCityInfo : ipCityInfoList){
             ipcityTmp.put(ipCityInfo.getIp(), ipCityInfo);

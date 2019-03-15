@@ -2,6 +2,7 @@ package com.songheng.dsp.datacenter.materiel.adx;
 
 import com.songheng.dsp.common.db.DbUtils;
 import com.songheng.dsp.common.utils.StringUtils;
+import com.songheng.dsp.datacenter.config.db.SqlMapperLoader;
 import com.songheng.dsp.datacenter.config.props.PropertiesLoader;
 import com.songheng.dsp.dubbo.baseinterface.materiel.adx.OtherDspAdvService;
 import com.songheng.dsp.model.materiel.DspAdvExtend;
@@ -43,33 +44,12 @@ public class OtherDspAdvImpl implements OtherDspAdvService {
      * 更新第三方DSP广告池
      */
     public void updateDspAdvs(){
-        List<DspAdvExtend> dspAdvs = DbUtils.queryList("SELECT\n" +
-                        "\tadStyle,\n" +
-                        "\tadId AS deliveryid,\n" +
-                        "\tadv_adId AS adv_id,\n" +
-                        "\tshowrep AS showbackurl,\n" +
-                        "\tclickrep AS clickbackurl,\n" +
-                        "\tdsp_id AS dspId,\n" +
-                        "\tadvertiser AS source,\n" +
-                        "\tadTitle AS topic,\n" +
-                        "\tadurl AS url,\n" +
-                        "\tisgrayav,\n" +
-                        "\tisdownload,\n" +
-                        "\tdownloadlink AS downloadurl,\n" +
-                        "\tdeepLinkUrl AS deeplink,\n" +
-                        "\tappStoreId AS appstoreid,\n" +
-                        "\tpackageName,\n" +
-                        "\timg1Path,\n" +
-                        "\timg2Path,\n" +
-                        "\timg3Path,\n" +
-                        "\tterminal \n" +
-                        "\tFROM\n" +
-                        "\tadx_adinfo_sync\n" +
-                        "\tWHERE\n" +
-                        "\tSTATUS = 1 \n" +
-                        "\tAND reviewstatus = 1 \n" +
-                        "\tAND startTime <= NOW( ) AND endTime >= NOW( )",
-                DspAdvExtend.class);
+        String sql = SqlMapperLoader.getSql("OtherDspAdv", "queryOtherDspAdvs");
+        if (StringUtils.isBlank(sql)){
+            log.error("updateDspAdvs error sql is null, namespace: OtherDspAdv, id: queryOtherDspAdvs");
+            return;
+        }
+        List<DspAdvExtend> dspAdvs = DbUtils.queryList(sql, DspAdvExtend.class);
         List<DspAdvExtend> appAdvList = new ArrayList<>();
         List<DspAdvExtend> h5AdvList = new ArrayList<>();
         List<DspAdvExtend> pcAdvList = new ArrayList<>();

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mapper namespace="AdvSsp">
+    <select id="queryAdvSspSlot">
+        SELECT
+            a.id AS sspAppId,
+            a.appName,
+            a.terminal,
+            a.appType,
+            a.appId,
+            a.bosshead,
+            a.validateQid,
+            a.remark,
+            s.slotId,
+            s.slotName,
+            s.pgtype,
+            s.slotDesc,
+            s.slotImgs,
+            s.adnum,
+            s.slotSort,
+            s.styleIds,
+            s.floorPrice,
+            ss.sellSeatId
+        FROM
+            adv_ssp_slot s
+            INNER JOIN adv_ssp_application a ON s.appId = a.Id
+            AND a.STATUS = 1 <!-- 启用 -->
+            AND a.validateQid = 0 <!-- 不验证 -->
+            INNER JOIN adv_dict_adstyle d ON FIND_IN_SET( d.id, s.styleIds ) <!-- 样式过滤 -->
+            AND d.STATUS = 1
+            LEFT JOIN adv_ssp_slot_seal ss ON s.slotId = ss.slotId
+        WHERE
+            s.STATUS = 1 <!-- 启用 -->
+
+        UNION ALL
+
+        SELECT
+            a.id AS sspAppId,
+            a.appName,
+            a.terminal,
+            a.appType,
+            a.appId,
+            a.bosshead,
+            a.validateQid,
+            a.remark,
+            s.slotId,
+            s.slotName,
+            s.pgtype,
+            s.slotDesc,
+            s.slotImgs,
+            s.adnum,
+            s.slotSort,
+            s.styleIds,
+            s.floorPrice,
+            ss.sellSeatId
+        FROM
+            adv_ssp_slot s
+            INNER JOIN adv_ssp_application a ON s.appId = a.Id
+            AND a.STATUS = 1 <!-- 启用 -->
+            AND a.validateQid = 1 <!-- 验证 -->
+            INNER JOIN adv_dict_adstyle d ON FIND_IN_SET( d.id, s.styleIds ) <!-- 样式过滤 -->
+            AND d.STATUS = 1
+            LEFT JOIN adv_ssp_slot_seal ss ON s.slotId = ss.slotId
+        WHERE
+            s.STATUS = 1 <!-- 启用 -->
+            AND a.id IN <!-- 渠道白名单过滤 -->
+            ( SELECT q.appId FROM adv_ssp_qid q WHERE q.STATUS = 1 )
+    </select>
+
+    <select id="queryAdvSspQid">
+        SELECT
+            a.id AS sspAppId,
+            a.appName,
+            a.terminal,
+            a.appType,
+            a.appId,
+            a.bosshead,
+            a.validateQid,
+            a.remark,
+            q.qid,
+            q.qidCode
+        FROM
+            adv_ssp_qid q
+            INNER JOIN adv_ssp_application a ON q.appId = a.id
+        WHERE
+            q.STATUS = 1
+            AND a.STATUS = 1
+            AND a.validateQid = 1
+    </select>
+
+    <select id="queryAdvDictSellSeat">
+        SELECT
+            ds.sellSeatId,
+            GROUP_CONCAT( ss.slotId ) AS slotIds,
+            ds.shellSeatName,
+            ds.priority,
+            ds.styleIds,
+            ds.terminals,
+            ds.perCode,
+            ds.perType
+        FROM
+            adv_dict_sell_seat ds
+            LEFT JOIN adv_ssp_slot_seal ss ON ds.sellSeatId = ss.sellSeatId
+        WHERE
+            ds.STATUS = 1
+            GROUP BY
+            ss.sellSeatId
+    </select>
+
+    <select id="queryAdvDictAdStyle">
+        SELECT
+            da.id AS styleId,
+            da.txtlen,
+            da.styleType,
+            da.styleName,
+            da.styleValue,
+            da.width,
+            da.height,
+            da.number,
+            da.iconwidth,
+            da.iconheight,
+            da.perType,
+            da.perCode,
+            da.txtlen,
+            da.subtxtlen,
+            da.imgFormatimgFormat AS imgFormat,
+            da.supportadx
+        FROM
+            adv_dict_adstyle da
+        WHERE
+            da.STATUS = 1
+    </select>
+</mapper>

@@ -1,6 +1,7 @@
 package com.songheng.dsp.datacenter.config.db;
 
 import com.songheng.dsp.common.db.DbUtils;
+import com.songheng.dsp.common.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
@@ -53,30 +54,12 @@ public class DbConfigLoader {
      */
     public static void loadAllDBConfig(){
         Map<String, String> dbConfigMapTmp = new ConcurrentHashMap<>(1024);
-        DbUtils.query2Map("SELECT CONCAT(conftype,'_',(CASE \n" +
-                "      WHEN userId = -1  AND hisId = -1 AND qid = '' THEN GROUP_CONCAT(dspkey) \n" +
-                "      WHEN qid <> '' THEN GROUP_CONCAT(qid,'_',dspkey)  \n" +
-                "      WHEN userId<>-1 AND hisId <>-1 THEN GROUP_CONCAT(userId,'_',hisId,'_',dspkey)\n" +
-                "      WHEN userId=-1 THEN GROUP_CONCAT(hisId,'_',dspkey)\n" +
-                "      WHEN hisId=-1 THEN GROUP_CONCAT(userId,'_',dspkey)\n" +
-                "      ELSE GROUP_CONCAT(qid,'_',userId,'_',hisId,'_',dspkey) END)) dspkey\n" +
-                "  , dspvalue\n" +
-                "  FROM adplatform_dsp_sysconf  \n" +
-                "  WHERE flag = 1\n" +
-                "  GROUP BY conftype,dspkey,userId,hisId,qid,dspvalue\n" +
-                "  UNION ALL \n" +
-                "  SELECT CONCAT('pc','_',b.dspkey) dspkey, b.dspvalue FROM (\n" +
-                "     (SELECT 'positionkey' dspkey, group_concat(a.dspkey ORDER BY a.remark = '', a.remark+0, a.id) dspvalue " +
-                "           FROM (SELECT id, dspkey, remark " +
-                "               FROM adplatform_dsp_sysconf " +
-                "               WHERE flag = 1 AND conftype = 'pcposition' AND confgroup = 'positionstyle' ORDER BY remark = '', remark+0, id) a) \n" +
-                "      UNION ALL\n" +
-                "     (SELECT 'news_site_type' dspkey, group_concat(substring(dspkey,8)) dspvalue " +
-                "           FROM adplatform_dsp_sysconf " +
-                "           WHERE flag = 1 AND conftype='pcposition' AND confgroup = 'sitepagetype' ORDER BY remark,id) \n" +
-                "      UNION ALL\n" +
-                "     (SELECT dspkey,dspvalue FROM adplatform_dsp_sysconf WHERE flag = 1 AND conftype='pcposition')\n" +
-                "  ) b ", dbConfigMapTmp);
+        String sql = SqlMapperLoader.getSql("DbConfig","getAllDbConfig");
+        if (StringUtils.isBlank(sql)){
+            log.error("loadAllDBConfig error sql is null, namespace: DbConfig, id: getAllDbConfig");
+            return;
+        }
+        DbUtils.query2Map(sql, dbConfigMapTmp);
         if (dbConfigMapTmp.size() > 0){
             dbConfigMap = dbConfigMapTmp;
         }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mapper namespace="DbConfig">
+    <select id="getAllDbConfig">
+        <![CDATA[
+            SELECT CONCAT(conftype,'_',(CASE
+              WHEN userId = -1  AND hisId = -1 AND qid = '' THEN GROUP_CONCAT(dspkey)
+              WHEN qid <> '' THEN GROUP_CONCAT(qid,'_',dspkey)
+              WHEN userId <> -1 AND hisId <> -1 THEN GROUP_CONCAT(userId,'_',hisId,'_',dspkey)
+              WHEN userId = -1 THEN GROUP_CONCAT(hisId,'_',dspkey)
+              WHEN hisId = -1 THEN GROUP_CONCAT(userId,'_',dspkey)
+              ELSE GROUP_CONCAT(qid,'_',userId,'_',hisId,'_',dspkey) END)) dspkey
+          , dspvalue
+          FROM adplatform_dsp_sysconf
+          WHERE flag = 1
+          GROUP BY conftype,dspkey,userId,hisId,qid,dspvalue
+          UNION ALL
+          SELECT CONCAT('pc','_',b.dspkey) dspkey, b.dspvalue FROM (
+             (SELECT 'positionkey' dspkey, group_concat(a.dspkey ORDER BY a.remark = '', a.remark+0, a.id) dspvalue
+                   FROM (SELECT id, dspkey, remark
+                       FROM adplatform_dsp_sysconf
+                       WHERE flag = 1 AND conftype = 'pcposition' AND confgroup = 'positionstyle' ORDER BY remark = '', remark+0, id) a)
+              UNION ALL
+            (SELECT 'news_site_type' dspkey, group_concat(substring(dspkey,8)) dspvalue
+                   FROM adplatform_dsp_sysconf
+                   WHERE flag = 1 AND conftype='pcposition' AND confgroup = 'sitepagetype' ORDER BY remark,id)
+              UNION ALL
+             (SELECT dspkey,dspvalue FROM adplatform_dsp_sysconf WHERE flag = 1 AND conftype='pcposition')
+          ) b
+        ]]>
+    </select>
+</mapper>

@@ -2,6 +2,7 @@ package com.songheng.dsp.datacenter.ssp;
 
 import com.songheng.dsp.common.db.DbUtils;
 import com.songheng.dsp.common.utils.StringUtils;
+import com.songheng.dsp.datacenter.config.db.SqlMapperLoader;
 import com.songheng.dsp.dubbo.baseinterface.ssp.AdvSspQidService;
 import com.songheng.dsp.model.ssp.AdvSspQid;
 import lombok.extern.slf4j.Slf4j;
@@ -55,25 +56,12 @@ public class AdvSspQidImpl implements AdvSspQidService {
      * 更新 渠道白名单信息（要求进行渠道白名单验证）
      */
     public void updateAdvSspQid(){
-
-        List<AdvSspQid> advSspQidList = DbUtils.queryList("SELECT\n" +
-                "\ta.id AS sspAppId,\n" +
-                "\ta.appName,\n" +
-                "\ta.terminal,\n" +
-                "\ta.appType,\n" +
-                "\ta.appId,\n" +
-                "\ta.bosshead,\n" +
-                "\ta.validateQid,\n" +
-                "\ta.remark,\n" +
-                "\tq.qid,\n" +
-                "\tq.qidCode \n" +
-                "\tFROM\n" +
-                "\tadv_ssp_qid q\n" +
-                "\tINNER JOIN adv_ssp_application a ON q.appId = a.id \n" +
-                "\tWHERE\n" +
-                "\tq.STATUS = 1 \n" +
-                "\tAND a.STATUS = 1 \n" +
-                "\tAND a.validateQid = 1", AdvSspQid.class);
+        String sql = SqlMapperLoader.getSql("AdvSsp", "queryAdvSspQid");
+        if (StringUtils.isBlank(sql)){
+            log.error("updateAdvSspQid error sql is null, namespace: AdvSsp, id: queryAdvSspQid");
+            return;
+        }
+        List<AdvSspQid> advSspQidList = DbUtils.queryList(sql, AdvSspQid.class);
         Map<String, AdvSspQid> advSspQidTmp = new ConcurrentHashMap<>(32);
         String tml_site_qid;
         for (AdvSspQid advSspQid : advSspQidList){
