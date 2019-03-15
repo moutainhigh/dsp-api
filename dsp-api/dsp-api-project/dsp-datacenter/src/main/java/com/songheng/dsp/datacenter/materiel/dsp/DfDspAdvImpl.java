@@ -1,5 +1,6 @@
 package com.songheng.dsp.datacenter.materiel.dsp;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.songheng.dsp.dubbo.baseinterface.materiel.dsp.DfDspAdvService;
 import com.songheng.dsp.model.materiel.ExtendNews;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import java.util.Set;
  * @date: 2019/3/12 15:55
  * @description: DfDsp广告池缓存接口实现类
  */
+@Service(interfaceClass = DfDspAdvService.class)
 @Component
 public class DfDspAdvImpl implements DfDspAdvService {
 

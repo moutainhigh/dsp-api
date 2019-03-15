@@ -15,8 +15,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-public class ExtendNews {
-
+public class ExtendNews implements java.io.Serializable {
+    public static final long serialVersionUID = 28620482137774168L;
     /**
      * 广告ID
      */

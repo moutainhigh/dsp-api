@@ -16,7 +16,7 @@ dubbo:
 
 #扫描包
   scan:
-#    base-packages: com.songheng.dsp.dubbo.provider.partner.serviceimpl
+    base-packages: com.songheng.dsp.datacenter
 
 
   

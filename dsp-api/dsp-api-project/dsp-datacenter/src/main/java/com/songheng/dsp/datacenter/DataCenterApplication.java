@@ -5,6 +5,7 @@ import com.songheng.dsp.common.InitLoadConf;
 import com.songheng.dsp.common.enums.ProjectEnum;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import javax.annotation.PostConstruct;
 
@@ -15,6 +16,7 @@ import javax.annotation.PostConstruct;
  */
 @SpringBootApplication
 @EnableDubboConfig
+@EnableScheduling
 public class DataCenterApplication {
     public static void main(String[] args){
         SpringApplication.run(DataCenterApplication.class, args);
