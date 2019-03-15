@@ -36,6 +36,9 @@ public class DbConfigLoader {
      * @return
      */
     public static String getDbConfigValue(String key){
+        if (StringUtils.isBlank(key)){
+            return null;
+        }
         return dbConfigMap.get(key);
     }
 
@@ -46,6 +49,9 @@ public class DbConfigLoader {
      * @return
      */
     public static Map<String, String> getDbConfigMap(String key){
+        if (StringUtils.isBlank(key)){
+            return new HashMap<>(16);
+        }
         return tmlDbConfigMap.get(key);
     }
 

@@ -1,5 +1,6 @@
 package com.songheng.dsp.datacenter.materiel.adx;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.songheng.dsp.common.db.DbUtils;
 import com.songheng.dsp.common.utils.StringUtils;
 import com.songheng.dsp.datacenter.config.db.SqlMapperLoader;
@@ -21,6 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @description: 第三方DSP广告池缓存接口实现类
  */
 @Slf4j
+@Service(interfaceClass = OtherDspAdvService.class)
 @Component
 public class OtherDspAdvImpl implements OtherDspAdvService {
 
@@ -57,8 +59,10 @@ public class OtherDspAdvImpl implements OtherDspAdvService {
         Map<String, DspAdvExtend> advIdMapTmp = new ConcurrentHashMap<>(1024);
         Map<String, DspAdvExtend> deliveryIdMapTmp = new ConcurrentHashMap<>(1024);
         for (DspAdvExtend dspAdvExtend : dspAdvs){
-            terminal = dspAdvExtend.getTerminal();
-            adStyle = PropertiesLoader.getProperty(dspAdvExtend.getAdStyle());
+            terminal = StringUtils.isNotBlank(dspAdvExtend.getTerminal()) ? dspAdvExtend.getTerminal() : "";
+            if (StringUtils.isNotBlank(dspAdvExtend.getAdStyle())){
+                adStyle = PropertiesLoader.getProperty(dspAdvExtend.getAdStyle());
+            }PropertiesLoader.getProperty(null);
             List<DspAdvExtend.Img> imglist = new ArrayList<>();
             DspAdvExtend.Img img = dspAdvExtend.new Img(dspAdvExtend.getImg1Path(),320, 240);
             imglist.add(img);
@@ -92,8 +96,12 @@ public class OtherDspAdvImpl implements OtherDspAdvService {
                 dspAdvExtend.setDeliveryOs("Android,iOS");
                 dspAdvExtend.setAdtype(0);
                 dspAdvExtend.setShowtime(3);
-                dspAdvExtend.setShowrep(Arrays.asList(dspAdvExtend.getShowbackurl().split("@_@")));
-                dspAdvExtend.setClickrep(Arrays.asList(dspAdvExtend.getClickbackurl().split("@_@")));
+                if (StringUtils.isNotBlank(dspAdvExtend.getShowbackurl())){
+                    dspAdvExtend.setShowrep(Arrays.asList(dspAdvExtend.getShowbackurl().split("@_@")));
+                }
+                if (StringUtils.isNotBlank(dspAdvExtend.getClickbackurl())){
+                    dspAdvExtend.setClickrep(Arrays.asList(dspAdvExtend.getClickbackurl().split("@_@")));
+                }
                 appAdvList.add(dspAdvExtend);
             }
             if (terminal.toLowerCase().indexOf("h5") != -1){

@@ -55,7 +55,8 @@ public class DfDspAdvCache {
         if (StringUtils.isBlank(tml_pg_key)){
             return new HashSet<>();
         }
-        return tmlPgTypeMap.get(tml_pg_key);
+        Set<ExtendNews> result = tmlPgTypeMap.get(tml_pg_key);
+        return null != result ? result : new HashSet<ExtendNews>();
     }
 
 
@@ -137,19 +138,19 @@ public class DfDspAdvCache {
         String tml_pg_key;
         String[] channels;
         for (ExtendNews news : collection){
-            if (StringUtils.isNotBlank(news.getChannel())){
-                channels = news.getChannel().split(",|，");
-                for (String channel : channels){
-                    tml_pg_key = String.format("%s%s%s", channel, ".", news.getPgtype());
-                    if (extendNewsTmp.containsKey(tml_pg_key)){
-                        extendNewsTmp.get(tml_pg_key).add(news);
-                    } else {
-                        Set<ExtendNews> extendNews = new HashSet<>();
-                        extendNews.add(news);
-                        extendNewsTmp.put(tml_pg_key, extendNews);
+                if (StringUtils.isNotBlank(news.getChannel())){
+                    channels = news.getChannel().split(",|，");
+                    for (String channel : channels){
+                        tml_pg_key = String.format("%s%s%s", channel, ".", news.getPgtype());
+                        if (extendNewsTmp.containsKey(tml_pg_key)){
+                            extendNewsTmp.get(tml_pg_key).add(news);
+                        } else {
+                            Set<ExtendNews> extendNews = new HashSet<>();
+                            extendNews.add(news);
+                            extendNewsTmp.put(tml_pg_key, extendNews);
+                        }
                     }
                 }
-            }
         }
         if (extendNewsTmp.size() > 0){
             tmlPgTypeMap = extendNewsTmp;

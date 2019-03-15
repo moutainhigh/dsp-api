@@ -1,5 +1,6 @@
 package com.songheng.dsp.datacenter.dict;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.songheng.dsp.common.db.DbUtils;
 import com.songheng.dsp.common.utils.StringUtils;
 import com.songheng.dsp.datacenter.config.db.SqlMapperLoader;
@@ -18,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @description: IpCity缓存接口实现类
  */
 @Slf4j
+@Service(interfaceClass = IpCityService.class)
 @Component
 public class IpCityImpl implements IpCityService {
 
@@ -38,7 +40,9 @@ public class IpCityImpl implements IpCityService {
         List<IpCityInfo> ipCityInfoList = DbUtils.queryList(sql, IpCityInfo.class);
         Map<String,IpCityInfo> ipcityTmp = new ConcurrentHashMap<>(16);
         for (IpCityInfo ipCityInfo : ipCityInfoList){
-            ipcityTmp.put(ipCityInfo.getIp(), ipCityInfo);
+            if (StringUtils.isNotBlank(ipCityInfo.getIp())){
+                ipcityTmp.put(ipCityInfo.getIp(), ipCityInfo);
+            }
         }
         if (ipcityTmp.size() > 0){
             ipCityMap = ipcityTmp;
