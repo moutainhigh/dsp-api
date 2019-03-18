@@ -1,5 +1,6 @@
 package com.songheng.dsp.datacenter.config.db;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.songheng.dsp.dubbo.baseinterface.config.db.DbConfigService;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ import java.util.Map;
  * @date: 2019/3/4 14:35
  * @description: DbConfig缓存接口实现类
  */
+@Service(interfaceClass = DbConfigService.class)
 @Component
 public class DbConfigImpl implements DbConfigService {
 

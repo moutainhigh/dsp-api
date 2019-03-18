@@ -1,5 +1,6 @@
 package com.songheng.dsp.datacenter.config.props;
 
+import com.songheng.dsp.common.utils.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
@@ -71,6 +72,9 @@ public class PropertiesLoader {
      * @return
      */
     public static String getProperty(String name) {
+        if (StringUtils.isBlank(name)){
+            return null;
+        }
         return propertiesMap.get(name);
     }
 

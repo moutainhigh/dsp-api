@@ -1,5 +1,6 @@
 package com.songheng.dsp.datacenter.user.adx;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.songheng.dsp.common.db.DbUtils;
 import com.songheng.dsp.common.utils.StringUtils;
 import com.songheng.dsp.datacenter.config.db.SqlMapperLoader;
@@ -19,6 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @description: DSP用户池缓存接口实现类
  */
 @Slf4j
+@Service(interfaceClass = DspUserService.class)
 @Component
 public class DspUserImpl implements DspUserService {
 
@@ -58,7 +60,7 @@ public class DspUserImpl implements DspUserService {
         Map<String, List<DspUserInfo>> dspIdMapTmp = new ConcurrentHashMap<>(32);
         Map<String, List<DspUserInfo>> priorityMapTmp = new ConcurrentHashMap<>(32);
         for (DspUserInfo userInfo : users){
-            terminal = userInfo.getTerminal();
+            terminal = StringUtils.isNotBlank(userInfo.getTerminal()) ? userInfo.getTerminal() : terminal;
             if (terminal.toLowerCase().indexOf("app") != -1){
                 //设置h5,pc qps初始值
                 userInfo.setH5Qps(100);

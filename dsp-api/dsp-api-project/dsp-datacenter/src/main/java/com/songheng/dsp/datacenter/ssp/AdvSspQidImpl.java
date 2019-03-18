@@ -21,6 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Service(interfaceClass = AdvSspQidService.class)
 @Slf4j
+@Service(interfaceClass = AdvSspQidService.class)
 @Component
 public class AdvSspQidImpl implements AdvSspQidService {
 

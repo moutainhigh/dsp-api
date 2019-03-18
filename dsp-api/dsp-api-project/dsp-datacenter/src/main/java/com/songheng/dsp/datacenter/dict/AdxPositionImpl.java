@@ -1,5 +1,6 @@
 package com.songheng.dsp.datacenter.dict;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.songheng.dsp.common.db.DbUtils;
 import com.songheng.dsp.common.utils.StringUtils;
 import com.songheng.dsp.datacenter.config.db.SqlMapperLoader;
@@ -19,6 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @description: ADX广告位缓存接口实现类
  */
 @Slf4j
+@Service(interfaceClass = AdxPositionService.class)
 @Component
 public class AdxPositionImpl implements AdxPositionService {
 

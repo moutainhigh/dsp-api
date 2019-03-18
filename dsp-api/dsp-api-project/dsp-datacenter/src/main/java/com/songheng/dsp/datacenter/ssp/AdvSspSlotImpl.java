@@ -1,5 +1,6 @@
 package com.songheng.dsp.datacenter.ssp;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.songheng.dsp.common.db.DbUtils;
 import com.songheng.dsp.common.utils.StringUtils;
 import com.songheng.dsp.datacenter.config.db.SqlMapperLoader;
@@ -20,6 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @description: SSP 广告位缓存接口实现类
  */
 @Slf4j
+@Service(interfaceClass = AdvSspSlotService.class)
 @Component
 public class AdvSspSlotImpl implements AdvSspSlotService {
 
