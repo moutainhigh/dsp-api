@@ -14,7 +14,7 @@ public abstract class RiskControl {
      * 获取成功结果：成功的方法不需要子类重写
      * */
     protected static final RiskControlResult getSuccessResult(BaseFlow baseFlow){
-        return new RiskControlResult(true,"00000","风控验证通过",baseFlow);
+        return new RiskControlResult(true,"00000","成功",baseFlow);
     }
     /**
      * 风控验证,以及风控的转发
