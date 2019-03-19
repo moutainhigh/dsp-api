@@ -36,7 +36,7 @@
         <dependency>
             <groupId>com.github.sgroschupf</groupId>
             <artifactId>zkclient</artifactId>
-            <version>${zkclient.version}</version>
+            <version>0.1</version>
         </dependency>
     </dependencies>
 
