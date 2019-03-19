@@ -19,6 +19,8 @@ import javax.annotation.PostConstruct;
 @EnableScheduling
 public class DataCenterApplication {
     public static void main(String[] args){
+        //设置dubbo使用slf4j来桥接，再由slf4j 转接到 log4j2 进行日志输出
+        System.setProperty("dubbo.application.logger","slf4j");
         SpringApplication.run(DataCenterApplication.class, args);
     }
 

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -215,10 +216,8 @@ public class DbUtils {
                         for(int i=1; i<=columnCount; i++) {
                             //获取查询sql别名字段
                             String columnName = rsmd.getColumnLabel(i);
-                            Field field = null;
-                            try {
-                                field = cls.getDeclaredField(columnName);
-                            } catch (Exception e) {
+                            Field field = getFieldByColumnName(cls, columnName);
+                            if (null == field){
                                 continue;
                             }
                             field.setAccessible(true);
@@ -286,6 +285,33 @@ public class DbUtils {
             log.error("analysisRst failure, ResultSet={}&className={}\t{}", rs, cls.getName(), e);
         }
         return list;
+    }
+
+    /**
+     * 根据属性名获取Field，包含父类，以及父类的父类直至Object
+     * @param cls
+     * @param columnName
+     * @return
+     */
+    public static Field getFieldByColumnName(Class<?> cls, String columnName){
+        try {
+            for (; null != cls && cls != Object.class; cls = cls.getSuperclass()) {
+                Field[] fields = cls.getDeclaredFields();
+                for (Field field : fields) {
+                    int mod = field.getModifiers();
+                    //static final 属性跳过
+                    if (Modifier.isStatic(mod) || Modifier.isFinal(mod)) {
+                        continue;
+                    }
+                    if (field.getName().equalsIgnoreCase(columnName)){
+                        return field;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**

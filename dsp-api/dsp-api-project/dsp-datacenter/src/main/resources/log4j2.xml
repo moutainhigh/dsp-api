@@ -19,6 +19,7 @@
         <property name="MODEL_USER">/user</property><!--USER模块 -->
         <property name="MODEL_SSP">/ssp</property><!--SSP模块 -->
         <property name="MODEL_JOB">/job</property><!--JOB模块 -->
+        <property name="MODEL_DUBBO">/dubbo</property><!--DUBBO内部日志模块 -->
         <property name="LAYOUT_PATTERN">%d{UNIX_MILLIS}\t%d\t\t%p\t%c{1}\t%m\t%r%n</property>
     </properties>
     <appenders>
@@ -84,6 +85,12 @@
             <TimeBasedTriggeringPolicy/>
         </RollingFile>
 
+        <RollingFile name="dubboLog" fileName="${LOG_HOME}/${MODEL_DUBBO}/dubboLog.log" filePattern="${LOG_HOME}/${MODEL_DUBBO}/dubboLog-%d{yyyyMMdd}.log">
+            <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout charset="UTF-8" pattern="${LAYOUT_PATTERN}"/>
+            <TimeBasedTriggeringPolicy/>
+        </RollingFile>
+
         <!--Appender  输出到滚动保存的文件, 触发保存日志文件的条件是日志文件大于3KB，只保存最新的10个日志-->
         <!--<RollingFile name="debugLog" fileName="${LOG_HOME}/${DEBUG_LOG}/debug.log" filePattern="${LOG_HOME}/${DEBUG_LOG}/debug-%i.log">-->
             <!--<ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>-->
@@ -137,6 +144,9 @@
         </AsyncLogger>
         <AsyncLogger name="com.songheng.dsp.datacenter.job" level="${LEVEL}" additivity="false">
             <appender-ref ref="jobLog"/>
+        </AsyncLogger>
+        <AsyncLogger name="com.alibaba.dubbo" level="${LEVEL}" additivity="false">
+            <appender-ref ref="dubboLog"/>
         </AsyncLogger>
     </loggers>
 </configuration>
