@@ -21,26 +21,26 @@ public class RiskControlResult {
      **/
     private boolean success;
     /**
+     * 无效原因code
+     **/
+    private String code;
+    /**
      * 无效原因
      **/
     private String reason;
     /**
-     *具体原因
+     * 风控业务执行的链数
      **/
-    private String detail;
+    private int rcNum;
     /**
      *流量信息
      **/
     private BaseFlow baseFlow;
-    /**
-     * 风控业务执行的链数
-     **/
-    private int rcNum;
 
-    public RiskControlResult(boolean success, String reason, String detail,BaseFlow baseFlow){
+    public RiskControlResult(boolean success, String code,String reason,BaseFlow baseFlow){
         this.success = success;
+        this.code = code;
         this.reason = reason;
-        this.detail = detail;
         this.baseFlow = baseFlow;
     }
     /**

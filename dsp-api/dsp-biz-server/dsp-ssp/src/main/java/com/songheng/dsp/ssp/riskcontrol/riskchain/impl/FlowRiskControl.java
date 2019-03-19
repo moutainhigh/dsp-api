@@ -12,18 +12,10 @@ import com.songheng.dsp.ssp.riskcontrol.riskchain.RiskControl;
  **/
 public class FlowRiskControl extends RiskControl {
 
-    /**
-     *重写风控验证失败的原因
-     **/
-    @Override
-    protected RiskControlResult getFailResult(BaseFlow baseFlow) {
-        return new RiskControlResult(false,"testFlow","测试流量",baseFlow);
-    }
-
     @Override
     protected RiskControlResult doVerification(BaseFlow baseFlow) {
         if(baseFlow.isTestFlow()){
-            return getFailResult(baseFlow);
+            return new RiskControlResult(false,"10003","流量信息为空",baseFlow);
         }else{
             return getSuccessResult(baseFlow);
         }

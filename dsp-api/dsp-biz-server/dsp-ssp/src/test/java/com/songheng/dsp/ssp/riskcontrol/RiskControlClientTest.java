@@ -3,7 +3,6 @@ package com.songheng.dsp.ssp.riskcontrol;
 import com.songheng.dsp.common.InitLoadConf;
 import com.songheng.dsp.common.enums.ProjectEnum;
 import com.songheng.dsp.model.flow.BaseFlow;
-import com.songheng.dsp.model.flow.PcFlow;
 import com.songheng.dsp.ssp.RiskControlClient;
 import com.songheng.dsp.ssp.riskcontrol.riskchain.impl.FlowRiskControl;
 import org.junit.After;
@@ -24,7 +23,7 @@ public class RiskControlClientTest {
         InitLoadConf.init(ProjectEnum.H5);
     }
 
-    BaseFlow baseFlow = new PcFlow();
+    BaseFlow baseFlow = new BaseFlow();
 
     @Before
     public void setUp()  {
