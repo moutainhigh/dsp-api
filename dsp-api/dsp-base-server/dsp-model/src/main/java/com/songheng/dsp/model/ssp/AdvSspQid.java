@@ -12,7 +12,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class AdvSspQid extends AdvSspApplication {
+public class AdvSspQid extends AdvSspApplication implements java.io.Serializable{
+    public static final long serialVersionUID = 2862048213777334168L;
     /**
      * 所属应用Id;ssp_application.id
      */

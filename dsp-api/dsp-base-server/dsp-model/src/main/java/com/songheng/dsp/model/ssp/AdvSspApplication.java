@@ -12,8 +12,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class AdvSspApplication {
-
+public class AdvSspApplication implements java.io.Serializable{
+    public static final long serialVersionUID = 2862012382137774168L;
     /**
      * 包名或网页地址;com.songheng.eastnews , http://mini.eastday.com
      */
