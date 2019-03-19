@@ -19,7 +19,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date: 2019/3/11 21:40
  * @description: 渠道白名单缓存接口实现类
  */
-@Service(interfaceClass = AdvSspQidService.class)
 @Slf4j
 @Service(interfaceClass = AdvSspQidService.class)
 @Component
