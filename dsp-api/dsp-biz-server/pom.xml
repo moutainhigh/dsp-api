@@ -33,7 +33,11 @@
                 <artifactId>dsp-model</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.songheng.dsp</groupId>
+                <artifactId>dsp-dubbo-base-interface</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

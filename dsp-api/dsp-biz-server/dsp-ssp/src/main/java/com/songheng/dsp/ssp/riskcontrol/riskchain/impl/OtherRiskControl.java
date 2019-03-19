@@ -11,18 +11,10 @@ import com.songheng.dsp.ssp.riskcontrol.riskchain.RiskControl;
  * @date: 2019-02-01 10:05
  **/
 public class OtherRiskControl extends RiskControl {
-    /**
-     *重写风控验证失败的原因
-     **/
-    @Override
-    protected RiskControlResult getFailResult(BaseFlow baseFlow) {
-        return new RiskControlResult(false,"notPcFlow","非pc流量",baseFlow);
-    }
-
     @Override
     protected RiskControlResult doVerification(BaseFlow baseFlow) {
         if(!"pc".equalsIgnoreCase(baseFlow.getTerminal())){
-            return getFailResult(baseFlow);
+            return new RiskControlResult(false,"10003","PC流量错误",baseFlow);
         }else{
             return getSuccessResult(baseFlow);
         }

@@ -10,17 +10,10 @@ import com.songheng.dsp.ssp.riskcontrol.riskchain.RiskControl;
  * @date: 2019-02-01 10:05
  **/
 public class AntiBrushRiskControl extends RiskControl{
-    /**
-     *重写风控验证失败的原因
-     **/
-    @Override
-    protected RiskControlResult getFailResult(BaseFlow baseFlow) {
-        return new RiskControlResult(false,"brushFlow","刷量流量",baseFlow);
-    }
     @Override
     protected RiskControlResult doVerification(BaseFlow baseFlow) {
         if(baseFlow.isBrushFlow()){
-            return getFailResult(baseFlow);
+            return new RiskControlResult(false,"10004","防刷流量",baseFlow);
         }else{
             return getSuccessResult(baseFlow);
         }
