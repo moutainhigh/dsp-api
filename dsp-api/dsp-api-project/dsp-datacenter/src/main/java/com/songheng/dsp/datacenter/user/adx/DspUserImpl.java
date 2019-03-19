@@ -140,9 +140,6 @@ public class DspUserImpl implements DspUserService {
     @Override
     public List<DspUserInfo> getDspUsersByDspId(String terminal, String dspId){
         String tml_dspId = String.format("%s%s", terminal, dspId);
-        if (StringUtils.isBlank(tml_dspId)){
-            return new ArrayList<>();
-        }
         List<DspUserInfo> result = dspUserInfoDspIdMap.get(tml_dspId);
         return null != result ? result : new ArrayList<DspUserInfo>();
     }
@@ -156,9 +153,6 @@ public class DspUserImpl implements DspUserService {
     @Override
     public List<DspUserInfo> getDspUsersByPriority(String terminal, String priority){
         String tml_priority = String.format("%s%s", terminal, priority);
-        if (StringUtils.isBlank(tml_priority)){
-            return new ArrayList<>();
-        }
         List<DspUserInfo> result = dspUserInfoPriorityMap.get(tml_priority);
         return null != result ? result : new ArrayList<DspUserInfo>();
     }

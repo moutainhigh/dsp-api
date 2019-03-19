@@ -166,9 +166,6 @@ public class OtherDspAdvImpl implements OtherDspAdvService {
     @Override
     public DspAdvExtend getDspAdvByHisIdDspId(String terminal, String hisId, String dspId) {
         String tml_hisId_dspId = String.format("%s%s%s", terminal, hisId, dspId);
-        if (StringUtils.isBlank(tml_hisId_dspId)){
-            return new DspAdvExtend();
-        }
         DspAdvExtend dspAdvExtend = deliveryIdAds.get(tml_hisId_dspId);
         return null != dspAdvExtend ? dspAdvExtend : new DspAdvExtend();
     }
@@ -176,9 +173,6 @@ public class OtherDspAdvImpl implements OtherDspAdvService {
     @Override
     public DspAdvExtend getDspAdvByAdvIdDspId(String terminal, String advId, String dspId) {
         String tml_advId_dspId = String.format("%s%s%s", terminal, advId, dspId);
-        if (StringUtils.isBlank(tml_advId_dspId)){
-            return new DspAdvExtend();
-        }
         DspAdvExtend dspAdvExtend = advidAds.get(tml_advId_dspId);
         return null != dspAdvExtend ? dspAdvExtend : new DspAdvExtend();
     }

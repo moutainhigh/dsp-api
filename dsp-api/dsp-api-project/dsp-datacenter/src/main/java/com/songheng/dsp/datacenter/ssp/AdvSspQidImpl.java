@@ -47,9 +47,6 @@ public class AdvSspQidImpl implements AdvSspQidService {
     @Override
     public AdvSspQid getAdvSspQid(String terminal, String appName, String qid){
         String tml_site_qid = String.format("%s%s%s%s%s", terminal, ".", appName, ".", qid);
-        if (StringUtils.isBlank(tml_site_qid)){
-            return new AdvSspQid();
-        }
         AdvSspQid advSspQid = advSspQidMap.get(tml_site_qid);
         return null != advSspQid ? advSspQid : new AdvSspQid();
     }
