@@ -4,7 +4,7 @@ import com.songheng.dsp.common.InitLoadConf;
 import com.songheng.dsp.common.enums.ProjectEnum;
 import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.ssp.RiskControlClient;
-import com.songheng.dsp.ssp.riskcontrol.riskchain.impl.FlowRiskControl;
+import com.songheng.dsp.ssp.riskcontrol.riskchain.impl.BlackListControl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -75,6 +75,6 @@ public class RiskControlClientTest {
         baseFlow.setTestFlow(false);
         baseFlow.setBrushFlow(true);
         RiskControlClient client = new RiskControlClient();
-        System.out.println(new FlowRiskControl().verification(baseFlow,client));
+        System.out.println(new BlackListControl().verification(baseFlow,client));
     }
 }

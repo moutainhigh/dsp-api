@@ -1,20 +1,14 @@
 package com.songheng.dsp.ssp;
 
-import com.alibaba.dubbo.config.ApplicationConfig;
-import com.alibaba.dubbo.config.ReferenceConfig;
-import com.alibaba.dubbo.config.RegistryConfig;
 import com.songheng.dsp.common.utils.CollectionUtils;
-import com.songheng.dsp.dubbo.baseinterface.ssp.AdvSspQidService;
-import com.songheng.dsp.dubbo.baseinterface.ssp.AdvSspSlotService;
 import com.songheng.dsp.model.flow.BaseFlow;
-import com.songheng.dsp.model.ssp.AdvSspQid;
 import com.songheng.dsp.model.ssp.AdvSspSlot;
 import com.songheng.dsp.ssp.context.RpcServiceContext;
 import com.songheng.dsp.ssp.riskcontrol.RiskControlResult;
 import com.songheng.dsp.ssp.riskcontrol.riskchain.RiskControl;
 import com.songheng.dsp.ssp.riskcontrol.riskchain.impl.AntiBrushRiskControl;
 import com.songheng.dsp.ssp.riskcontrol.riskchain.impl.FlowCheckControl;
-import com.songheng.dsp.ssp.riskcontrol.riskchain.impl.FlowRiskControl;
+import com.songheng.dsp.ssp.riskcontrol.riskchain.impl.BlackListControl;
 import com.songheng.dsp.ssp.riskcontrol.riskchain.impl.OtherRiskControl;
 import com.songheng.dsp.ssp.service.AdvSspSlotLocalService;
 import lombok.extern.slf4j.Slf4j;
@@ -32,8 +26,9 @@ public class RiskControlClient extends RiskControl {
      *风控列表,后续如需实现新的风控业务,添加即可
      **/
     protected static List<RiskControl> riskVerifications = CollectionUtils.objsToList(
+        new BlackListControl(),
         new FlowCheckControl(),
-        new FlowRiskControl(),
+        new BlackListControl(),
         new AntiBrushRiskControl(),
         new OtherRiskControl()
     );
