@@ -33,7 +33,6 @@ public class SendAdxBidReq implements Callable<ResponseBean> {
 
     @Override
     public ResponseBean call() {
-        //QPS限制
         if(limitOverQPS()){
             return null;
         }
@@ -55,7 +54,9 @@ public class SendAdxBidReq implements Callable<ResponseBean> {
 
     /**
      *限制高流量QPS
-     * @return   true :限流 ; false: 不限流
+     * @return
+     * true :限流 ;
+     * false: 不限流
      * */
     private boolean limitOverQPS(){
         if(ProjectEnum.isApp(baseFlow.getTerminal()) && baseFlow.getCurrQps() <= user.getAppQps()){
@@ -67,8 +68,8 @@ public class SendAdxBidReq implements Callable<ResponseBean> {
         if(ProjectEnum.isPc(baseFlow.getTerminal()) && baseFlow.getCurrQps() <= user.getPcQps()){
             return false;
         }
-        log.info("[limit-qps],dspId={}&terminal={}&reqId={}=currQps={}",user.getDspid(),
-                baseFlow.getTerminal(),baseFlow.getReqId(),baseFlow.getCurrQps());
+        log.info("[limit-qps],dspId={}&terminal={}&reqId={}=currQps={}",
+              user.getDspid(), baseFlow.getTerminal(),baseFlow.getReqId(),baseFlow.getCurrQps());
         return true;
     }
 }

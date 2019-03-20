@@ -11,7 +11,10 @@ import com.songheng.dsp.model.adx.request.Site;
 import com.songheng.dsp.model.adx.request.User;
 import com.songheng.dsp.model.flow.AdvPositions;
 import com.songheng.dsp.model.flow.BaseFlow;
+import com.songheng.dsp.model.flow.ReqSlotInfo;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 构建请求bean
@@ -22,6 +25,12 @@ public final class BuildAdxBidRequestBean {
     private BuildAdxBidRequestBean(){}
 
     /**
+     * 竞拍模式：系统固定暗拍模式,不做调整
+     * 1：明拍 2：暗拍
+     * */
+    private final static int BID_MODEL = 2;
+
+    /**
      * 构建请求对象
      * */
     public static RequestBean buildAdxBidRequestBean(BaseFlow baseFlow){
@@ -29,16 +38,16 @@ public final class BuildAdxBidRequestBean {
         RequestBean requestBean = new RequestBean(baseFlow.getReqId());
 
         //构建竞拍模式
-        buildBidModel(baseFlow,requestBean);
+        requestBean.setAt(BID_MODEL);
 
         //构建设备对象信息
-        buildDeviceInfo(baseFlow,requestBean);
+        requestBean.setDevice(new Device(baseFlow));
 
         //构建用户信息
-        buildUserInfo(baseFlow,requestBean);
+        requestBean.setUser(new User(baseFlow));
 
         //构建站点信息
-        buildSiteInfo(baseFlow,requestBean);
+        requestBean.setSite(new Site(baseFlow));
 
         //构建曝光对象信息
         buildImplInfo(baseFlow,requestBean);
@@ -47,78 +56,26 @@ public final class BuildAdxBidRequestBean {
     }
 
     /**
-     * 构建竞拍模式
-     * */
-    private static void buildBidModel(BaseFlow baseFlow,RequestBean requestBean){
-        //拍卖模式  1:明拍 2:暗拍
-        int bidModel = Integer.parseInt(StringUtils.replaceInvalidString(PropertyPlaceholder.getProperty("bidModel"),"2"));
-        requestBean.setAt(bidModel);
-    }
-
-    /**
-     * 构建设备对象信息
-     * */
-    private static void buildDeviceInfo(BaseFlow baseFlow,RequestBean requestBean){
-        Device device = new Device(
-                baseFlow.getUa(),
-                baseFlow.getRemoteIp(),
-                baseFlow.getOs(),
-                baseFlow.getNet(),
-                baseFlow.getModel(),
-                baseFlow.getOsAndVersion()
-        ) ;
-        requestBean.setDevice(device);
-    }
-
-    /**
-     * 构建用户信息
-     * */
-    private static void buildUserInfo(BaseFlow baseFlow,RequestBean requestBean){
-        User user = new User(
-                baseFlow.getUserId(),
-                baseFlow.getGender(),
-                baseFlow.getAge(),
-                baseFlow.getDeviceId()
-        );
-        requestBean.setUser(user);
-    }
-    /**
-     * 构建站点信息
-     * */
-    private static void buildSiteInfo(BaseFlow baseFlow,RequestBean requestBean){
-        Site site = new Site(
-                baseFlow.getSiteName(),
-                baseFlow.getPage(),
-                baseFlow.getQid(),
-                baseFlow.getReadHistory(),
-                baseFlow.getPgType(),
-                baseFlow.getNewsType()
-        );
-        requestBean.setSite(site);
-    }
-
-
-    /**
      * 构建曝光对象
      * */
     private static void buildImplInfo(BaseFlow baseFlow,RequestBean requestBean){
         JSONArray imps = new JSONArray();
-        List<AdvPositions> positions = baseFlow.getBidPositions();
-        for (AdvPositions advPosition:positions) {
+        Set<ReqSlotInfo> reqSlotInfos = baseFlow.getReqSlotInfos();
+        Iterator<ReqSlotInfo> iterator = reqSlotInfos.iterator();
+        while(iterator.hasNext()){
+            ReqSlotInfo reqSlotInfo = iterator.next();
             JSONObject imp = new JSONObject();
-            imp.put("id", RandomUtils.generateRandString("b",10));
-            imp.put("tagid", advPosition.getTagId());
-            imp.put("styles", StringUtils.strToList(advPosition.getOuterStyle()));
-            imp.put("bidfloor",advPosition.getFloorPrice());
+            imp.put("id", RandomUtils.generateRandString("b",20));
+            imp.put("tagid", reqSlotInfo.getTagId());
+            imp.put("styles", reqSlotInfo.getStyles());
+            imp.put("bidfloor",reqSlotInfo.getMinCpm());
             imps.add(imp);
         }
         requestBean.setImp(imps);
     }
 
     public static void main(String[] args) {
-        BaseFlow baseFlow = BaseFlow.getTestBaseFlow();
-        RequestBean requestBean =  buildAdxBidRequestBean(baseFlow);
-        System.out.println(requestBean);
+
     }
 
 

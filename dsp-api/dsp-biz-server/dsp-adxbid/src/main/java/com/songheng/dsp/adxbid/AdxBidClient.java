@@ -20,15 +20,15 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class AdxBidClient {
 
-    public List<ResponseBean> execute(BaseFlow baseFlow){
+    /**
+     * @param userInfos 用户列表
+     * @param baseFlow 流量信息
+     * */
+    public List<ResponseBean> execute(List<DspUserInfo> userInfos ,BaseFlow baseFlow){
         //竞价的响应结构
         List<ResponseBean> responseBeans = new ArrayList<>();
         //构建请求对象
         RequestBean requestBean = BuildAdxBidRequestBean.buildAdxBidRequestBean(baseFlow);
-
-        //TODO DC 获取用户信息
-        List<DspUserInfo> userInfos = new ArrayList<>();
-
         //发送竞标请求
         List<Future> futures = new ArrayList<>();
         for(DspUserInfo dspUserInfo  : userInfos){
@@ -36,7 +36,6 @@ public class AdxBidClient {
             Future<ResponseBean> responseBeanFuture = ThreadPoolUtils.submit(dspUserInfo.getDspid(),sendAdxBidReq);
             futures.add(responseBeanFuture);
         }
-
         //获取响应对象
         for (Future<ResponseBean> requestBeanFuture : futures) {
             try {
