@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 /**
  * @author: luoshaobing
  * @date: 2019/3/8 17:03
@@ -12,7 +14,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class AdvSspSlot extends AdvSspApplication {
+public class AdvSspSlot extends AdvSspApplication implements Serializable {
+    private static final long serialVersionUID = 8342668456742305518L;
     /**
      * 广告位Id,随机ID
      */

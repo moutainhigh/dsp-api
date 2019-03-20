@@ -4,10 +4,20 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
+
+/**
+ * @author: luoshaobing
+ * @date: 2019/3/8 17:22
+ * @description:
+ */
 @Getter
 @Setter
 @ToString
-public class DspUserInfo {
+public class DspUserInfo implements Serializable {
+
+	private static final long serialVersionUID = -5690285271015173819L;
+
 	private String dspid;
 	private String token;
 	private double banlance;

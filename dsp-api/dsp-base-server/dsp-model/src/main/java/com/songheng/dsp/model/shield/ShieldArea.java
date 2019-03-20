@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 /**
  * @author: luoshaobing
  * @date: 2019/3/19 15:50
@@ -12,7 +14,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ShieldArea {
+public class ShieldArea implements Serializable {
+
+    private static final long serialVersionUID = 3602059365758341070L;
 
     private String shielId;
     private String terminal;

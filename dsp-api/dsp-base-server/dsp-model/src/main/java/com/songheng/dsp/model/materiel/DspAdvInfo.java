@@ -2,12 +2,21 @@ package com.songheng.dsp.model.materiel;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.List;
 
+/**
+ * @author: luoshaobing
+ * @date: 2019/3/8 17:22
+ * @description:
+ */
 @Getter
 @Setter
-public class DspAdvInfo {
+@ToString
+public class DspAdvInfo implements Serializable {
+    private static final long serialVersionUID = -5077716995034385669L;
     /**
      * 具体的广告样式 1:大图|2:单图|3:三图|4:开屏广告|5:视频贴片广告|11:游戏视频广告|13:文字链广告|14:share广告|15:主页悬浮广告
      */
