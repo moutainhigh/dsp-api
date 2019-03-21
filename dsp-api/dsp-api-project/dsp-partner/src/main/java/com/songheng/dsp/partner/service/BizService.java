@@ -1,6 +1,10 @@
 package com.songheng.dsp.partner.service;
 
+import com.songheng.dsp.model.client.SspClientRequest;
+import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.ssp.riskcontrol.RiskControlResult;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @description: 业务逻辑接口
@@ -9,8 +13,18 @@ import com.songheng.dsp.ssp.riskcontrol.RiskControlResult;
  **/
 public interface BizService {
     /**
+     * 初始化SSP的模块的请求参数
+     * @param request
+     * @param apiArg api请求的参数
+     * @return ssp客户端请求对象
+     * */
+    SspClientRequest initSspClientRequestObj(HttpServletRequest request, BaseFlow apiArg);
+
+    /**
      * 执行风控逻辑
      * @return 风控执行结果
      * */
-    RiskControlResult execute();
+    RiskControlResult execute(SspClientRequest request);
+
+
 }

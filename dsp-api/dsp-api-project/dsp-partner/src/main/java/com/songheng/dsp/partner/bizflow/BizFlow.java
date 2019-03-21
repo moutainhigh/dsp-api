@@ -1,7 +1,9 @@
-package com.songheng.dsp.partner.process;
+package com.songheng.dsp.partner.bizflow;
 
 import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.ssp.riskcontrol.RiskControlResult;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @description: 业务流程组装
@@ -12,6 +14,6 @@ public interface BizFlow {
     /**
      * 组装业务流
      * */
-    RiskControlResult assemble(BaseFlow baseFlow);
+    RiskControlResult assemble(HttpServletRequest request,BaseFlow baseFlow);
 
 }
