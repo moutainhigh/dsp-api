@@ -1,9 +1,12 @@
 package com.songheng.dsp.ssp.riskcontrol.riskchain.impl;
 
 import com.songheng.dsp.common.enums.ProjectEnum;
+import com.songheng.dsp.common.utils.StringUtils;
 import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.ssp.riskcontrol.RiskControlResult;
 import com.songheng.dsp.ssp.riskcontrol.riskchain.RiskControl;
+
+import java.util.List;
 
 /**
  * @description: 反防盗验证
@@ -13,16 +16,22 @@ import com.songheng.dsp.ssp.riskcontrol.riskchain.RiskControl;
 public class AntiTheftControl extends RiskControl{
     @Override
     protected RiskControlResult doVerification(BaseFlow baseFlow) {
-        if(ProjectEnum.isApp(baseFlow.getTerminal())){//如果是app流量则对包名进行验证
-            baseFlow.getPackageName();
-        }else{
-
+        List<String> appIds =  StringUtils.strToList(baseFlow.getAppId());
+        if(appIds.size()==0){
+            return new RiskControlResult(false,"10005","防刷配置未配",baseFlow);
         }
-
-        if(baseFlow.isBrushFlow()){
-            return new RiskControlResult(false,"10004","防刷流量",baseFlow);
-        }else{
-            return getSuccessResult(baseFlow);
+        for(String appId : appIds ){
+            if(appId.contains("http")){
+                String url = appId.replace("http://","").replace("https://","");
+                if(!baseFlow.getReferer().contains(url)){
+                    return new RiskControlResult(false,"10006","刷量请求",baseFlow);
+                }
+            }else{
+                if(!appIds.contains(baseFlow.getPackageName())){
+                    return new RiskControlResult(false,"10006","刷量请求",baseFlow);
+                }
+            }
         }
+        return getSuccessResult(baseFlow);
     }
 }

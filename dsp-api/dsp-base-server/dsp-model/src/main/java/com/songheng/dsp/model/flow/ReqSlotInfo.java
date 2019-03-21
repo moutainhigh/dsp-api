@@ -81,7 +81,7 @@ public class ReqSlotInfo {
     public static ReqSlotInfo buildReqSlotInfo(AdvSspSlot advSspSlot, BaseFlow baseFlow,int idx){
         ReqSlotInfo reqSlotInfo = null;
         if(null!=advSspSlot && null!=baseFlow) {
-            baseFlow.setAppId(advSspSlot.getAppId());
+            baseFlow.setAppId(StringUtils.replaceInvalidString(advSspSlot.getAppId(),""));
             baseFlow.setTerminal(advSspSlot.getTerminal());
             baseFlow.setPgType(advSspSlot.getPgtype());
             baseFlow.setAppName(advSspSlot.getAppName());
