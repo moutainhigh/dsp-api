@@ -17,6 +17,7 @@
     <modules>
         <module>dsp-datacenter</module>
         <module>dsp-web</module>
+        <module>dsp-partner</module>
     </modules>
 
     <!--注：不确定每个子项目都会依赖的jar包，放至 dependencyManagement下，再由子项目重写引入，减少不必要的开销-->
@@ -36,6 +37,26 @@
             <dependency>
                 <groupId>com.songheng.dsp</groupId>
                 <artifactId>dsp-dubbo-base-interface</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.songheng.dsp</groupId>
+                <artifactId>dsp-ssp</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.songheng.dsp</groupId>
+                <artifactId>dsp-adx</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.songheng.dsp</groupId>
+                <artifactId>dsp-monopoly</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.songheng.dsp</groupId>
+                <artifactId>dsp-advmatch</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <!--spring boot -->
