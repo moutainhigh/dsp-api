@@ -29,37 +29,37 @@ public class ThreadPoolUtilsTest {
 
     @Test
     public void threadTest(){
-        while(true) {
-            List<Future> futureList = new ArrayList();
-            // 发送100次消息
-            for (int i = 0; i < 1000; i++) {
-                Future<AdplatformAdShowHistory> messageFuture = ThreadPoolUtils.submit("default",
-                        new TestCallable(String.format("这是第{%s}条任务", i)));
-                futureList.add(messageFuture);
-                try{
-                    Thread.sleep(new Random().nextInt(2));
-                }catch (Exception e){
-
-                }
-            }
-            long start = System.currentTimeMillis();
-            List<AdplatformAdShowHistory> list = new ArrayList<>();
-            try {
-                for (Future<AdplatformAdShowHistory> message : futureList) {
-                    AdplatformAdShowHistory adv = message.get(100, TimeUnit.MILLISECONDS);
-                    list.add(adv);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            long diff = System.currentTimeMillis() - start;
-            System.out.println(String.format("共计耗时{%s}毫秒,list:{%s}", diff, list.size()));
-            try{
-                Thread.sleep(1000);
-            }catch (Exception e){
-
-            }
-        }
+//        while(true) {
+//            List<Future> futureList = new ArrayList();
+//            // 发送100次消息
+//            for (int i = 0; i < 1000; i++) {
+//                Future<AdplatformAdShowHistory> messageFuture = ThreadPoolUtils.submit("default",
+//                        new TestCallable(String.format("这是第{%s}条任务", i)));
+//                futureList.add(messageFuture);
+//                try{
+//                    Thread.sleep(new Random().nextInt(2));
+//                }catch (Exception e){
+//
+//                }
+//            }
+//            long start = System.currentTimeMillis();
+//            List<AdplatformAdShowHistory> list = new ArrayList<>();
+//            try {
+//                for (Future<AdplatformAdShowHistory> message : futureList) {
+//                    AdplatformAdShowHistory adv = message.get(100, TimeUnit.MILLISECONDS);
+//                    list.add(adv);
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            long diff = System.currentTimeMillis() - start;
+//            System.out.println(String.format("共计耗时{%s}毫秒,list:{%s}", diff, list.size()));
+//            try{
+//                Thread.sleep(1000);
+//            }catch (Exception e){
+//
+//            }
+//        }
     }
     @After
     public void after() {

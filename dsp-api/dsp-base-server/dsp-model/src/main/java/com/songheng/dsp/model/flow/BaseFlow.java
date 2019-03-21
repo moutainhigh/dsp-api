@@ -6,6 +6,7 @@ import com.songheng.dsp.common.utils.RandomUtils;
 import com.songheng.dsp.common.utils.StringUtils;
 import com.songheng.dsp.model.enums.DeviceType;
 import com.songheng.dsp.model.ssp.AdvSspSlot;
+import com.songheng.dsp.model.client.SspClientRequest;
 import java.io.Serializable;
 import java.util.*;
 import lombok.Getter;
@@ -126,6 +127,11 @@ public class BaseFlow implements Serializable {
      * (api-arg)
      * */
     private String isp;
+    /**
+     * 国际移动用户识别码
+     * (api-arg)
+     */
+    private String imsi;
 
     /**
      * 网卡MAC地址
@@ -138,11 +144,7 @@ public class BaseFlow implements Serializable {
      * */
     private String pixel;
 
-    /**
-     * referer
-     * (api-arg)
-     **/
-    private String referer;
+
     /**
      * 安装时间 默认20180101
      * (api-arg)
@@ -176,6 +178,12 @@ public class BaseFlow implements Serializable {
      **/
     private String osAndVersion;
 
+    /**
+     * 应用包名 : app应用将会和注册的包名进行验证
+     * （api-arg）
+     * */
+    private String packageName;
+
 
 
     /**
@@ -205,7 +213,11 @@ public class BaseFlow implements Serializable {
     private long currQps;
 
 
-
+    /**
+     * referer 将会与注册填的url进行验证
+     * (head-arg)
+     **/
+    private String referer;
     /**
      * userAgent
      * (head-arg)
@@ -257,12 +269,6 @@ public class BaseFlow implements Serializable {
      **/
     private String pgType;
 
-
-
-
-
-
-
     /**
      * 性别 -1 : 未知 1：男  0：女
      * (hbase-arg)
@@ -292,105 +298,120 @@ public class BaseFlow implements Serializable {
      * */
     private Set<ReqSlotInfo> reqSlotInfos;
 
-
-
-
-//    /**
-//     *所有流量广告位 list_1_1,list_1_2
-//     **/
-//    private List<AdvPositions> flowPositions;
-//
-//    /**
-//     * 竞价的广告位
-//     * */
-//    private List<AdvPositions> bidPositions;
-//    /**
-//     *垄断流量占用的广告位
-//     **/
-//    private Set<AdvPositions> monopolyPositions;
-
     public BaseFlow(){
         this.reqId = RandomUtils.generateRandString("r",19);
-        this.reqSlotInfos = new HashSet<>(10);
-        this.reqSlotIds = new HashSet<>(10);
+        this.reqSlotInfos = new TreeSet<>();
+        this.reqSlotIds = new TreeSet<>();
     }
     /**
+     * @param baseFlow 需要赋值的流量对象
      * @param ua req_head
      * */
-    public BaseFlow(String ua){
-        this();
-        this.ua = ua;
-        this.os = DeviceUtils.getOsName(ua);
-        this.osAndVersion = DeviceUtils.getOs(ua);
-        this.browserName = DeviceUtils.getBrowserName(ua);
-        this.browserVersion = DeviceUtils.getBrowserVersion(ua);
-        this.deviceType = DeviceUtils.getDeviceType(ua);
-        this.userAgentId = DeviceUtils.getUserAgentId(ua);
-        this.model = DeviceUtils.getPhoneModel(ua);
+    private static BaseFlow setUserAgentInfo(BaseFlow baseFlow,String ua){
+        baseFlow.ua = ua;
+        baseFlow.os = DeviceUtils.getOsName(ua);
+        baseFlow.osAndVersion = DeviceUtils.getOs(ua);
+        baseFlow.browserName = DeviceUtils.getBrowserName(ua);
+        baseFlow.browserVersion = DeviceUtils.getBrowserVersion(ua);
+        baseFlow.deviceType = DeviceUtils.getDeviceType(ua);
+        baseFlow.userAgentId = DeviceUtils.getUserAgentId(ua);
+        baseFlow.model = DeviceUtils.getPhoneModel(ua);
+        return baseFlow;
 
     }
     /**
-     * @param ua req_head
-     * @param remoteIp 客户端ip
-     * */
-    public BaseFlow(String ua,String remoteIp){
-        this(ua);
-        this.remoteIp = remoteIp;
-        //TODO
-        this.province = "上海";
-        this.city = "上海";
-
-    }
-    /**
-     * @param ua req_head
+     * @param baseFlow 需要赋值的流量对象
      * @param remoteIp ip
+     * */
+    private static BaseFlow setAreaInfo(BaseFlow baseFlow,String remoteIp){
+        baseFlow.remoteIp = remoteIp;
+        //TODO
+        baseFlow.province = "上海";
+        baseFlow.city = "上海";
+        return baseFlow;
+
+    }
+    /**
+     * @param baseFlow 需要赋值的流量对象
      * @param reqSlotIds 广告位Id
      * @param advSspSlotMap 所有广告位数据Map
      * */
-    public BaseFlow(String ua,String remoteIp,String reqSlotIds,Map<String, AdvSspSlot> advSspSlotMap){
-        this(ua,remoteIp);
+    private static BaseFlow setReqSlotIdInfo(BaseFlow baseFlow,String reqSlotIds,Map<String, AdvSspSlot> advSspSlotMap){
         //添加广告位信息
         if(StringUtils.isNotNullOrEmpty(reqSlotIds) && null!=advSspSlotMap){
-            this.reqSlotIds = CollectionUtils.listToSet(StringUtils.strToList(reqSlotIds));
-            Iterator<String> iterator = this.reqSlotIds.iterator();
+            baseFlow.reqSlotIds = CollectionUtils.listToSet(StringUtils.strToList(reqSlotIds));
+            Iterator<String> iterator = baseFlow.reqSlotIds.iterator();
             while(iterator.hasNext()){
                 String slotId = iterator.next();
                 if(advSspSlotMap.containsKey(slotId)) {
-                    reqSlotInfos.add(new ReqSlotInfo(advSspSlotMap.get(slotId), this));
+                    AdvSspSlot advSspSlot = advSspSlotMap.get(slotId);
+                    //如果广告数量没有通过参数传过来则从ssp配置中取
+                    if(null == baseFlow.getAdnum()) {
+                        baseFlow.setAdnum(advSspSlot.getAdnum()<=0?1:advSspSlot.getAdnum());
+                    }
+                    //非信息流广告位,强制设置pgnum=1,adnum=1
+                    if(!advSspSlot.isFeeds()) {
+                        baseFlow.setPgnum(1);
+                        baseFlow.setAdnum(1);
+                    }
+                    //生成具体的广告位信息
+                    for(int idx=1;idx<=baseFlow.getAdnum();idx++){
+                        baseFlow.reqSlotInfos.add(ReqSlotInfo.buildReqSlotInfo(advSspSlot,baseFlow,idx));
+                    }
+
                 }
             }
         }
+        return baseFlow;
     }
 
     /**
-     * @param ua req_head
-     * @param remoteIp ip
-     * @param reqSlotIds 广告位Id
-     * @param advSspSlotMap 所有广告位数据Map
+     * @param baseFlow api参数设置的广告流量信息
      * */
-    public BaseFlow(String ua,String remoteIp,String reqSlotIds,Map<String, AdvSspSlot> advSspSlotMap,BaseFlow baseFlow){
-        this(ua,remoteIp,reqSlotIds,advSspSlotMap);
+    private static BaseFlow setApiArg(BaseFlow baseFlow){
+        if(null == baseFlow){
+            throw new NullPointerException("封装的请求参数有误:BaseFlow为空");
+        }
         //API-ARG
-        this.qid = StringUtils.replaceInvalidString(baseFlow.getQid(),"");
-        this.network = StringUtils.replaceInvalidString(baseFlow.getNetwork(),"0"); //未知
-        this.age = StringUtils.replaceInvalidString(baseFlow.getAge(),"-1"); //未知
-        this.gender = StringUtils.replaceInvalidString(baseFlow.getGender(),"-1");
-        this.isp = StringUtils.replaceInvalidString(baseFlow.getIsp(),"0");
-        this.age = StringUtils.replaceInvalidString(baseFlow.getAge(),"0-100");
-        this.installTime = StringUtils.replaceInvalidString(baseFlow.getInstallTime(),"20180101");
-        this.appver = StringUtils.replaceInvalidString(baseFlow.getAppver(),"10000");
-        this.newsClassify = StringUtils.replaceInvalidString(baseFlow.getNewsClassify(),"");
-        this.visitHistory = StringUtils.replaceInvalidString(baseFlow.getVisitHistory(),"");
-        this.newsurl = StringUtils.replaceInvalidString(baseFlow.getNewsurl(),"");
-        this.appUserId = StringUtils.replaceInvalidString(baseFlow.getAppUserId(),"");
-        this.userId = StringUtils.replaceInvalidString(baseFlow.getUserId(),"");
-        this.mac = StringUtils.replaceInvalidString(baseFlow.getMac(),"");
-        this.pixel = StringUtils.replaceInvalidString(baseFlow.getPixel(),"");
-        this.referer = StringUtils.replaceInvalidString(baseFlow.getReferer(),"");
-        this.vendor = StringUtils.replaceInvalidString(baseFlow.getVendor(),"");
-        this.pgnum = baseFlow.getPgnum();
-        this.newsurl = baseFlow.getNewsurl();
-        this.userIdType = baseFlow.getUserIdType();
+        baseFlow.setAdnum(baseFlow.getAdnum());
+        baseFlow.qid = StringUtils.replaceInvalidString(baseFlow.getQid(),"");
+        baseFlow.network = StringUtils.replaceInvalidString(baseFlow.getNetwork(),"0"); //未知
+        baseFlow.age = StringUtils.replaceInvalidString(baseFlow.getAge(),"-1"); //未知
+        baseFlow.gender = StringUtils.replaceInvalidString(baseFlow.getGender(),"-1");
+        baseFlow.isp = StringUtils.replaceInvalidString(baseFlow.getIsp(),"0");
+        baseFlow.age = StringUtils.replaceInvalidString(baseFlow.getAge(),"0-100");
+        baseFlow.installTime = StringUtils.replaceInvalidString(baseFlow.getInstallTime(),"20180101");
+        baseFlow.appver = StringUtils.replaceInvalidString(baseFlow.getAppver(),"10000");
+        baseFlow.newsClassify = StringUtils.replaceInvalidString(baseFlow.getNewsClassify(),"");
+        baseFlow.visitHistory = StringUtils.replaceInvalidString(baseFlow.getVisitHistory(),"");
+        baseFlow.newsurl = StringUtils.replaceInvalidString(baseFlow.getNewsurl(),"");
+        baseFlow.appUserId = StringUtils.replaceInvalidString(baseFlow.getAppUserId(),"");
+        baseFlow.userId = StringUtils.replaceInvalidString(baseFlow.getUserId(),"");
+        baseFlow.mac = StringUtils.replaceInvalidString(baseFlow.getMac(),"");
+        baseFlow.pixel = StringUtils.replaceInvalidString(baseFlow.getPixel(),"");
+        baseFlow.referer = StringUtils.replaceInvalidString(baseFlow.getReferer(),"");
+        baseFlow.vendor = StringUtils.replaceInvalidString(baseFlow.getVendor(),"");
+        baseFlow.pgnum = baseFlow.getPgnum();
+        baseFlow.newsurl = baseFlow.getNewsurl();
+        baseFlow.userIdType = baseFlow.getUserIdType();
+        baseFlow.imsi =  StringUtils.replaceInvalidString(baseFlow.getImsi(),"");
+        baseFlow.packageName = StringUtils.replaceInvalidString(baseFlow.getPackageName(),"");
+        return baseFlow;
+    }
 
+    /**
+     * 生成流量对象信息
+     * */
+    public static BaseFlow generateBaseFlow(SspClientRequest clientRequest){
+        BaseFlow baseFlow = clientRequest.getArgBaseFlow();
+        //设置请求参数
+        setApiArg(baseFlow);
+        //设置ua信息
+        setUserAgentInfo(baseFlow,clientRequest.getUa());
+        //设置地域信息
+        setAreaInfo(baseFlow,clientRequest.getRemoteIp());
+        //设置广告位信息
+        setReqSlotIdInfo(baseFlow,clientRequest.getReqSlotIds(),clientRequest.getAdvSspSlot());
+        return baseFlow;
     }
 }

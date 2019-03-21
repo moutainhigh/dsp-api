@@ -143,6 +143,7 @@
             <appender-ref ref="sspLog"/>
         </AsyncLogger>
         <AsyncLogger name="com.songheng.dsp.datacenter.job" level="${LEVEL}" additivity="false">
+            <appender-ref ref="Console"/>
             <appender-ref ref="jobLog"/>
         </AsyncLogger>
         <AsyncLogger name="com.alibaba.dubbo" level="${LEVEL}" additivity="false">

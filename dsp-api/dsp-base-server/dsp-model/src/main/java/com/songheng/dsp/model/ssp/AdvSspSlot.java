@@ -51,7 +51,7 @@ public class AdvSspSlot extends AdvSspApplication implements Serializable {
     /**
      * 位置的排序
      */
-    private int slotSoort;
+    private int slotSort;
     /**
      * 支持的样式Id
      */
@@ -60,4 +60,8 @@ public class AdvSspSlot extends AdvSspApplication implements Serializable {
      * 默认底价
      */
     private double floorPrice;
+    /**
+     * 是否信息流广告
+     * */
+    private boolean isFeeds;
 }

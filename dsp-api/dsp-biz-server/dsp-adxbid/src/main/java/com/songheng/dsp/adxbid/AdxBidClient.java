@@ -25,20 +25,24 @@ public class AdxBidClient {
      * @param baseFlow 流量信息
      * */
     public List<ResponseBean> execute(List<DspUserInfo> userInfos ,BaseFlow baseFlow){
-        //竞价的响应结构
-        List<ResponseBean> responseBeans = new ArrayList<>();
         //构建请求对象
         RequestBean requestBean = BuildAdxBidRequestBean.buildAdxBidRequestBean(baseFlow);
         //发送竞标请求
         List<Future> futures = new ArrayList<>();
         for(DspUserInfo dspUserInfo  : userInfos){
+            //将竞标任务提交线程池
             SendAdxBidReq sendAdxBidReq = new SendAdxBidReq(dspUserInfo,requestBean,baseFlow);
             Future<ResponseBean> responseBeanFuture = ThreadPoolUtils.submit(dspUserInfo.getDspid(),sendAdxBidReq);
             futures.add(responseBeanFuture);
         }
-        //获取响应对象
+        //竞标请求返回响应的广告对象
+        List<ResponseBean> responseBeans = new ArrayList<>();
+        //遍历获取所有的广告响应
         for (Future<ResponseBean> requestBeanFuture : futures) {
             try {
+                /**
+                 * 等待<code>timeouot</code> ms ,超时后,抛出异常,不再进行等待
+                 * */
                 ResponseBean responseBean = requestBeanFuture.get(100, TimeUnit.MILLISECONDS);
                 responseBeans.add(responseBean);
             }catch (Exception e){

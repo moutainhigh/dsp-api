@@ -9,6 +9,7 @@ import com.songheng.dsp.model.adx.response.BidBean;
 import com.songheng.dsp.model.adx.response.ResponseBean;
 import com.songheng.dsp.model.flow.AdvPositions;
 import com.songheng.dsp.model.flow.BaseFlow;
+import com.songheng.dsp.model.flow.ReqSlotInfo;
 import com.songheng.dsp.model.materiel.DspAdvInfo;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,78 +28,48 @@ public abstract class Monopoly {
      *获取垄断广告的响应信息
      **/
     public final List<ResponseBean> getMonopolyAdvResponseBean(BaseFlow baseFlow){
-        List<ResponseBean> result = new ArrayList<>();
-        if(null == baseFlow || baseFlow.getFlowPositions().size() == 0){
-            log.debug("没有获取到流量广告位");
-            return result;
-        }
-        List<AdvPositions> positions = baseFlow.getFlowPositions();
-        int positionSize = positions.size();
+        //获取广告位列表
+        Set<ReqSlotInfo> reqSlotInfos = baseFlow.getReqSlotInfos();
+        //广告位数量
+        int positionSize = reqSlotInfos.size();
         /**
-         *已经展现的投放id
+         * 已经展现的投放id
          **/
         Set<String> deliveryIdFilter = new HashSet<>(20);
-        /**
-         * 已经使用过的广告位
-         * */
-        Set<String> positionFilter = new HashSet<>(20);
-
-
+        //响应的广告列表
+        List<ResponseBean> result = new ArrayList<>();
         //遍历所有广告位
-        for(int i=0;i<positionSize;i++){
-            AdvPositions advPositions = positions.get(i);
-            //广告位标识
-            String pid = advPositions.getPid();
-            //使用过的广告位,不可再使用
-            if(positionFilter.contains(pid)){
-                continue;
-            }
+        Iterator<ReqSlotInfo> iterator = reqSlotInfos.iterator();
+        while(iterator.hasNext()){
+            ReqSlotInfo reqSlotInfo = iterator.next();
+            //广告位标识 slotid+pgnum+idx
+            String tagId = reqSlotInfo.getTagId();
             //过滤当前流量广告位
-            if(this.filterCurrPosition(baseFlow,pid)){
+            if(this.filterCurrPosition(baseFlow,tagId)){
                 continue;
             }
-            //获取该位置的广告
-            List<DspAdvInfo> advInfos = this.getMonopolyAdvByCurPosition(baseFlow,pid);
-            if(null != advInfos && advInfos.size()>0) {
-                //对广告进行排序
-                this.sort(advInfos);
-                //过滤广告 获取可用广告
-                DspAdvInfo advInfo = this.getMonopolyAdvInfoByFilter(baseFlow,advInfos,deliveryIdFilter);
-                if(null != advInfo) {
-                    //将广告对象转化为响应对象
-                    ResponseBean responseBean = this.conversion(advInfo, baseFlow, i);
-                    result.add(responseBean);
-                    //设置返回出去的广告,用于过滤
-                    deliveryIdFilter.add(advInfo.getDeliveryid());
-                    //设置已经占用的广告位
-                    positionFilter.add(pid);
-                    //设置垄断广告占用的位置
-                    baseFlow.getMonopolyPositions().add(advPositions);
+            //竞价模式
+            int[] model = {1,0,2};
+            for(int i=0;i<model.length;i++) {
+                //获取该位置的广告
+                List<DspAdvInfo> advInfos = this.getMonopolyAdvByCurPosition(baseFlow, tagId);
+                if (null != advInfos && advInfos.size() > 0) {
+                    //对广告进行排序
+                    this.sort(advInfos);
+                    //过滤广告 获取可用广告
+                    DspAdvInfo advInfo = this.getMonopolyAdvInfoByFilter(baseFlow, advInfos, deliveryIdFilter);
+                    if (null != advInfo) {
+                        //将广告对象转化为响应对象
+                        ResponseBean responseBean = this.conversion(advInfo, baseFlow, reqSlotInfo.getIdx());
+                        result.add(responseBean);
+                        //设置返回出去的广告,用于过滤
+                        deliveryIdFilter.add(advInfo.getDeliveryid());
+                    }
                 }
             }
         }
-        //设置竞价广告位
-        setBidPositions(baseFlow);
         return result;
     }
-
-    /**
-     * 设置竞价的广告位
-     * @param baseFlow 流量信息
-     * */
-    private static void setBidPositions(BaseFlow baseFlow){
-        //获取所有广告位
-        List<AdvPositions> advPositionsList = baseFlow.getFlowPositions();
-        Iterator<AdvPositions> iterator = advPositionsList.iterator();
-        while(iterator.hasNext()){
-            AdvPositions advPositions = iterator.next();
-            //没有垄断的广告位 则为竞价的广告位
-            if(!baseFlow.getMonopolyPositions().contains(advPositions)){
-                baseFlow.getBidPositions().add(advPositions);
-            }
-        }
-    }
-
     /**
      * 获取这个位置的垄断广告
      * @param baseFlow 流量信息
@@ -166,7 +137,7 @@ public abstract class Monopoly {
     public final ResponseBean conversion(DspAdvInfo advInfo,BaseFlow baseFlow,int idx){
         ResponseBean responseBean = new ResponseBean();
         responseBean.setId(baseFlow.getReqId());
-        responseBean.setBidid(RandomUtils.generateRandString("m",10));
+        responseBean.setBidid(RandomUtils.generateRandString("m",20));
         responseBean.setDsp_id(PropertyPlaceholder.getProperty("dfdspid"));
         responseBean.setIsmonopolyad(true);
         responseBean.setMonopolyidx(idx);

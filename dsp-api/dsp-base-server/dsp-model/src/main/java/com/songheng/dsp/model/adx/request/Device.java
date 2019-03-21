@@ -1,5 +1,6 @@
 package com.songheng.dsp.model.adx.request;
 
+import com.songheng.dsp.model.flow.BaseFlow;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -22,23 +23,15 @@ public class Device {
 	private String imsi;
 	private String isp;
 
-	public Device(String ua, String ip, String os, String net, String model, String osver) {
-		super();
-		this.ua = ua;
-		this.ip = ip;
+	public Device(BaseFlow baseFlow) {
+		this.ua = baseFlow.getUa();
+		this.ip = baseFlow.getRemoteIp();
 		this.serverip = "";
-		this.model = model;
-		this.os = os;
-		this.osver = osver;
-		switch (net) {
-			case "wifi":this.net="100";break;
-			case "5g":this.net="5";break;
-			case "4g":this.net="4";break;
-			case "3g":this.net="3";break;
-			case "2g":this.net="2";break;
-			default:this.net="0";break;
-		}
-		this.imsi = "";
-		this.isp = "0";
+		this.model = baseFlow.getModel();
+		this.os = baseFlow.getOs();
+		this.osver = baseFlow.getOsAndVersion();
+		this.net = baseFlow.getNetwork();
+		this.imsi = baseFlow.getImsi();
+		this.isp = baseFlow.getIsp();
 	}
 }

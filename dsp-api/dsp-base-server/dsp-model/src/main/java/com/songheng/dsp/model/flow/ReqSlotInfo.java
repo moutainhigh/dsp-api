@@ -30,9 +30,17 @@ public class ReqSlotInfo {
     private static final int CPM_PRICE_CONVERSION_RATE = PRICE_CONVERSION_RATE / 1000;
 
     /**
-     * 广告位ID：密文
+     * 大维度广告位ID-流量方从ssp申请下来的广告位Id
+     * 如 list,detailflow 类型的广告位
      * */
     private String slotId;
+    /**
+     * 小维度广告位ID
+     * 针对信息流类型的广告位,可能一次请求多个位置 拼接形式如下：
+     * String.format("%s%s%s%s%s", this.slotId, "_", baseFlow.getPgnum(),"_",idx)
+     * */
+    private String tagId;
+
     /**
      * 广告位名称
      * */
@@ -60,27 +68,43 @@ public class ReqSlotInfo {
      * */
     private long minPrice;
 
+    /**
+     * 当前idx
+     * */
+    private int idx;
 
-    public ReqSlotInfo(AdvSspSlot advSspSlot, BaseFlow baseFlow){
+    private ReqSlotInfo (){}
+
+    /**
+     * 从ssp配置中获取相关信息
+     * */
+    public static ReqSlotInfo buildReqSlotInfo(AdvSspSlot advSspSlot, BaseFlow baseFlow,int idx){
+        ReqSlotInfo reqSlotInfo = null;
         if(null!=advSspSlot && null!=baseFlow) {
-            this.slotId = advSspSlot.getSlotId();
-            this.slotName = advSspSlot.getSlotName();
-            this.minCpm = advSspSlot.getFloorPrice();
-
-            this.minPrice = MathUtils.doubleToLong(minCpm,
-                    CPM_PRICE_CONVERSION_RATE);
-            this.styleIds = CollectionUtils.listToSetNum(
-                 StringUtils.strToList(advSspSlot.getStyleIds())
-            );
-            this.styles = CollectionUtils.listToSet(
-                 StringUtils.strToList(advSspSlot.getStyleIds())
-            );
             baseFlow.setAppId(advSspSlot.getAppId());
-            baseFlow.setAdnum(advSspSlot.getAdnum());
             baseFlow.setTerminal(advSspSlot.getTerminal());
             baseFlow.setPgType(advSspSlot.getPgtype());
             baseFlow.setAppName(advSspSlot.getAppName());
+            reqSlotInfo = new ReqSlotInfo();
+            reqSlotInfo.setIdx(idx);
+            reqSlotInfo.slotId = advSspSlot.getSlotId();
+            reqSlotInfo.slotName = advSspSlot.getSlotName();
+            reqSlotInfo.styleIds = CollectionUtils.listToSetNum(
+                 StringUtils.strToList(advSspSlot.getStyleIds())
+            );
+            reqSlotInfo.styles = CollectionUtils.listToSet(
+                 StringUtils.strToList(advSspSlot.getStyleIds())
+            );
+            //拼接小维度的广告id
+            reqSlotInfo.tagId = String.format("%s%s%s%s%s", reqSlotInfo.slotId, "_",
+                    baseFlow.getPgnum(),"_",idx);
+            //查找底价
+            reqSlotInfo.minCpm = advSspSlot.getFloorPrice();
+            reqSlotInfo.minPrice = MathUtils.doubleToLong(reqSlotInfo.minCpm,
+                    CPM_PRICE_CONVERSION_RATE);
+
         }
+        return reqSlotInfo;
     }
 
     @Override

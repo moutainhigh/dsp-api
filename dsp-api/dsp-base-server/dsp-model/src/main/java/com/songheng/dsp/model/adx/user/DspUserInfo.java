@@ -46,7 +46,7 @@ public class DspUserInfo implements Serializable {
 
 	public DspUserInfo(){
 		this.isOneselfDsp = false;
-		//默认值
+		//TODO qps 默认值
 		this.pcQps = 100;
 		this.h5Qps = 100;
 		this.appQps = 100;
