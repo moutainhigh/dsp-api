@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<mapper namespace="ShieldArea">
+    <select id="queryShieldAreaInfo">
+        <![CDATA[
+            SELECT
+                shielId,
+                terminal,
+                shielType,
+                site,
+                qid,
+                adPosition,
+                adLevel,
+                adStyle,
+                pageType,
+                pageNum,
+                area,
+                areaTime,
+                cycleStartTime,
+                cycleEndTime,
+                planStartTime,
+                planEndTime,
+                qidState,
+                siteState,
+                creatTime,
+                updateTime,
+                operator,
+                other,
+                isReverse,
+                sectors
+            FROM
+                adplatform_conf_shielarea
+            WHERE
+              siteState = 1
+              AND qidState = 1
+              AND (CASE WHEN (planStartTime<>'' AND planStartTime<>'0000-00-00' AND planEndTime<>'' AND planEndTime<>'0000-00-00') THEN NOW() BETWEEN planStartTime AND planEndTime ELSE 1=1 END)
+              AND (CASE WHEN cycleStartTime<>'00:00:00' AND cycleEndTime<>'00:00:00' THEN NOW() BETWEEN cycleStartTime AND cycleEndTime ELSE 1=1 END)
+              ORDER BY shielType ASC, site ASC, qid ASC
+        ]]>
+    </select>
+
+    <select id="querySectorInfo">
+        SELECT
+            namecode,
+            name
+        FROM
+            adplatform_basicdictionary
+        WHERE
+            type = 'sectors'
+            AND flag = 1
+    </select>
+
+    <select id="queryMobileVendor">
+        SELECT
+            NAME,
+            CODE
+        FROM
+            adplatform_mobile_vendor
+    </select>
+
+    <select id="queryOtherVendor">
+        SELECT
+            NAME,
+            CODE
+        FROM
+            adplatform_mobile_vendor
+        WHERE
+            code NOT IN ( SELECT namecode FROM adplatform_basicdictionary WHERE type = 'vendor' )
+    </select>
+</mapper>

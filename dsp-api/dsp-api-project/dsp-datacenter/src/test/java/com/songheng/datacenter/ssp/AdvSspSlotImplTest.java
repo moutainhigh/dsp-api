@@ -1,6 +1,7 @@
 package com.songheng.datacenter.ssp;
 
 import com.songheng.dsp.datacenter.DataCenterApplication;
+import com.songheng.dsp.datacenter.materiel.dsp.DfDspAdvCache;
 import com.songheng.dsp.datacenter.ssp.AdvSspSlotImpl;
 import com.songheng.dsp.model.materiel.ExtendNews;
 import org.junit.After;
@@ -25,10 +26,21 @@ public class AdvSspSlotImplTest {
 
     @Autowired
     private AdvSspSlotImpl advSspSlot;
+    @Autowired
+    private DfDspAdvCache dfDspAdvCache;
+
+
 
     @Before
     public void init() {
         System.out.println("开始测试-----------------");
+        dfDspAdvCache.updateDfDspAdv();
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        advSspSlot.updateAdvSspSlot();
     }
 
     @Test

@@ -100,9 +100,6 @@ public class AdxPositionImpl implements AdxPositionService {
     @Override
     public AdPosition getAdPositionById(String terminal, String locationId) {
         String tml_locationId = String.format("%s%s%s", terminal, "_", locationId);
-        if (StringUtils.isBlank(tml_locationId)){
-            return new AdPosition();
-        }
         AdPosition adPosition = locationIdsMap.get(tml_locationId);
         return null != adPosition ? adPosition : new AdPosition();
     }

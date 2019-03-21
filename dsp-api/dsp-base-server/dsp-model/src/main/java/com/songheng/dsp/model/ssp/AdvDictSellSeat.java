@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 /**
  * @author: luoshaobing
  * @date: 2019/3/8 17:13
@@ -12,7 +14,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class AdvDictSellSeat {
+public class AdvDictSellSeat implements Serializable {
+    private static final long serialVersionUID = 4596367528052697665L;
     /**
      * 售卖位置id,随机ID
      */

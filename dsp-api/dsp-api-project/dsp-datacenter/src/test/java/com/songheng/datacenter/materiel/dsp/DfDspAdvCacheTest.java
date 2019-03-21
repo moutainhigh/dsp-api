@@ -34,7 +34,12 @@ public class DfDspAdvCacheTest {
     @Test
     public void getExtendNewsSet(){
         dfDspAdvCache.updateDfDspAdv();
-        Set<ExtendNews> set = dfDspAdvCache.getExtendNewsSet("h5", "detail");
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Set<ExtendNews> set = dfDspAdvCache.getExtendNewsSet("h5", "list");
         if (null == set){
             return;
         }

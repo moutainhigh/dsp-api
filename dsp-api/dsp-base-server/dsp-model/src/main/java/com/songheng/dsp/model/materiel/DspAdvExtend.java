@@ -2,7 +2,9 @@ package com.songheng.dsp.model.materiel;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -12,7 +14,9 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class DspAdvExtend extends DspAdvInfo {
+@ToString
+public class DspAdvExtend extends DspAdvInfo implements Serializable {
+    private static final long serialVersionUID = 2531129782125563638L;
     /**
      * dspId
      */
