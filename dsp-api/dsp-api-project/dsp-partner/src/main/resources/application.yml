@@ -1,0 +1,9 @@
+server:
+  context-path: /partner
+  port: 8088
+
+spring:
+  profiles:
+    active : dev
+  application:
+    name: dsp-partner
