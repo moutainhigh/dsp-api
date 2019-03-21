@@ -6,6 +6,7 @@ import com.songheng.dsp.ssp.context.RpcServiceContext;
 import com.songheng.dsp.ssp.riskcontrol.RiskControlResult;
 import com.songheng.dsp.ssp.riskcontrol.riskchain.RiskControl;
 import com.songheng.dsp.ssp.service.BlackListLocalService;
+import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Set;
@@ -16,7 +17,6 @@ import java.util.Set;
  * @date: 2019-02-01 10:05
  **/
 public class BlackListControl extends RiskControl {
-
     @Override
     protected RiskControlResult doVerification(BaseFlow baseFlow) {
         BlackListLocalService blackListLocalService = RpcServiceContext.getLocalService(BlackListLocalService.class);

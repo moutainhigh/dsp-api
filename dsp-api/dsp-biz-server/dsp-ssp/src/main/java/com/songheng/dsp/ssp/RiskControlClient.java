@@ -23,14 +23,15 @@ import java.util.Map;
  **/
 @Slf4j
 public class RiskControlClient extends RiskControl {
+
+    private RiskControlClient(){}
     /***
      *风控列表,后续如需实现新的风控业务,添加即可
      **/
     protected static List<RiskControl> riskVerifications = CollectionUtils.objsToList(
-        new BlackListControl(),
         new FlowCheckControl(),
-        new BlackListControl(),
         new AntiTheftControl(),
+        new BlackListControl(),
         new OtherRiskControl()
     );
 
@@ -71,26 +72,26 @@ public class RiskControlClient extends RiskControl {
         return client.verification(baseFlow,client);
     }
 
-    public static void main(String[] args) {
-        //构建请求信息
-        String ua = "Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Mobile Safari/537.36";
-        String reqSlotIds = "list";
-        String remoteIp = "10.9.119.12";
-        BaseFlow reqArgBaseFlow = new BaseFlow();
-        reqArgBaseFlow.setNewsClassify("yule");
-        reqArgBaseFlow.setGender("1");
-        reqArgBaseFlow.setQid("test");
-        reqArgBaseFlow.setUserId("121212");
-        reqArgBaseFlow.setUserIdType(4);
-        reqArgBaseFlow.setPgnum(1);
-        reqArgBaseFlow.setReferer("http://www.biadu.com");
-        reqArgBaseFlow.setMac("02:00:00:00");
-        AdvSspSlotLocalService advSspSlotLocalService = RpcServiceContext.getLocalService(AdvSspSlotLocalService.class);
-        Map<String,AdvSspSlot> advSspSlot = advSspSlotLocalService.getAdvSspSlotMap();
-        SspClientRequest clientRequest = new SspClientRequest(ua,remoteIp,
-                "list",advSspSlot,reqArgBaseFlow);
-
-        //执行风控业务
-        System.out.println(verification(clientRequest));
-    }
+//    public static void main(String[] args) {
+//        //构建请求信息
+//        String ua = "Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Mobile Safari/537.36";
+//        String reqSlotIds = "list";
+//        String remoteIp = "10.9.119.12";
+//        BaseFlow reqArgBaseFlow = new BaseFlow();
+//        reqArgBaseFlow.setNewsClassify("yule");
+//        reqArgBaseFlow.setGender("1");
+//        reqArgBaseFlow.setQid("test");
+//        reqArgBaseFlow.setUserId("121212");
+//        reqArgBaseFlow.setUserIdType(4);
+//        reqArgBaseFlow.setPgnum(1);
+//        reqArgBaseFlow.setReferer("http://www.biadu.com");
+//        reqArgBaseFlow.setMac("02:00:00:00");
+//        AdvSspSlotLocalService advSspSlotLocalService = RpcServiceContext.getLocalService(AdvSspSlotLocalService.class);
+//        Map<String,AdvSspSlot> advSspSlot = advSspSlotLocalService.getAdvSspSlotMap();
+//        SspClientRequest clientRequest = new SspClientRequest(ua,remoteIp,
+//                "list",advSspSlot,reqArgBaseFlow);
+//
+//        //执行风控业务
+//        System.out.println(verification(clientRequest));
+//    }
 }

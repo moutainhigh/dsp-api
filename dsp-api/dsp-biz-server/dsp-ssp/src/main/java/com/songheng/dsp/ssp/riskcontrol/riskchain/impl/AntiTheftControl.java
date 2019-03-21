@@ -17,21 +17,18 @@ public class AntiTheftControl extends RiskControl{
     @Override
     protected RiskControlResult doVerification(BaseFlow baseFlow) {
         List<String> appIds =  StringUtils.strToList(baseFlow.getAppId());
-        if(appIds.size()==0){
-            return new RiskControlResult(false,"10005","防刷配置未配",baseFlow);
-        }
         for(String appId : appIds ){
             if(appId.contains("http")){
                 String url = appId.replace("http://","").replace("https://","");
-                if(!baseFlow.getReferer().contains(url)){
-                    return new RiskControlResult(false,"10006","刷量请求",baseFlow);
+                if(baseFlow.getReferer().contains(url)){
+                    getSuccessResult(baseFlow);
                 }
             }else{
-                if(!appIds.contains(baseFlow.getPackageName())){
-                    return new RiskControlResult(false,"10006","刷量请求",baseFlow);
+                if(appIds.contains(baseFlow.getPackageName())){
+                    getSuccessResult(baseFlow);
                 }
             }
         }
-        return getSuccessResult(baseFlow);
+        return new RiskControlResult(false,"10005","刷量请求",baseFlow);
     }
 }

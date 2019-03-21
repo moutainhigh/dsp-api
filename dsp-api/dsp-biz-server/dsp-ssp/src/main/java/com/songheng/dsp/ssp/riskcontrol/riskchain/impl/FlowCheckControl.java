@@ -18,7 +18,7 @@ public class FlowCheckControl extends RiskControl {
         }
         //验证广告位信息
         if(flow.getReqSlotInfos().size()==0){
-            return new RiskControlResult(false,"10002","广告位信息为空",flow);
+            return new RiskControlResult(false,"10002","广告位不存在",flow);
         }
         //验证必要参数信息
         int idx = isInvalidArgs(
@@ -27,11 +27,9 @@ public class FlowCheckControl extends RiskControl {
                 flow.getTerminal(),
                 flow.getQid(),
                 flow.getUserId(),
+                flow.getUserIdType()+"",
                 flow.getReferer(),
                 flow.getUa(),
-                flow.getPgnum()+"",
-                flow.getUserIdType()+"",
-                flow.getUserIdType()+"",
                 flow.getPgType());
         if(idx!=-1){
             return new RiskControlResult(false,"10003","参数无效,idx:"+idx,flow);
