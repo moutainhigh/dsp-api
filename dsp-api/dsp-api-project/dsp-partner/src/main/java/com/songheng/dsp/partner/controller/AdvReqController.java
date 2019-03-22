@@ -4,6 +4,7 @@ import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.partner.bizflow.BizFlow;
 import com.songheng.dsp.ssp.riskcontrol.RiskControlResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,8 +22,9 @@ public class AdvReqController {
    BizFlow bizFlow;
 
     @RequestMapping(value="/api/list")
-    public RiskControlResult partner(HttpServletRequest request){
-        return bizFlow.assemble(request,new BaseFlow());
+    public RiskControlResult partner(HttpServletRequest request, @RequestBody BaseFlow baseFlow){
+        System.out.println(baseFlow);
+        return bizFlow.assemble(request,baseFlow);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.songheng.dsp.partner.service.impl;
 
+import com.songheng.dsp.common.utils.StringUtils;
 import com.songheng.dsp.model.client.SspClientRequest;
 import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.model.ssp.AdvSspSlot;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,8 +42,16 @@ public class BizServiceImpl implements BizService {
         apiArg.setRemoteIp(remoteIp);
         apiArg.setUa(ua);
         apiArg.setReferer(referer);
+        apiArg.setSlotIds(StringUtils.replaceInvalidString(apiArg.getSlotIds(),""));
         //获取广告位集合数据
-        Map<String, AdvSspSlot> slotMap = dictDc.getAdvSspSlotMap();
+        List<String> slotIds = StringUtils.strToList(apiArg.getSlotIds());
+        Map<String, AdvSspSlot> slotMap = new HashMap<>(slotIds.size());
+        for(String slotId : slotIds){
+            AdvSspSlot advSspSlot = dictDc.getAdvSspSlotMap(slotId);
+            if(advSspSlot!=null) {
+                slotMap.put(slotId,advSspSlot);
+            }
+        }
         return new SspClientRequest(slotMap,apiArg);
     }
     /**
