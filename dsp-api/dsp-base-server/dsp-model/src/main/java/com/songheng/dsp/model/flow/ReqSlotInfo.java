@@ -19,7 +19,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-public class ReqSlotInfo {
+public class ReqSlotInfo implements Comparable<ReqSlotInfo>{
     /**
      * 单次收费价格转化倍率
      * */
@@ -128,4 +128,14 @@ public class ReqSlotInfo {
         ReqSlotInfo that = (ReqSlotInfo) o;
         return Objects.equals(slotId, that.slotId);
     }
+    @Override
+    public int compareTo(ReqSlotInfo reqSlotInfo) {
+        if(this.idx>reqSlotInfo.idx){
+            return -1;
+        }else if(this.idx<reqSlotInfo.idx){
+            return 1;
+        }
+        return 0;
+    }
+
 }

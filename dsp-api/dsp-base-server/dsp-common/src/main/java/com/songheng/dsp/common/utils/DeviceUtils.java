@@ -10,6 +10,10 @@ import eu.bitwalker.useragentutils.UserAgent;
  * @date: 2019-01-23 13:32
  */
 public final class DeviceUtils {
+    /**
+     * 无效的 ua_id
+     * */
+    public final static int INVALID_UA_ID = 16843022;
 
     private DeviceUtils(){}
     /**

@@ -21,11 +21,11 @@ public class AntiTheftControl extends RiskControl{
             if(appId.contains("http")){
                 String url = appId.replace("http://","").replace("https://","");
                 if(baseFlow.getReferer().contains(url)){
-                    getSuccessResult(baseFlow);
+                    return getSuccessResult(baseFlow);
                 }
             }else{
                 if(appIds.contains(baseFlow.getPackageName())){
-                    getSuccessResult(baseFlow);
+                    return getSuccessResult(baseFlow);
                 }
             }
         }

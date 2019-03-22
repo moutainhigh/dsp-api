@@ -17,18 +17,6 @@ import java.util.Map;
 @ToString
 public class SspClientRequest {
     /**
-     * userAgent
-     * */
-    private String ua;
-    /**
-     * 客户端ip
-     * */
-    private String remoteIp;
-    /**
-     * 请求的广告位Id
-     * */
-    private String reqSlotIds;
-    /**
      * 广告位映射数据 -> dc/local
      * */
     private Map<String, AdvSspSlot> advSspSlot;
@@ -37,13 +25,9 @@ public class SspClientRequest {
      * */
     private BaseFlow argBaseFlow;
 
-    public SspClientRequest(String ua, String remoteIp, String reqSlotIds,
-        Map<String, AdvSspSlot> advSspSlot,BaseFlow argBaseFlow){
-        this.ua = ua;
-        this.remoteIp = remoteIp;
-        this.reqSlotIds = reqSlotIds;
+    public SspClientRequest(Map<String, AdvSspSlot> advSspSlot,BaseFlow apiArg){
         this.advSspSlot = advSspSlot;
-        this.argBaseFlow = argBaseFlow;
+        this.argBaseFlow = apiArg;
     }
 
 }

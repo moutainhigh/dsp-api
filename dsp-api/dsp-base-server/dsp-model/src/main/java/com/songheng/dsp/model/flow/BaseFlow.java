@@ -25,10 +25,9 @@ public class BaseFlow implements Serializable {
 
     private static final long serialVersionUID = 1983712738291293847L;
     /**
-     * 请求的广告位ID集合
-     * (api-arg)
+     * 请求的广告位id,以","隔开
      * */
-    private Set<String> reqSlotIds;
+    private String slotIds;
     /**
      * app版本号  10403 = 1.4.3
      * (api-arg)
@@ -297,6 +296,11 @@ public class BaseFlow implements Serializable {
      * (parse)
      * */
     private Set<ReqSlotInfo> reqSlotInfos;
+    /**
+     * 请求的广告位ID集合
+     * (parse)
+     * */
+    private Set<String> reqSlotIds;
 
     public BaseFlow(){
         this.reqId = RandomUtils.generateRandString("r",19);
@@ -308,14 +312,17 @@ public class BaseFlow implements Serializable {
      * @param ua req_head
      * */
     private static BaseFlow setUserAgentInfo(BaseFlow baseFlow,String ua){
-        baseFlow.ua = ua;
-        baseFlow.os = DeviceUtils.getOsName(ua);
-        baseFlow.osAndVersion = DeviceUtils.getOs(ua);
-        baseFlow.browserName = DeviceUtils.getBrowserName(ua);
-        baseFlow.browserVersion = DeviceUtils.getBrowserVersion(ua);
-        baseFlow.deviceType = DeviceUtils.getDeviceType(ua);
-        baseFlow.userAgentId = DeviceUtils.getUserAgentId(ua);
-        baseFlow.model = DeviceUtils.getPhoneModel(ua);
+        //如果 是有效ua,则直接解析ua,否则从参数中获取
+        if(StringUtils.isNotBlank(ua) && DeviceUtils.getUserAgentId(ua)!=DeviceUtils.INVALID_UA_ID) {
+            baseFlow.ua = ua;
+            baseFlow.os = DeviceUtils.getOsName(ua);
+            baseFlow.osAndVersion = DeviceUtils.getOs(ua);
+            baseFlow.browserName = DeviceUtils.getBrowserName(ua);
+            baseFlow.browserVersion = DeviceUtils.getBrowserVersion(ua);
+            baseFlow.deviceType = DeviceUtils.getDeviceType(ua);
+            baseFlow.userAgentId = DeviceUtils.getUserAgentId(ua);
+            baseFlow.model = DeviceUtils.getPhoneModel(ua);
+        }
         return baseFlow;
 
     }
@@ -336,29 +343,25 @@ public class BaseFlow implements Serializable {
      * @param reqSlotIds 广告位Id
      * @param advSspSlotMap 所有广告位数据Map
      * */
-    private static BaseFlow setReqSlotIdInfo(BaseFlow baseFlow,String reqSlotIds,Map<String, AdvSspSlot> advSspSlotMap){
+    private static BaseFlow setReqSlotIdInfo(BaseFlow baseFlow,Map<String, AdvSspSlot> advSspSlotMap){
         //添加广告位信息
-        if(StringUtils.isNotNullOrEmpty(reqSlotIds) && null!=advSspSlotMap){
-            baseFlow.reqSlotIds = CollectionUtils.listToSet(StringUtils.strToList(reqSlotIds));
-            Iterator<String> iterator = baseFlow.reqSlotIds.iterator();
-            while(iterator.hasNext()){
-                String slotId = iterator.next();
-                if(advSspSlotMap.containsKey(slotId)) {
-                    AdvSspSlot advSspSlot = advSspSlotMap.get(slotId);
-                    //如果广告数量没有通过参数传过来则从ssp配置中取
-                    if(null == baseFlow.getAdnum()) {
-                        baseFlow.setAdnum(advSspSlot.getAdnum()<=0?1:advSspSlot.getAdnum());
-                    }
-                    //非信息流广告位,强制设置pgnum=1,adnum=1
-                    if(!advSspSlot.isFeeds()) {
-                        baseFlow.setPgnum(1);
-                        baseFlow.setAdnum(1);
-                    }
-                    //生成具体的广告位信息
-                    for(int idx=1;idx<=baseFlow.getAdnum();idx++){
-                        baseFlow.reqSlotInfos.add(ReqSlotInfo.buildReqSlotInfo(advSspSlot,baseFlow,idx));
-                    }
-
+        if(null!=advSspSlotMap && advSspSlotMap.size()>0){
+            for(String slotId:advSspSlotMap.keySet()){
+                //设置广告位列表
+                baseFlow.reqSlotIds.add(slotId);
+                AdvSspSlot advSspSlot = advSspSlotMap.get(slotId);
+                //如果广告数量没有通过参数传过来则从ssp配置中取
+                if(null == baseFlow.getAdnum()) {
+                    baseFlow.setAdnum(advSspSlot.getAdnum()<=0?1:advSspSlot.getAdnum());
+                }
+                //非信息流广告位,强制设置pgnum=1,adnum=1
+                if(!advSspSlot.isFeeds()) {
+                    baseFlow.setPgnum(1);
+                    baseFlow.setAdnum(1);
+                }
+                //生成具体的广告位信息
+                for(int idx=1;idx<=baseFlow.getAdnum();idx++){
+                    baseFlow.reqSlotInfos.add(ReqSlotInfo.buildReqSlotInfo(advSspSlot,baseFlow,idx));
                 }
             }
         }
@@ -368,9 +371,9 @@ public class BaseFlow implements Serializable {
     /**
      * @param baseFlow api参数设置的广告流量信息
      * */
-    private static BaseFlow setApiArg(BaseFlow baseFlow){
+    private static BaseFlow dealApiArg(BaseFlow baseFlow){
         if(null == baseFlow){
-            throw new NullPointerException("封装的请求参数有误:BaseFlow为空");
+            throw new NullPointerException("[SSP]:封装的请求参数有误:BaseFlow为空");
         }
         //API-ARG
         baseFlow.setAdnum(baseFlow.getAdnum());
@@ -404,14 +407,14 @@ public class BaseFlow implements Serializable {
      * */
     public static BaseFlow generateBaseFlow(SspClientRequest clientRequest){
         BaseFlow baseFlow = clientRequest.getArgBaseFlow();
-        //设置请求参数
-        setApiArg(baseFlow);
+        //处理请求参数
+        dealApiArg(baseFlow);
         //设置ua信息
-        setUserAgentInfo(baseFlow,clientRequest.getUa());
+        setUserAgentInfo(baseFlow,baseFlow.getUa());
         //设置地域信息
-        setAreaInfo(baseFlow,clientRequest.getRemoteIp());
+        setAreaInfo(baseFlow,baseFlow.getRemoteIp());
         //设置广告位信息
-        setReqSlotIdInfo(baseFlow,clientRequest.getReqSlotIds(),clientRequest.getAdvSspSlot());
+        setReqSlotIdInfo(baseFlow,clientRequest.getAdvSspSlot());
         return baseFlow;
     }
 }
