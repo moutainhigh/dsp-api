@@ -61,20 +61,36 @@ public class BizServiceImpl implements BizService {
         return RiskControlClient.verification(request);
     }
     /**
-     * 获取adx用户信息集合
+     * 获取第三方adx企业信息列表
      * */
     @Override
-    public List<DspUserInfo> getAdxUserInfoList(String terminal){
+    public List<DspUserInfo> getThirdAdxUserList(String terminal){
         List<DspUserInfo> result = new ArrayList<>();
         List<DspUserInfo> list = dictDc.getAdxUserInfoList(terminal);
         Iterator<DspUserInfo> iterable = list.iterator();
         while (iterable.hasNext()){
             DspUserInfo dspUserInfo = iterable.next();
-            if(dspUserInfo.getDspid().equalsIgnoreCase("XP4Q4ELI7HTPVK7GHYM9")){
-                dspUserInfo.setOneselfDsp(true);
+            dspUserInfo.setOneselfDsp(true);
+            if(!dspUserInfo.isOneselfDsp()){
                 result.add(dspUserInfo);
             }
         }
         return result;
+    }
+    /**
+     * 获取本方adx企业信息
+     * */
+    @Override
+    public DspUserInfo getOneSelfAdxUser(String terminal) {
+        List<DspUserInfo> list = dictDc.getAdxUserInfoList(terminal);
+        Iterator<DspUserInfo> iterable = list.iterator();
+        while (iterable.hasNext()){
+            DspUserInfo dspUserInfo = iterable.next();
+            dspUserInfo.setOneselfDsp(true);
+            if(dspUserInfo.isOneselfDsp()){
+               return dspUserInfo;
+            }
+        }
+        return null;
     }
 }

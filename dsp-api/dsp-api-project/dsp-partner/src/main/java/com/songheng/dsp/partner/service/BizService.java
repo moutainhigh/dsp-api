@@ -29,9 +29,14 @@ public interface BizService {
     RiskControlResult execute(SspClientRequest request);
 
     /**
-     * 获取adx用户信息集合
+     * 获取第三方adx企业信息列表
      * */
-    List<DspUserInfo> getAdxUserInfoList(String terminal);
+    List<DspUserInfo> getThirdAdxUserList(String terminal);
+
+    /**
+     * 获取本方adx企业信息
+     * */
+    DspUserInfo getOneSelfAdxUser(String terminal);
 
 
 }

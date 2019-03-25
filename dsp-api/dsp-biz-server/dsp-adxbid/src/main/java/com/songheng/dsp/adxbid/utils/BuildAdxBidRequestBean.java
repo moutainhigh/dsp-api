@@ -9,7 +9,6 @@ import com.songheng.dsp.model.adx.request.Device;
 import com.songheng.dsp.model.adx.request.RequestBean;
 import com.songheng.dsp.model.adx.request.Site;
 import com.songheng.dsp.model.adx.request.User;
-import com.songheng.dsp.model.flow.AdvPositions;
 import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.model.flow.ReqSlotInfo;
 import java.util.Iterator;

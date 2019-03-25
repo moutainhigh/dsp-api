@@ -19,6 +19,7 @@
         <module>dsp-monopoly</module>
         <module>dsp-adxbid</module>
         <module>dsp-match</module>
+        <module>dsp-dspbid</module>
     </modules>
 
     <dependencyManagement>

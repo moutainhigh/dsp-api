@@ -101,6 +101,11 @@
             <groupId>com.songheng.dsp</groupId>
             <artifactId>dsp-advmatch</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.songheng.dsp</groupId>
+            <artifactId>dsp-dspbid</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>

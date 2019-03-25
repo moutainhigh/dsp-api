@@ -20,4 +20,5 @@ public interface DictDc {
      * 获取adx用户信息集合
      * */
     List<DspUserInfo> getAdxUserInfoList(String terminal);
+
 }

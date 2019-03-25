@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
  * @date: 2019-03-21 15:01
  **/
 @Slf4j
-public class UpdateDIctData {
+public class UpdateDictData {
     /**
      * 定时任务更新广告缓存
      * 60秒更新一次
