@@ -1,5 +1,7 @@
 package com.songheng.dsp.model.output;
 
+import com.songheng.dsp.model.materiel.MaterielBaseInfo;
+import com.songheng.dsp.model.materiel.MaterielImgInfo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,67 +18,7 @@ import java.util.logging.SimpleFormatter;
  **/
 @Getter
 @Setter
-public class OutPutAdv {
-    /**
-     * 素材类型 0:展示类 1:下载类 2:小程序类
-     * */
-    private String type;
-    /**
-     * 素材基本样式 big,one,group,video
-     * */
-    private String baseStyle;
-    /**
-     * 素材扩展样式 : 针对组图不同的展示形式
-     *  0:普通样式
-     *  1:新样式
-     * */
-    private String subStyle;
-
-    /**
-     * 广告主来源
-     * */
-    private String source;
-
-    /**
-     * 广告落地页url
-     * */
-    private String url;
-
-    /**
-     * 主图片列表
-     * */
-    private List<Img> mainImgs;
-    /**
-     * 辅图片列表：大图广告补充素材图片
-     * */
-    private List<Img> subImgs;
-
-
-    private List<String> video;
-
-    /**
-     * 素材主文本内容
-     * */
-    private String mainContent;
-
-    /**
-     * 素材副文本内容
-     * */
-    private String subContent;
-
-    /**
-     * 下载地址
-     * */
-    private String downloadurl;
-
-    /**
-     * iOS 应用商店id
-     * */
-    private String appstoreId;
-    /**
-     * Android 应用包名
-     * */
-    private String packagename;
+public class OutPutAdv extends MaterielBaseInfo {
 
     /**
      * 广告位Id
@@ -118,41 +60,8 @@ public class OutPutAdv {
         this.inviewRep = new ArrayList<>();
         this.clickRep = new ArrayList<>();
         this.conversionRep = new ArrayList<>();
-        this.mainImgs = new ArrayList<>();
-        this.subImgs = new ArrayList<>();
-        this.video = new ArrayList<>();
         this.cacheTime = 30;
-        this.appstoreId = "";
-        this.packagename = "";
-        this.baseStyle = "";
-        this.subStyle = "";
-        this.type = "";
-        this.downloadurl = "";
         this.sectors = "";
         this.sectors = "";
-        this.mainContent = "";
-        this.subContent = "";
-        this.source = "";
-    }
-
-
-    @Getter
-    @Setter
-    public class Img {
-        private String src;
-        private int imgwidth;
-        private int imgheight;
-
-        public Img(){}
-
-        public Img(String src){
-            this.src = src;
-        }
-
-        public Img(String src, int imgwidth, int imgheight){
-            this.src = src;
-            this.imgwidth = imgwidth;
-            this.imgheight = imgheight;
-        }
     }
 }
