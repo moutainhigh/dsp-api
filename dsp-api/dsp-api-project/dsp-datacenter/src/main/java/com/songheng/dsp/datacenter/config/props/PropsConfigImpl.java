@@ -11,7 +11,8 @@ import java.util.Map;
  * @date: 2019/3/4 14:37
  * @description: PropsConfig缓存接口实现类
  */
-@Service(interfaceClass = PropsConfigService.class)
+@Service(interfaceClass = PropsConfigService.class,
+        timeout = 100)
 @Component
 public class PropsConfigImpl implements PropsConfigService {
 

@@ -19,7 +19,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @description: 广告样式缓存接口实现类
  */
 @Slf4j
-@Service(interfaceClass = AdvDictAdStyleService.class)
+@Service(interfaceClass = AdvDictAdStyleService.class,
+        timeout = 100)
 @Component
 public class AdvDictAdStyleImpl implements AdvDictAdStyleService {
 

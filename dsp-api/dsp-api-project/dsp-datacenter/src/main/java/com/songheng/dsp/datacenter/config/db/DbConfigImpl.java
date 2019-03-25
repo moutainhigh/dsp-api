@@ -12,7 +12,8 @@ import java.util.Map;
  * @date: 2019/3/4 14:35
  * @description: DbConfig缓存接口实现类
  */
-@Service(interfaceClass = DbConfigService.class)
+@Service(interfaceClass = DbConfigService.class,
+            timeout = 100)
 @Component
 public class DbConfigImpl implements DbConfigService {
 

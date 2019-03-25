@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.songheng.dsp.common.db.DbUtils;
 import com.songheng.dsp.common.utils.StringUtils;
 import com.songheng.dsp.datacenter.config.db.SqlMapperLoader;
+import com.songheng.dsp.datacenter.config.props.PropertiesLoader;
 import com.songheng.dsp.dubbo.baseinterface.user.adx.DspUserService;
 import com.songheng.dsp.model.adx.user.DspUserInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +21,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @description: DSP用户池缓存接口实现类
  */
 @Slf4j
-@Service(interfaceClass = DspUserService.class)
+@Service(interfaceClass = DspUserService.class,
+        timeout = 100)
 @Component
 public class DspUserImpl implements DspUserService {
 
@@ -60,6 +62,11 @@ public class DspUserImpl implements DspUserService {
         Map<String, List<DspUserInfo>> dspIdMapTmp = new ConcurrentHashMap<>(32);
         Map<String, List<DspUserInfo>> priorityMapTmp = new ConcurrentHashMap<>(32);
         for (DspUserInfo userInfo : users){
+            if (userInfo.getDspid().equals(StringUtils.replaceInvalidString(
+                    PropertiesLoader.getProperty("dfdspid"), "XP4Q4ELI7HTPVK7GHYM9"))){
+                //DFDSP
+                userInfo.setOneselfDsp(true);
+            }
             terminal = StringUtils.isNotBlank(userInfo.getTerminal()) ? userInfo.getTerminal() : terminal;
             if (terminal.toLowerCase().indexOf("app") != -1){
                 //设置h5,pc qps初始值

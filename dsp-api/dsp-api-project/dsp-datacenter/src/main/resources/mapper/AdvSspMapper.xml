@@ -20,6 +20,7 @@
             s.slotSort,
             s.styleIds,
             s.floorPrice,
+            s.isFeeds,
             ss.sellSeatId
         FROM
             adv_ssp_slot s
@@ -52,6 +53,7 @@
             s.slotSort,
             s.styleIds,
             s.floorPrice,
+            s.isFeeds,
             ss.sellSeatId
         FROM
             adv_ssp_slot s

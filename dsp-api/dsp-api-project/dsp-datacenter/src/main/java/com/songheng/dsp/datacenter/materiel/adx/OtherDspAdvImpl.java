@@ -22,7 +22,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @description: 第三方DSP广告池缓存接口实现类
  */
 @Slf4j
-@Service(interfaceClass = OtherDspAdvService.class)
+@Service(interfaceClass = OtherDspAdvService.class,
+        timeout = 100)
 @Component
 public class OtherDspAdvImpl implements OtherDspAdvService {
 

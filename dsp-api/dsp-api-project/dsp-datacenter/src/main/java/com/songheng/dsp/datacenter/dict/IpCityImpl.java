@@ -19,7 +19,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @description: IpCity缓存接口实现类
  */
 @Slf4j
-@Service(interfaceClass = IpCityService.class)
+@Service(interfaceClass = IpCityService.class,
+        timeout = 100)
 @Component
 public class IpCityImpl implements IpCityService {
 
