@@ -19,7 +19,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @description: dsp售卖位置缓存接口实现类
  */
 @Slf4j
-@Service(interfaceClass = AdvDictSellSeatService.class)
+@Service(interfaceClass = AdvDictSellSeatService.class,
+        timeout = 100)
 @Component
 public class AdvDictSellSeatImpl implements AdvDictSellSeatService {
 

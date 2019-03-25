@@ -21,7 +21,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @description: SSP 广告位缓存接口实现类
  */
 @Slf4j
-@Service(interfaceClass = AdvSspSlotService.class)
+@Service(interfaceClass = AdvSspSlotService.class,
+        timeout = 100)
 @Component
 public class AdvSspSlotImpl implements AdvSspSlotService {
 

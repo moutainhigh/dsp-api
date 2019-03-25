@@ -20,7 +20,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @description: 渠道白名单缓存接口实现类
  */
 @Slf4j
-@Service(interfaceClass = AdvSspQidService.class)
+@Service(interfaceClass = AdvSspQidService.class,
+        timeout = 100)
 @Component
 public class AdvSspQidImpl implements AdvSspQidService {
 

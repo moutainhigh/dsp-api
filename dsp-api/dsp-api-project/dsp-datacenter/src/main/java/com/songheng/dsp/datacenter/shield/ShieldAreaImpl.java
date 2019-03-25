@@ -20,7 +20,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @description: 地域屏蔽信息缓存接口实现类
  */
 @Slf4j
-@Service(interfaceClass = ShieldAreaService.class)
+@Service(interfaceClass = ShieldAreaService.class,
+        timeout = 100)
 @Component
 public class ShieldAreaImpl implements ShieldAreaService {
 

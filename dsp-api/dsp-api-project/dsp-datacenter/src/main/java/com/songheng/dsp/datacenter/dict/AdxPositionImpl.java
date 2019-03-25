@@ -20,7 +20,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @description: ADX广告位缓存接口实现类
  */
 @Slf4j
-@Service(interfaceClass = AdxPositionService.class)
+@Service(interfaceClass = AdxPositionService.class,
+        timeout = 100)
 @Component
 public class AdxPositionImpl implements AdxPositionService {
 
