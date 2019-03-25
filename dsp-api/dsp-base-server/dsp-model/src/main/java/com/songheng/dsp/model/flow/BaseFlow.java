@@ -302,6 +302,11 @@ public class BaseFlow implements Serializable {
      * */
     private Set<String> reqSlotIds;
 
+    /**
+     *jsonp 回调参数
+     * */
+    private String jsonpcallback;
+
     public BaseFlow(){
         this.reqId = RandomUtils.generateRandString("r",19);
         this.reqSlotInfos = new TreeSet<>();

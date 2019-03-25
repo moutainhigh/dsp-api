@@ -3,8 +3,11 @@ package com.songheng.dsp.model.output;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.SimpleFormatter;
 
 /**
  * @description: 输出的物料信息
@@ -14,10 +17,6 @@ import java.util.List;
 @Getter
 @Setter
 public class OutPutAdv {
-    /**
-     * 物料下发时间
-     * */
-    private String time;
     /**
      * 素材类型 0:展示类 1:下载类 2:小程序类
      * */
@@ -109,13 +108,33 @@ public class OutPutAdv {
      * 素材所属行业
      * */
     private String sectors;
+    /**
+     * 最大可缓存的时间(分钟)
+     * */
+    private int cacheTime;
 
     public OutPutAdv(){
         this.showRep = new ArrayList<>();
         this.inviewRep = new ArrayList<>();
         this.clickRep = new ArrayList<>();
         this.conversionRep = new ArrayList<>();
+        this.mainImgs = new ArrayList<>();
+        this.subImgs = new ArrayList<>();
+        this.video = new ArrayList<>();
+        this.cacheTime = 30;
+        this.appstoreId = "";
+        this.packagename = "";
+        this.baseStyle = "";
+        this.subStyle = "";
+        this.type = "";
+        this.downloadurl = "";
+        this.sectors = "";
+        this.sectors = "";
+        this.mainContent = "";
+        this.subContent = "";
+        this.source = "";
     }
+
 
     @Getter
     @Setter

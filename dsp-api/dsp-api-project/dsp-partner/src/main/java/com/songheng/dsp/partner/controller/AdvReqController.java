@@ -1,17 +1,15 @@
 package com.songheng.dsp.partner.controller;
 
-import com.songheng.dsp.model.adx.response.ResponseBean;
+import com.alibaba.fastjson.JSONObject;
 import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.partner.bizflow.IBizFlow;
-import com.songheng.dsp.ssp.riskcontrol.RiskControlResult;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.songheng.dsp.partner.utils.GzipResponse;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @description: 广告素材请求入口
@@ -25,9 +23,16 @@ public class AdvReqController {
    IBizFlow bizFlow;
 
     @RequestMapping(value="/api/list")
-    public List<ResponseBean> partner(HttpServletRequest request, @RequestBody BaseFlow baseFlow){
+    public void partner(HttpServletRequest request, HttpServletResponse response, @RequestBody BaseFlow baseFlow){
         System.out.println(baseFlow);
-        return bizFlow.assemble(request,baseFlow);
+        JSONObject data = new JSONObject();
+        data.put("dta",bizFlow.assemble(request,baseFlow));
+        data.put("province",baseFlow.getProvince());
+        data.put("city",baseFlow.getCity());
+        data.put("dt",System.currentTimeMillis());
+        String callBack = baseFlow.getJsonpcallback();
+        String respData = (null == callBack) ? (data.toJSONString()) : (callBack+ "(" + data.toJSONString() + ")");
+        GzipResponse.gzipPrint(request,response,respData);
     }
 
 }

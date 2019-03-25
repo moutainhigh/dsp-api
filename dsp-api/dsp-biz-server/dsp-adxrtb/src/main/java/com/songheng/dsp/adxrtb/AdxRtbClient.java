@@ -7,6 +7,7 @@ import com.songheng.dsp.adxrtb.rtb.Rtb;
 import com.songheng.dsp.adxrtb.rtb.impl.DefaultRtb;
 import com.songheng.dsp.model.output.OutPutAdv;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +19,11 @@ import java.util.Map;
  **/
 public class AdxRtbClient {
 
-    public static List<OutPutAdv> execute(BaseFlow baseFlow) {
-       return null;
+    public static List<OutPutAdv> execute(BaseFlow baseFlow,List<ResponseBean> responseBeans) {
+        List<OutPutAdv> advList = new ArrayList<>();
+        OutPutAdv outPutAdv = new OutPutAdv();
+        advList.add(outPutAdv);
+        return advList;
     }
 
 }

@@ -1,12 +1,10 @@
 package com.songheng.dsp.partner.bizflow.impl;
 
-import com.songheng.dsp.model.adx.response.ResponseBean;
-import com.songheng.dsp.model.client.SspClientRequest;
 import com.songheng.dsp.model.flow.BaseFlow;
+import com.songheng.dsp.model.output.OutPutAdv;
 import com.songheng.dsp.partner.bizflow.BaseBizFlow;
 import com.songheng.dsp.partner.bizflow.IBizFlow;
 import com.songheng.dsp.partner.service.BizService;
-import com.songheng.dsp.ssp.riskcontrol.RiskControlResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +25,7 @@ public class DefaultBizFlowImpl extends BaseBizFlow implements IBizFlow {
      * 组装业务流
      * */
     @Override
-    public List<ResponseBean> assemble(HttpServletRequest request, BaseFlow baseFlow){
+    public List<OutPutAdv> assemble(HttpServletRequest request, BaseFlow baseFlow){
         System.out.println("default-biz-flow");
         return groupBizFlow(request,baseFlow);
     }

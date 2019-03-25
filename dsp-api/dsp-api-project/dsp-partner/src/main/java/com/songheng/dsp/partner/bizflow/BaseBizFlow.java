@@ -1,11 +1,13 @@
 package com.songheng.dsp.partner.bizflow;
 
 import com.songheng.dsp.adxbid.AdxBidClient;
+import com.songheng.dsp.adxrtb.AdxRtbClient;
 import com.songheng.dsp.common.utils.ThreadPoolUtils;
 import com.songheng.dsp.model.adx.response.ResponseBean;
 import com.songheng.dsp.model.adx.user.DspUserInfo;
 import com.songheng.dsp.model.client.SspClientRequest;
 import com.songheng.dsp.model.flow.BaseFlow;
+import com.songheng.dsp.model.output.OutPutAdv;
 import com.songheng.dsp.partner.job.dspbidreq.SendDspBidReq;
 import com.songheng.dsp.partner.service.BizService;
 import com.songheng.dsp.ssp.riskcontrol.RiskControlResult;
@@ -31,7 +33,8 @@ public abstract class BaseBizFlow{
     /**
      * 组装业务流
      * */
-    public List<ResponseBean> groupBizFlow(HttpServletRequest request, BaseFlow baseFlow){
+    public List<OutPutAdv> groupBizFlow(HttpServletRequest request, BaseFlow baseFlow){
+        List<OutPutAdv> result = new ArrayList<>();
         //初始化风控请求对象
         SspClientRequest sspClientRequest = bizService.initSspClientRequestObj(request,baseFlow);
         //风控验证
@@ -41,12 +44,10 @@ public abstract class BaseBizFlow{
             List<Future> futures = sendBidReqAndGetFuture(baseFlow);
             //通过futures获取响应bean
             List<ResponseBean> responseBeans = getResponseByFutures(futures,baseFlow);
-            //ADX竞价业务
-
-
-            return responseBeans;
+            //ADX RTB 竞价
+            result = AdxRtbClient.execute(baseFlow,responseBeans);
         }
-        return null;
+        return result;
     }
 
     /**

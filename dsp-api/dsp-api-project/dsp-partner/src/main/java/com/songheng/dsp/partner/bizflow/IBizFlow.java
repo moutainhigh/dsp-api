@@ -1,9 +1,7 @@
 package com.songheng.dsp.partner.bizflow;
 
-import com.songheng.dsp.model.adx.response.ResponseBean;
 import com.songheng.dsp.model.flow.BaseFlow;
-import com.songheng.dsp.ssp.riskcontrol.RiskControlResult;
-
+import com.songheng.dsp.model.output.OutPutAdv;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -13,9 +11,13 @@ import java.util.List;
  * @date: 2019-03-21 16:46
  **/
 public interface IBizFlow {
+
     /**
-     * 组装业务流
-     * */
-    List<ResponseBean> assemble(HttpServletRequest request, BaseFlow baseFlow);
+     * 业务组装
+     * @param request 请求
+     * @param baseFlow 流量信息
+     * @return 素材信息
+     */
+    List<OutPutAdv> assemble(HttpServletRequest request, BaseFlow baseFlow);
 
 }
