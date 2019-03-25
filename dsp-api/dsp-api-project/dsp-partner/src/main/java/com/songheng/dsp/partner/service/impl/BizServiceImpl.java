@@ -1,6 +1,7 @@
 package com.songheng.dsp.partner.service.impl;
 
 import com.songheng.dsp.common.utils.StringUtils;
+import com.songheng.dsp.model.adx.user.DspUserInfo;
 import com.songheng.dsp.model.client.SspClientRequest;
 import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.model.ssp.AdvSspSlot;
@@ -13,9 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @description: 业务逻辑组装
@@ -60,5 +59,22 @@ public class BizServiceImpl implements BizService {
     @Override
     public RiskControlResult execute(SspClientRequest request){
         return RiskControlClient.verification(request);
+    }
+    /**
+     * 获取adx用户信息集合
+     * */
+    @Override
+    public List<DspUserInfo> getAdxUserInfoList(String terminal){
+        List<DspUserInfo> result = new ArrayList<>();
+        List<DspUserInfo> list = dictDc.getAdxUserInfoList(terminal);
+        Iterator<DspUserInfo> iterable = list.iterator();
+        while (iterable.hasNext()){
+            DspUserInfo dspUserInfo = iterable.next();
+            if(dspUserInfo.getDspid().equalsIgnoreCase("XP4Q4ELI7HTPVK7GHYM9")){
+                dspUserInfo.setOneselfDsp(true);
+                result.add(dspUserInfo);
+            }
+        }
+        return result;
     }
 }
