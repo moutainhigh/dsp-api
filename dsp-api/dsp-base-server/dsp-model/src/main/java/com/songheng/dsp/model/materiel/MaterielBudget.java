@@ -5,11 +5,10 @@ package com.songheng.dsp.model.materiel;
  * @author: zhangshuai@021.com
  * @date: 2019-03-26 11:52
  **/
-public class MaterielBudget {
-    /**
-     * 素材投放Id
-     * */
-    private String deliveryId;
+public class MaterielBudget extends MaterielBaseInfo implements java.io.Serializable{
+
+    public static final long serialVersionUID = 386204821357724168L;
+
     /**
      * 广告组id
      * */

@@ -12,13 +12,10 @@ import java.util.List;
  **/
 @Getter
 @Setter
-public class MaterielDirect implements java.io.Serializable{
+public class MaterielDirect extends MaterielBudget implements java.io.Serializable{
 
     public static final long serialVersionUID = 4862048213773124168L;
-    /**
-     * 素材投放Id
-     * */
-    private String deliveryId;
+
     /**
      * 竞价模式 iscustomtime
      * 0:自由竞价 1:优先竞价 2:打底竞价
