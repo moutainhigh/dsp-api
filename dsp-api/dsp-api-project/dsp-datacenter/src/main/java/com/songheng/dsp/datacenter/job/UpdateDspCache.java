@@ -1,5 +1,8 @@
 package com.songheng.dsp.datacenter.job;
 
+import com.songheng.dsp.common.utils.StringUtils;
+import com.songheng.dsp.common.utils.ZkClientUtils;
+import com.songheng.dsp.datacenter.infosync.ZkWatcherAdvice;
 import com.songheng.dsp.datacenter.materiel.dsp.DfDspAdvCache;
 import com.songheng.dsp.datacenter.ssp.AdvDictAdStyleImpl;
 import com.songheng.dsp.datacenter.ssp.AdvDictSellSeatImpl;
@@ -49,6 +52,12 @@ public class UpdateDspCache {
     @Autowired
     private AdvSspSlotImpl advSspSlot;
 
+    /**
+     * zkWatcherAdvice
+     */
+    @Autowired
+    private ZkWatcherAdvice zkWatcherAdvice;
+
 
     /**
      * 定时任务更新DSP广告缓存
@@ -86,6 +95,17 @@ public class UpdateDspCache {
             advDictAdStyle.updateAdvDictAdStyle();
         } catch (Exception e){
             log.error("更新广告样式缓存数据失败\n{}", e);
+        }
+        long startTs = System.currentTimeMillis();
+        try {
+            String nodeData = ZkClientUtils.readData(zkWatcherAdvice.getZkClient(), zkWatcherAdvice.getMinPath());
+            long remoteTs = Long.parseLong(StringUtils.replaceInvalidString(nodeData, "0"));
+            if ((startTs - remoteTs) > 10L){
+                //更新节点数据，通知监听该节点的所有客户端更新缓存
+                ZkClientUtils.updateNode(zkWatcherAdvice.getZkClient(), zkWatcherAdvice.getMinPath(), startTs);
+            }
+        } catch (Exception e) {
+            log.error("更新zk节点数据失败\tnode path ==>{}\n{}", zkWatcherAdvice.getMinPath(), e);
         }
         log.debug("更新DSP广告缓存数据成功！");
     }

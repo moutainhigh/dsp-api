@@ -16,5 +16,15 @@ dubbo:
   scan:
     base-packages: com.songheng.dsp.datacenter
 
+zk:
+  cluster:
+    address: dspzk001:2181,dspzk002:2181,dspzk003:2181
+  connect:
+    timeout: 5000
+  session:
+    timeout: 5000
+  subscribe:
+    minutepath: /dsp-dc/advice/timerupt/minute-
+    secondspath: /dsp-dc/advice/timerupt/seconds-
 
   
