@@ -7,7 +7,8 @@ import java.util.List;
  * @author: zhangshuai@021.com
  * @date: 2019-03-25 20:37
  **/
-public class MaterielBaseInfo {
+public class MaterielBaseInfo implements java.io.Serializable{
+    public static final long serialVersionUID = 28622482134776168L;
     /**
      * 素材类型 0:展示类 1:下载类 2:小程序类
      * */
@@ -34,16 +35,19 @@ public class MaterielBaseInfo {
     private String url;
 
     /**
-     * 主图片列表
+     * 图片列表
      * */
-    private List<MaterielImgInfo> mainImgs;
+    private List<MaterielImgInfo> imgs;
+
     /**
-     * 辅图片列表：大图广告补充素材图片
+     * 视频播放广告链接
      * */
-    private List<MaterielImgInfo> subImgs;
+    private String videoUrl;
 
-
-    private List<String> video;
+    /**
+     * 视频播放时长
+     * */
+    private long videoTime;
 
     /**
      * 素材主文本内容

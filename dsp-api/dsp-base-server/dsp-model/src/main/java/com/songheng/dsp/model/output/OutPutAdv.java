@@ -18,7 +18,7 @@ import java.util.logging.SimpleFormatter;
  **/
 @Getter
 @Setter
-public class OutPutAdv extends MaterielBaseInfo {
+public class OutPutAdv extends MaterielBaseInfo implements java.io.Serializable{
 
     /**
      * 广告位Id
