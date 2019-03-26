@@ -16,10 +16,10 @@
     <description>The project of dsp-biz-server</description>
     <modules>
         <module>dsp-ssp</module>
-        <module>dsp-monopoly</module>
         <module>dsp-adxbid</module>
         <module>dsp-match</module>
         <module>dsp-dspbid</module>
+        <module>dsp-adxrtb</module>
     </modules>
 
     <dependencyManagement>

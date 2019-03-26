@@ -11,7 +11,7 @@
 
     <artifactId>dsp-partner</artifactId>
 
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
     <description>The project of dsp-partner</description>
@@ -91,20 +91,19 @@
         </dependency>
         <dependency>
             <groupId>com.songheng.dsp</groupId>
-            <artifactId>dsp-adx</artifactId>
+            <artifactId>dsp-adxbid</artifactId>
         </dependency>
         <dependency>
             <groupId>com.songheng.dsp</groupId>
-            <artifactId>dsp-monopoly</artifactId>
+            <artifactId>dsp-adxrtb</artifactId>
         </dependency>
         <dependency>
             <groupId>com.songheng.dsp</groupId>
-            <artifactId>dsp-advmatch</artifactId>
+            <artifactId>dsp-match</artifactId>
         </dependency>
         <dependency>
             <groupId>com.songheng.dsp</groupId>
             <artifactId>dsp-dspbid</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
