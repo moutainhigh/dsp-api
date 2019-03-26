@@ -10,6 +10,10 @@ import java.util.List;
 public class MaterielBaseInfo implements java.io.Serializable{
     public static final long serialVersionUID = 28622482134776168L;
     /**
+     * 素材投放Id
+     * */
+    private String deliveryId;
+    /**
      * 素材类型 0:展示类 1:下载类 2:小程序类
      * */
     private String type;

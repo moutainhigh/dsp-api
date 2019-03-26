@@ -6,16 +6,19 @@ import lombok.Setter;
 import java.util.List;
 
 /**
- * @description: 物料的其他信息(定向,出价)
+ * @description: 物料的定向信息
  * @author: zhangshuai@021.com
  * @date: 2019-03-25 20:48
  **/
 @Getter
 @Setter
-public class MaterielExpand extends MaterielBaseInfo implements java.io.Serializable{
+public class MaterielDirect implements java.io.Serializable{
 
     public static final long serialVersionUID = 4862048213773124168L;
-
+    /**
+     * 素材投放Id
+     * */
+    private String deliveryId;
     /**
      * 竞价模式 iscustomtime
      * 0:自由竞价 1:优先竞价 2:打底竞价
@@ -31,37 +34,6 @@ public class MaterielExpand extends MaterielBaseInfo implements java.io.Serializ
      * 广告分类 图书、音像,金融
      * */
     private String typeName;
-
-    /**
-     * 广告主 出价
-     * */
-    private double unitprice;
-
-    /**
-     * 广告组id
-     * */
-    private int groupId;
-    /**
-     * 广告主Id
-     * */
-    private int userId;
-    /**
-     * 广告组预算
-     * */
-    private double groupBudget;
-    /**
-     * 广告计划总预算/日预算
-     * money
-     * */
-    private double planBudget;
-    /**
-     * 预算类型 1:总预算 0:日预算
-     * */
-    private int yusuanType;
-    /**
-     * 收费方式
-     * */
-    private String chargeway;
 
     /***
      * 投放的省份/城市
