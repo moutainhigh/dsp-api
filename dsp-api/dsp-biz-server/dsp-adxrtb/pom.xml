@@ -9,11 +9,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>dsp-monopoly</artifactId>
+    <artifactId>dsp-adxrtb</artifactId>
     <packaging>jar</packaging>
 
     <name>${project.artifactId}</name>
-    <description>The project of dsp-monopoly</description>
+    <description>The project of dsp-adxrtb</description>
 
     <dependencies>
         <dependency>

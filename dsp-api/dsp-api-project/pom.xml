@@ -46,17 +46,22 @@
             </dependency>
             <dependency>
                 <groupId>com.songheng.dsp</groupId>
-                <artifactId>dsp-adx</artifactId>
+                <artifactId>dsp-adxbid</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.songheng.dsp</groupId>
-                <artifactId>dsp-monopoly</artifactId>
+                <artifactId>dsp-adxrtb</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.songheng.dsp</groupId>
-                <artifactId>dsp-advmatch</artifactId>
+                <artifactId>dsp-match</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.songheng.dsp</groupId>
+                <artifactId>dsp-dspbid</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <!--spring boot -->
