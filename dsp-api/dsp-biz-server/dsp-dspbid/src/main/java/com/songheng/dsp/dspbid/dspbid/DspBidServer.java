@@ -140,7 +140,7 @@ public abstract class DspBidServer {
      */
     private final List<MaterielDirect> getCurrTagIdAdvList(Map<String, Set<MaterielDirect>> advInfoMap,String tagId, int bidModel){
         List<MaterielDirect> result = new ArrayList<>();
-        Set<MaterielDirect> advInfo = advInfoMap.containsKey(tagId) ? advInfoMap.get(tagId) : new TreeSet<MaterielDirect>();
+        Set<MaterielDirect> advInfo = (null!=advInfoMap && advInfoMap.containsKey(tagId)) ? advInfoMap.get(tagId) : new TreeSet<MaterielDirect>();
         Iterator<MaterielDirect> iterator = advInfo.iterator();
         while(iterator.hasNext()){
             MaterielDirect next = iterator.next();

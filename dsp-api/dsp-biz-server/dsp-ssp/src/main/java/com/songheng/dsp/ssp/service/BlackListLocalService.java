@@ -30,6 +30,6 @@ public class BlackListLocalService {
      * 验证 data 是否在黑名单列表中
      */
     public static boolean isInBlackList(Map<String, List<String>> blackListMap,String type,String data){
-        return blackListMap.get(type).contains(data);
+        return blackListMap.containsKey(type) ? blackListMap.get(type).contains(data) : false;
     }
 }
