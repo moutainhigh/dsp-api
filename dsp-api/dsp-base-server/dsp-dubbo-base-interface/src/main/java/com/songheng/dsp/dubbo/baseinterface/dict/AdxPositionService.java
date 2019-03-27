@@ -3,6 +3,7 @@ package com.songheng.dsp.dubbo.baseinterface.dict;
 import com.songheng.dsp.model.dict.AdPosition;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author: luoshaobing
@@ -33,5 +34,17 @@ public interface AdxPositionService {
      * @return
      */
     AdPosition getAdPositionByName(String terminal, String locationName);
+
+    /**
+     * 获取所有 List<AdPosition>
+     * @return
+     */
+    Map<String, List<AdPosition>> getAdPositionListMap();
+
+    /**
+     * 获取所有 AdPosition
+     * @return
+     */
+    Map<String, AdPosition> getAdPositionMap();
 
 }

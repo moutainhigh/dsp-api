@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Slf4j
 @Service(interfaceClass = AdvSspSlotService.class,
-        timeout = 100)
+        timeout = 1000)
 @Component
 public class AdvSspSlotImpl implements AdvSspSlotService {
 

@@ -51,7 +51,7 @@ public class DfDspAdvCache {
      * @return
      */
     public Set<ExtendNews> getExtendNewsSet(String terminal, String pgtype){
-        String tml_pg_key = String.format("%s%s%s", terminal, ".", pgtype);
+        String tml_pg_key = String.format("%s%s%s", terminal, "_", pgtype);
         Set<ExtendNews> result = tmlPgTypeMap.get(tml_pg_key);
         return null != result ? result : new HashSet<ExtendNews>();
     }
@@ -138,7 +138,7 @@ public class DfDspAdvCache {
                 if (StringUtils.isNotBlank(news.getChannel())){
                     channels = news.getChannel().split(",|，");
                     for (String channel : channels){
-                        tml_pg_key = String.format("%s%s%s", channel, ".", news.getPgtype());
+                        tml_pg_key = String.format("%s%s%s", channel, "_", news.getPgtype());
                         if (extendNewsTmp.containsKey(tml_pg_key)){
                             extendNewsTmp.get(tml_pg_key).add(news);
                         } else {

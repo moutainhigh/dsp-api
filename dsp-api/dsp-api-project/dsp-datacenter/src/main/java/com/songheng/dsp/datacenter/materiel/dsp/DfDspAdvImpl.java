@@ -15,7 +15,8 @@ import java.util.Set;
  * @date: 2019/3/12 15:55
  * @description: DfDsp广告池缓存接口实现类
  */
-@Service(interfaceClass = DfDspAdvService.class)
+@Service(interfaceClass = DfDspAdvService.class,
+            timeout = 1000)
 @Component
 public class DfDspAdvImpl implements DfDspAdvService {
 

@@ -77,7 +77,7 @@ public class ZkClientUtils {
      * @param path
      * @return
      */
-    private static String getParentPath(String path) {
+    public static String getParentPath(String path) {
         int lastIndexOf = path.lastIndexOf("/");
         return lastIndexOf != -1 && lastIndexOf != 0 ? path.substring(0, lastIndexOf) : null;
     }

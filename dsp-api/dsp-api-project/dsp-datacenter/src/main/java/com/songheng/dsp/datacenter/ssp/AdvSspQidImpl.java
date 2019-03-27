@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Slf4j
 @Service(interfaceClass = AdvSspQidService.class,
-        timeout = 100)
+        timeout = 1000)
 @Component
 public class AdvSspQidImpl implements AdvSspQidService {
 
@@ -48,7 +48,7 @@ public class AdvSspQidImpl implements AdvSspQidService {
      */
     @Override
     public AdvSspQid getAdvSspQid(String terminal, String appName, String qid){
-        String tml_site_qid = String.format("%s%s%s%s%s", terminal, ".", appName, ".", qid);
+        String tml_site_qid = String.format("%s%s%s%s%s", terminal, "_", appName, "_", qid);
         AdvSspQid advSspQid = advSspQidMap.get(tml_site_qid);
         return null != advSspQid ? advSspQid : new AdvSspQid();
     }
@@ -66,8 +66,8 @@ public class AdvSspQidImpl implements AdvSspQidService {
         Map<String, AdvSspQid> advSspQidTmp = new ConcurrentHashMap<>(32);
         String tml_site_qid;
         for (AdvSspQid advSspQid : advSspQidList){
-            tml_site_qid = String.format("%s%s%s%s%s", advSspQid.getTerminal(), ".", advSspQid.getAppName(),
-                    ".", advSspQid.getQid());
+            tml_site_qid = String.format("%s%s%s%s%s", advSspQid.getTerminal(), "_", advSspQid.getAppName(),
+                    "_", advSspQid.getQid());
             advSspQidTmp.put(tml_site_qid, advSspQid);
         }
         if (advSspQidTmp.size() > 0){

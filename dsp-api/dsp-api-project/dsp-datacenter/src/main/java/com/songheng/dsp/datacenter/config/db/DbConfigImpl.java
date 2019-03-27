@@ -13,7 +13,7 @@ import java.util.Map;
  * @description: DbConfig缓存接口实现类
  */
 @Service(interfaceClass = DbConfigService.class,
-            timeout = 100)
+            timeout = 1000)
 @Component
 public class DbConfigImpl implements DbConfigService {
 
@@ -39,6 +39,15 @@ public class DbConfigImpl implements DbConfigService {
     public Map<String, String> getDbConfigMap(String terminal) {
         Map<String, String> result = DbConfigLoader.getDbConfigMap(terminal);
         return null != result ? result : new HashMap<String, String>(16);
+    }
+
+    /**
+     * 获取所有 dbConfigMap
+     * @return
+     */
+    @Override
+    public Map<String, String> getDbConfigMap() {
+        return DbConfigLoader.getDbConfigMap();
     }
 
 }

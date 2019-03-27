@@ -3,6 +3,7 @@ package com.songheng.dsp.dubbo.baseinterface.user.adx;
 import com.songheng.dsp.model.adx.user.DspUserInfo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author: luoshaobing
@@ -34,5 +35,22 @@ public interface DspUserService {
      */
     List<DspUserInfo> getDspUsersByPriority(String terminal, String priority);
 
+    /**
+     * 获取所有 List<DspUserInfo>
+     * @return
+     */
+    Map<String, List<DspUserInfo>> getDspUsersListMap();
+
+    /**
+     * 获取所有 List<DspUserInfo>
+     * @return
+     */
+    Map<String, List<DspUserInfo>> getDspUsersByDspIdListMap();
+
+    /**
+     * 获取所有 List<DspUserInfo>
+     * @return
+     */
+    Map<String, List<DspUserInfo>> getDspUsersByPriorityListMap();
 
 }

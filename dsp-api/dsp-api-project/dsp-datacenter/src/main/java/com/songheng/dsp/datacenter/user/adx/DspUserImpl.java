@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Slf4j
 @Service(interfaceClass = DspUserService.class,
-        timeout = 100)
+        timeout = 1000)
 @Component
 public class DspUserImpl implements DspUserService {
 
@@ -87,8 +87,8 @@ public class DspUserImpl implements DspUserService {
                 pcUserList.add(userInfo);
             }
             for (String tml : terminal.split(",|，")){
-                k_dspId = String.format("%s%s", tml, userInfo.getDspid());
-                k_priority = String.format("%s%s", tml, userInfo.getPriority());
+                k_dspId = String.format("%s%s%s", tml, "_", userInfo.getDspid());
+                k_priority = String.format("%s%s%s", tml, "_", userInfo.getPriority());
                 if (dspIdMapTmp.containsKey(k_dspId)){
                     dspIdMapTmp.get(k_dspId).add(userInfo);
                 } else {
@@ -146,7 +146,7 @@ public class DspUserImpl implements DspUserService {
      */
     @Override
     public List<DspUserInfo> getDspUsersByDspId(String terminal, String dspId){
-        String tml_dspId = String.format("%s%s", terminal, dspId);
+        String tml_dspId = String.format("%s%s%s", terminal, "_", dspId);
         List<DspUserInfo> result = dspUserInfoDspIdMap.get(tml_dspId);
         return null != result ? result : new ArrayList<DspUserInfo>();
     }
@@ -159,8 +159,35 @@ public class DspUserImpl implements DspUserService {
      */
     @Override
     public List<DspUserInfo> getDspUsersByPriority(String terminal, String priority){
-        String tml_priority = String.format("%s%s", terminal, priority);
+        String tml_priority = String.format("%s%s%s", terminal, "_", priority);
         List<DspUserInfo> result = dspUserInfoPriorityMap.get(tml_priority);
         return null != result ? result : new ArrayList<DspUserInfo>();
+    }
+
+    /**
+     * 获取所有 List<DspUserInfo>
+     * @return
+     */
+    @Override
+    public Map<String, List<DspUserInfo>> getDspUsersListMap() {
+        return dspUserInfoMap;
+    }
+
+    /**
+     * 获取所有 List<DspUserInfo>
+     * @return
+     */
+    @Override
+    public Map<String, List<DspUserInfo>> getDspUsersByDspIdListMap() {
+        return dspUserInfoDspIdMap;
+    }
+
+    /**
+     * 获取所有 List<DspUserInfo>
+     * @return
+     */
+    @Override
+    public Map<String, List<DspUserInfo>> getDspUsersByPriorityListMap() {
+        return dspUserInfoPriorityMap;
     }
 }

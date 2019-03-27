@@ -13,3 +13,14 @@ dubbo:
 #扫描包
 scan:
   base-packages: com.songheng.dsp.partner.dc
+
+zk:
+  cluster:
+    address: 10.9.197.173:2181
+  connect:
+    timeout: 5000
+  session:
+    timeout: 5000
+  subscribe:
+    minutepath: /dsp-dc/advice/timerupt/minute-
+    secondspath: /dsp-dc/advice/timerupt/seconds-

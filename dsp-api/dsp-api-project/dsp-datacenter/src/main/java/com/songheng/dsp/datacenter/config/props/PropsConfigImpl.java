@@ -12,7 +12,7 @@ import java.util.Map;
  * @description: PropsConfig缓存接口实现类
  */
 @Service(interfaceClass = PropsConfigService.class,
-        timeout = 100)
+        timeout = 1000)
 @Component
 public class PropsConfigImpl implements PropsConfigService {
 

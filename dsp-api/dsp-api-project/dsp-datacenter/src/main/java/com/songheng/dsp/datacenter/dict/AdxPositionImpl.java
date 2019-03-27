@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Slf4j
 @Service(interfaceClass = AdxPositionService.class,
-        timeout = 100)
+        timeout = 1000)
 @Component
 public class AdxPositionImpl implements AdxPositionService {
 
@@ -76,6 +76,25 @@ public class AdxPositionImpl implements AdxPositionService {
         }
         log.debug("adxPositionSize: {}\tappPositionSize: {}\th5PositionSize: {}\tpcPositionSize: {}",
                 adPositions.size(), appAdPosit.size(), h5AdPosit.size(), pcAdPosit.size());
+    }
+
+
+    /**
+     * 获取所有 List<AdPosition>
+     * @return
+     */
+    @Override
+    public Map<String, List<AdPosition>> getAdPositionListMap() {
+        return tmlAdPositions;
+    }
+
+    /**
+     * 获取所有 AdPosition
+     * @return
+     */
+    @Override
+    public Map<String, AdPosition> getAdPositionMap() {
+        return locationIdsMap;
     }
 
     /**
@@ -140,4 +159,5 @@ public class AdxPositionImpl implements AdxPositionService {
         }
         return new AdPosition();
     }
+
 }

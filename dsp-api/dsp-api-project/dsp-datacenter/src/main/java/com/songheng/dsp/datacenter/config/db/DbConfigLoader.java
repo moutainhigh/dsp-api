@@ -31,6 +31,13 @@ public class DbConfigLoader {
     private volatile static Map<String, Map<String, String>> tmlDbConfigMap = new ConcurrentHashMap<>(16);
 
     /**
+     * 获取所有 dbConfigMap
+     * @return
+     */
+    public static Map<String, String> getDbConfigMap(){
+        return dbConfigMap;
+    }
+    /**
      * 获取指定 key 的 value
      * @param key
      * @return

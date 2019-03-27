@@ -3,6 +3,7 @@ package com.songheng.dsp.dubbo.baseinterface.materiel.adx;
 import com.songheng.dsp.model.materiel.DspAdvExtend;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author: luoshaobing
@@ -35,5 +36,23 @@ public interface OtherDspAdvService {
      * @return
      */
     DspAdvExtend getDspAdvByAdvIdDspId(String terminal, String advId, String dspId);
+
+    /**
+     * 获取所有 List<DspAdvExtend>
+     * @return
+     */
+    Map<String, List<DspAdvExtend>> getDspAdvListMap();
+
+    /**
+     * 获取所有 DspAdvExtend
+     * @return
+     */
+    Map<String, DspAdvExtend> getDspAdvByHisIdMap();
+
+    /**
+     * 获取所有 DspAdvExtend
+     * @return
+     */
+    Map<String, DspAdvExtend> getDspAdvByAdvIdMap();
 
 }

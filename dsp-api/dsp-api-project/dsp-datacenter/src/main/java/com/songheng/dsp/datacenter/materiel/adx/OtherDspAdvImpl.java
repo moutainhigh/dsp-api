@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Slf4j
 @Service(interfaceClass = OtherDspAdvService.class,
-        timeout = 100)
+        timeout = 1000)
 @Component
 public class OtherDspAdvImpl implements OtherDspAdvService {
 
@@ -126,8 +126,8 @@ public class OtherDspAdvImpl implements OtherDspAdvService {
                 pcAdvList.add(dspAdvExtend);
             }
             for (String tml : terminal.split(",|，")){
-                k_advId = String.format("%s%s%s", tml, dspAdvExtend.getAdv_id(), dspAdvExtend.getDspId());
-                k_deliveryId = String.format("%s%s%s", tml, dspAdvExtend.getDeliveryid(), dspAdvExtend.getDspId());
+                k_advId = String.format("%s%s%s%s%s", tml, "_", dspAdvExtend.getAdv_id(), "_", dspAdvExtend.getDspId());
+                k_deliveryId = String.format("%s%s%s%s%s", tml, "_", dspAdvExtend.getDeliveryid(), "_", dspAdvExtend.getDspId());
                 //dsp方唯一标识 advid+dspid
                 advIdMapTmp.put(k_advId, dspAdvExtend);
                 //adx方唯一标识  deliveryId+dspid
@@ -154,7 +154,11 @@ public class OtherDspAdvImpl implements OtherDspAdvService {
                 dspAdvs.size(), appAdvList.size(), h5AdvList.size(), pcAdvList.size());
     }
 
-
+    /**
+     * 根据terminal 获取 List<DspAdvExtend>
+     * @param terminal
+     * @return
+     */
     @Override
     public List<DspAdvExtend> getDspAdvInfos(String terminal) {
         if (StringUtils.isBlank(terminal)){
@@ -164,18 +168,59 @@ public class OtherDspAdvImpl implements OtherDspAdvService {
         return null != result ? result : new ArrayList<DspAdvExtend>();
     }
 
+    /**
+     * 根据terminal,hisId,dspId 获取 DspAdvExtend
+     * @param terminal
+     * @param hisId 投放id
+     * @param dspId
+     * @return
+     */
     @Override
     public DspAdvExtend getDspAdvByHisIdDspId(String terminal, String hisId, String dspId) {
-        String tml_hisId_dspId = String.format("%s%s%s", terminal, hisId, dspId);
+        String tml_hisId_dspId = String.format("%s%s%s%s%s", terminal, "_", hisId, "_", dspId);
         DspAdvExtend dspAdvExtend = deliveryIdAds.get(tml_hisId_dspId);
         return null != dspAdvExtend ? dspAdvExtend : new DspAdvExtend();
     }
 
+    /**
+     * 根据terminal,advId,dspId 获取 DspAdvExtend
+     * @param terminal
+     * @param advId 物料id
+     * @param dspId
+     * @return
+     */
     @Override
     public DspAdvExtend getDspAdvByAdvIdDspId(String terminal, String advId, String dspId) {
-        String tml_advId_dspId = String.format("%s%s%s", terminal, advId, dspId);
+        String tml_advId_dspId = String.format("%s%s%s%s%s", terminal, "_", advId, "_", dspId);
         DspAdvExtend dspAdvExtend = advidAds.get(tml_advId_dspId);
         return null != dspAdvExtend ? dspAdvExtend : new DspAdvExtend();
+    }
+
+    /**
+     * 获取所有 List<DspAdvExtend>
+     * @return
+     */
+    @Override
+    public Map<String, List<DspAdvExtend>> getDspAdvListMap() {
+        return terminalAds;
+    }
+
+    /**
+     * 获取所有 List<DspAdvExtend>
+     * @return
+     */
+    @Override
+    public Map<String, DspAdvExtend> getDspAdvByHisIdMap() {
+        return deliveryIdAds;
+    }
+
+    /**
+     * 获取所有 List<DspAdvExtend>
+     * @return
+     */
+    @Override
+    public Map<String, DspAdvExtend> getDspAdvByAdvIdMap() {
+        return advidAds;
     }
 
 }

@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Slf4j
 @Service(interfaceClass = ShieldAreaService.class,
-        timeout = 100)
+        timeout = 1000)
 @Component
 public class ShieldAreaImpl implements ShieldAreaService {
 
@@ -81,7 +81,7 @@ public class ShieldAreaImpl implements ShieldAreaService {
      */
     @Override
     public List<ShieldArea> getShieldAreaList(String terminal, String site, String qid){
-        String tmlSiteQid = String.format("%s%s%s%s%s", terminal, ".", site, ".", qid);
+        String tmlSiteQid = String.format("%s%s%s%s%s", terminal, "_", site, "_", qid);
         List<ShieldArea> result = tmlSiteQidMap.get(tmlSiteQid);
         return null != result ? result : new ArrayList<ShieldArea>();
     }
@@ -103,7 +103,7 @@ public class ShieldAreaImpl implements ShieldAreaService {
      */
     @Override
     public List<ShieldArea> getShieldAreaList(String terminal, String shieldType) {
-        String tmlShieldType = String.format("%s%s%s", terminal, ".", shieldType);
+        String tmlShieldType = String.format("%s%s%s", terminal, "_", shieldType);
         List<ShieldArea> result = tmlShieldTypeMap.get(tmlShieldType);
         return null != result ? result : new ArrayList<ShieldArea>();
     }
@@ -190,8 +190,8 @@ public class ShieldAreaImpl implements ShieldAreaService {
         String tmlSiteQid, tmlShieldType;
         for (ShieldArea shieldArea : shieldAreaList){
             tmlSiteQid = String.format("%s%s%s%s%s", shieldArea.getTerminal(),
-                    ".", shieldArea.getSite(), ".", shieldArea.getQid());
-            tmlShieldType = String.format("%s%s%s", shieldArea.getTerminal(), ".", shieldArea.getShielType());
+                    "_", shieldArea.getSite(), "_", shieldArea.getQid());
+            tmlShieldType = String.format("%s%s%s", shieldArea.getTerminal(), "_", shieldArea.getShielType());
             if (tmlSiteQidTmp.containsKey(tmlSiteQid)){
                 tmlSiteQidTmp.get(tmlSiteQid).add(shieldArea);
             } else {

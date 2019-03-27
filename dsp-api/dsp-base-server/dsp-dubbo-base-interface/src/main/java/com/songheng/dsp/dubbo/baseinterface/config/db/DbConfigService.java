@@ -24,4 +24,10 @@ public interface DbConfigService {
      */
     Map<String, String> getDbConfigMap(String terminal);
 
+    /**
+     * 获取所有DBCONFIG
+     * @return
+     */
+    Map<String, String> getDbConfigMap();
+
 }

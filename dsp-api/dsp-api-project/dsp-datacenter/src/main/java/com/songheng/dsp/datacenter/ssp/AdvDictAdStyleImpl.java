@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Slf4j
 @Service(interfaceClass = AdvDictAdStyleService.class,
-        timeout = 100)
+        timeout = 1000)
 @Component
 public class AdvDictAdStyleImpl implements AdvDictAdStyleService {
 
