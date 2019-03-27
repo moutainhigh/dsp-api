@@ -2,15 +2,13 @@ package com.songheng.dsp.dspbid.dspbid;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.songheng.dsp.common.utils.PropertyPlaceholder;
 import com.songheng.dsp.common.utils.RandomUtils;
 import com.songheng.dsp.model.adx.response.BidBean;
 import com.songheng.dsp.model.adx.response.ResponseBean;
 import com.songheng.dsp.model.adx.user.DspUserInfo;
 import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.model.flow.ReqSlotInfo;
-import com.songheng.dsp.model.materiel.DspAdvInfo;
-import com.songheng.dsp.model.materiel.ExtendNews;
+import com.songheng.dsp.model.materiel.MaterielDirect;
 import lombok.extern.slf4j.Slf4j;
 import java.util.*;
 
@@ -47,19 +45,21 @@ public abstract class DspBidServer {
             for(int i=0,len=BID_MODEL.length;i<len;i++) {
                 int bidModel = BID_MODEL[i];
                 //过滤当前流量广告位
-                if (this.filterCurrTagId(baseFlow,tagId,bidModel)) {
+                if (this.filterCurrTagId(baseFlow,tagId)) {
                     continue;
                 }
                 //获取当前模式当前位置的广告列表
-                List<ExtendNews> advList = this.getCurrTagIdAdvList(baseFlow,tagId,bidModel);
+                List<MaterielDirect> advList = this.getCurrTagIdAdvList(tagId,bidModel);
+                //广告限速
+                this.advSpeedLimit(advList,baseFlow,tagId,bidModel);
                 //广告屏蔽
                 shieldAdvList(advList,baseFlow,tagId,bidModel);
                 //广告定向
                 matchAdvList(advList,baseFlow,tagId,bidModel);
                 //广告RTB实时竞价
-                DspAdvInfo advInfo = dspRtb(advList,deliveryIdFilter,baseFlow,tagId,bidModel);
+                MaterielDirect advInfo = this.dspRtb(advList,deliveryIdFilter,baseFlow,tagId,bidModel);
                 if(null!=advInfo) {
-                    deliveryIdFilter.add(advInfo.getDeliveryid());
+                    deliveryIdFilter.add(advInfo.getDeliveryId());
                     //转化对象信息
                     bidBeans.add(conversion(advInfo));
                 }
@@ -73,10 +73,18 @@ public abstract class DspBidServer {
 
     }
 
+    /**
+     * 广告限速
+     * @param advList
+     * @param baseFlow
+     * @param tagId
+     * @param bidModel
+     */
+    protected abstract void advSpeedLimit(List<MaterielDirect> advList, BaseFlow baseFlow, String tagId, int bidModel);
 
 
     /**
-     * dsp实时竞价
+     * dsp实时竞价-过滤本次已请求到的广告
      * @param advList 可用广告列表
      * @param deliveryIdFilter 只展现的广告列表
      * @param baseFlow 流量信息
@@ -84,7 +92,25 @@ public abstract class DspBidServer {
      * @param bidModel 竞价模式
      * @return 获取竞价成功的广告
      */
-    protected abstract DspAdvInfo dspRtb(List<ExtendNews> advList,Set<String> deliveryIdFilter, BaseFlow baseFlow, String tagId, int bidModel);
+    private final MaterielDirect dspRtb(List<MaterielDirect> advList,Set<String> deliveryIdFilter, BaseFlow baseFlow, String tagId, int bidModel){
+        Iterator<MaterielDirect> iterator = advList.iterator();
+        while(iterator.hasNext()){
+            MaterielDirect materielDirect = iterator.next();
+            if(deliveryIdFilter.contains(materielDirect.getDeliveryId())){
+                iterator.remove();
+            }
+        }
+        return this.dspRtb(advList,baseFlow,tagId,bidModel);
+    }
+    /**
+     * dsp实时竞价
+     * @param advList 可用广告列表
+     * @param baseFlow 流量信息
+     * @param tagId 广告位信息
+     * @param bidModel 竞价模式
+     * @return 获取竞价成功的广告
+     */
+    protected abstract MaterielDirect dspRtb(List<MaterielDirect> advList, BaseFlow baseFlow, String tagId, int bidModel);
 
     /**
      * 定向匹配广告
@@ -93,7 +119,7 @@ public abstract class DspBidServer {
      * @param tagId 广告位
      * @param bidModel 竞价模式
      */
-    protected abstract void matchAdvList(List<ExtendNews> advList, BaseFlow baseFlow, String tagId,int bidModel);
+    protected abstract void matchAdvList(List<MaterielDirect> advList, BaseFlow baseFlow, String tagId,int bidModel);
 
     /**
      * 屏蔽广告
@@ -102,27 +128,25 @@ public abstract class DspBidServer {
      * @param tagId 广告位
      * @param bidModel 竞价模式
      */
-    protected abstract void shieldAdvList(List<ExtendNews> advList, BaseFlow baseFlow, String tagId,int bidModel);
+    protected abstract void shieldAdvList(List<MaterielDirect> advList, BaseFlow baseFlow, String tagId,int bidModel);
 
     /**
      * 获取当前位置的广告
-     * @param baseFlow 流量信息
      * @param tagId 广告位id
      * @param bidModel 竞价模式
      * @return
      */
-    protected abstract List<ExtendNews> getCurrTagIdAdvList(BaseFlow baseFlow, String tagId, int bidModel);
+    protected abstract List<MaterielDirect> getCurrTagIdAdvList(String tagId, int bidModel);
 
     /**
      * 过滤当前位置信息
      * @param baseFlow 流量信息
      * @param tagId 广告位信息
-     *  @param bidModel 竞价模式
      * @return true:过滤 false:不过滤
      * */
-    protected abstract boolean filterCurrTagId(BaseFlow baseFlow, String tagId,int bidModel);
+    protected abstract boolean filterCurrTagId(BaseFlow baseFlow, String tagId);
 
-    private ResponseBean initResponseBean(BaseFlow baseFlow,DspUserInfo user) {
+    private final ResponseBean initResponseBean(BaseFlow baseFlow,DspUserInfo user) {
         ResponseBean responseBean = new ResponseBean();
         responseBean.setId(baseFlow.getReqId());
         responseBean.setBidid(RandomUtils.generateRandString("m",20));
@@ -132,9 +156,9 @@ public abstract class DspBidServer {
     /**
      * 转化广告对象为响应对象
      */
-    private BidBean conversion(DspAdvInfo advInfo){
+    private BidBean conversion(MaterielDirect advInfo){
         BidBean bid = new BidBean();
-        bid.setAdm(advInfo.getDeliveryid());
+        bid.setAdm(advInfo.getDeliveryId());
         bid.setImpid(RandomUtils.generateRandString("b",10));
         JSONArray jsonArray = new JSONArray();
         JSONObject obj = new JSONObject();

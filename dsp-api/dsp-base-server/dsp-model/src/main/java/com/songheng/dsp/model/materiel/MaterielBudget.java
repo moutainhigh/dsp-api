@@ -1,10 +1,15 @@
 package com.songheng.dsp.model.materiel;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @description: 物料的预算信息
  * @author: zhangshuai@021.com
  * @date: 2019-03-26 11:52
  **/
+@Getter
+@Setter
 public class MaterielBudget extends MaterielBaseInfo implements java.io.Serializable{
 
     public static final long serialVersionUID = 386204821357724168L;

@@ -2,11 +2,8 @@ package com.songheng.dsp.dspbid.dspbid.impl;
 
 import com.songheng.dsp.dspbid.dspbid.DspBidServer;
 import com.songheng.dsp.model.flow.BaseFlow;
-import com.songheng.dsp.model.materiel.DspAdvInfo;
-import com.songheng.dsp.model.materiel.ExtendNews;
-
+import com.songheng.dsp.model.materiel.MaterielDirect;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @description: 默认的DSP竞标服务
@@ -15,27 +12,32 @@ import java.util.Set;
  **/
 public class DefaultDspBidServer extends DspBidServer {
     @Override
-    protected DspAdvInfo dspRtb(List<ExtendNews> advList, Set<String> deliveryIdFilter, BaseFlow baseFlow, String tagId, int bidModel) {
+    protected void advSpeedLimit(List<MaterielDirect> advList, BaseFlow baseFlow, String tagId, int bidModel) {
+
+    }
+
+    @Override
+    protected MaterielDirect dspRtb(List<MaterielDirect> advList, BaseFlow baseFlow, String tagId, int bidModel) {
         return null;
     }
 
     @Override
-    protected void matchAdvList(List<ExtendNews> advList, BaseFlow baseFlow, String tagId,int bidModel) {
+    protected void matchAdvList(List<MaterielDirect> advList, BaseFlow baseFlow, String tagId,int bidModel) {
 
     }
 
     @Override
-    protected void shieldAdvList(List<ExtendNews> advList, BaseFlow baseFlow, String tagId, int bidModel) {
+    protected void shieldAdvList(List<MaterielDirect> advList, BaseFlow baseFlow, String tagId, int bidModel) {
 
     }
 
     @Override
-    protected List<ExtendNews> getCurrTagIdAdvList(BaseFlow baseFlow, String tagId, int bidModel) {
+    protected List<MaterielDirect> getCurrTagIdAdvList(String tagId, int bidModel) {
         return null;
     }
 
     @Override
-    protected boolean filterCurrTagId(BaseFlow baseFlow, String tagId, int bidModel) {
+    protected boolean filterCurrTagId(BaseFlow baseFlow, String tagId) {
         return false;
     }
 }

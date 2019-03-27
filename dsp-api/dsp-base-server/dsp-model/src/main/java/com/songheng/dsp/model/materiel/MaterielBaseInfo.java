@@ -1,5 +1,8 @@
 package com.songheng.dsp.model.materiel;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
 /**
@@ -7,6 +10,8 @@ import java.util.List;
  * @author: zhangshuai@021.com
  * @date: 2019-03-25 20:37
  **/
+@Getter
+@Setter
 public class MaterielBaseInfo implements java.io.Serializable{
     public static final long serialVersionUID = 28622482134776168L;
     /**
