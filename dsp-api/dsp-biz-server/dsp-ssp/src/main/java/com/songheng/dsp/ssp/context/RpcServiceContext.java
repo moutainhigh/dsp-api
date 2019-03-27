@@ -13,6 +13,7 @@ import org.springframework.context.annotation.PropertySource;
  * @author: zhangshuai@021.com
  * @date: 2019-03-18 17:22
  **/
+@Deprecated
 public class RpcServiceContext<T> {
 
 
@@ -21,10 +22,10 @@ public class RpcServiceContext<T> {
     /**
      *指定Spring扫描dubbo配置路径
      * */
-    @Configuration
-    @EnableDubbo(scanBasePackages = "com.songheng.dsp.ssp.service")
-    @PropertySource("classpath:/dubbo-consumer.properties")
-    @ComponentScan(value = {"com.songheng.dsp.ssp.service"})
+    //@Configuration
+    //@EnableDubbo(scanBasePackages = "com.songheng.dsp.ssp.service")
+    //@PropertySource("classpath:/dubbo-consumer.properties")
+    //@ComponentScan(value = {"com.songheng.dsp.ssp.service"})
     static class SspConsumerConfiguration {
 
     }
@@ -36,7 +37,10 @@ public class RpcServiceContext<T> {
 
     static{
         context = new AnnotationConfigApplicationContext(SspConsumerConfiguration.class);
-        context.start();
+        /**
+         * 启动spring容器
+         * */
+        //context.start();
         System.out.println("容器启动完成:com.songheng.dsp.ssp.RpcServiceContext");
 
     }

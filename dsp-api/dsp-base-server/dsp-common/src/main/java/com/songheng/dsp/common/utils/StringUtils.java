@@ -3,6 +3,8 @@ package com.songheng.dsp.common.utils;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
+
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -206,12 +208,12 @@ public final class StringUtils {
         return Joiner.on("&").withKeyValueSeparator("=").join(maps);
     }
     /**
-     * @description: 将list转化为","分割的字符串
-     * @param list 要转化的list
+     * @description: 将集合转化为","分割的字符串
+     * @param collection 要转化的集合
      * @return List集合转化后的字符串
      **/
-    public static String listToStr(List<String> list){
-        return Joiner.on(",").skipNulls().join(list);
+    public static String collectionToStr(Collection collection){
+        return Joiner.on(",").skipNulls().join(collection);
     }
 
     public static void main(String[] args) {
@@ -226,7 +228,7 @@ public final class StringUtils {
         System.out.println("padDefaultEnd:" + StringUtils.padEnd("11"));
         System.out.println("padEnd:" + StringUtils.padEnd("121", 4, '0'));
         List<String> list = StringUtils.strToList("a，b,c");
-        System.out.println("listToStr:"+StringUtils.listToStr(list)+";");
+        System.out.println("collectionToStr:"+StringUtils.collectionToStr(list)+";");
         Map<String,String> maps = StringUtils.strToMap("k1=v1&k2=v2");
         System.out.println("strToMap:"+maps);
         System.out.println("mapToStr:"+mapToStr(maps));

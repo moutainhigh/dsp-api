@@ -14,14 +14,11 @@ import java.util.Map;
  * @author: zhangshuai@021.com
  * @date: 2019-03-19 20:31
  **/
-@Service
 public class BlackListLocalService {
-
-    private static Map<String,List<String>> blackListMap = new HashMap<>();
 
     private final static String[] blackListKey = {"ip","advuid","appuid"};
 
-    public Map<String,String> getBlackListKey(BaseFlow baseFlow){
+    public static Map<String,String> getBlackListKey(BaseFlow baseFlow){
         Map<String,String> result = new HashMap<>(3);
         result.put(blackListKey[0],baseFlow.getRemoteIp());
         result.put(blackListKey[1],baseFlow.getUserId());
@@ -29,22 +26,10 @@ public class BlackListLocalService {
         return result;
     }
 
-    static{
-        try {
-
-            String filePath = Class.class.getClass().getResource("/").getPath();
-            for(int i=0;i<blackListKey.length;i++){
-                String fileFullPath = filePath + blackListKey[i] + ".data";
-                blackListMap.put(blackListKey[i],FileUtils.readLines(fileFullPath, true)) ;
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
     /**
      * 验证 data 是否在黑名单列表中
      */
-    public boolean isInBlackList(String type,String data){
+    public static boolean isInBlackList(Map<String, List<String>> blackListMap,String type,String data){
         return blackListMap.get(type).contains(data);
     }
 }

@@ -1,6 +1,7 @@
 package com.songheng.dsp.dspbid.dspbid.impl;
 
 import com.songheng.dsp.dspbid.dspbid.DspBidServer;
+import com.songheng.dsp.model.client.DspBidClientRequest;
 import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.model.materiel.MaterielDirect;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  **/
 public class DefaultDspBidServer extends DspBidServer {
     @Override
-    protected void advSpeedLimit(List<MaterielDirect> advList, BaseFlow baseFlow, String tagId, int bidModel) {
+    protected void advSpeedLimit(List<MaterielDirect> advList, DspBidClientRequest request, String tagId, int bidModel) {
 
     }
 
@@ -29,15 +30,5 @@ public class DefaultDspBidServer extends DspBidServer {
     @Override
     protected void shieldAdvList(List<MaterielDirect> advList, BaseFlow baseFlow, String tagId, int bidModel) {
 
-    }
-
-    @Override
-    protected List<MaterielDirect> getCurrTagIdAdvList(String tagId, int bidModel) {
-        return null;
-    }
-
-    @Override
-    protected boolean filterCurrTagId(BaseFlow baseFlow, String tagId) {
-        return false;
     }
 }

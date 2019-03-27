@@ -1,6 +1,7 @@
 package com.songheng.dsp.common.utils;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import java.util.*;
 
@@ -48,14 +49,48 @@ public class CollectionUtils {
         return Lists.newArrayList(objs);
     }
 
+    /**
+     * 取两个集合的交集
+     * @param sets1
+     * @param sets2
+     * @return
+     */
+    public static<T> Set<T> intersection(Set<T> sets1,Set<T> sets2){
+        return Sets.intersection(sets1, sets2);
+    }
+    /**
+     * 取两个集合的差集
+     * @param sets1
+     * @param sets2
+     * @return
+     */
+    public static<T> Set<T> difference(Set<T> sets1,Set<T> sets2){
+        return Sets.difference(sets1, sets2);
+    }
+    /**
+     * 取两个集合的并集
+     * @param sets1
+     * @param sets2
+     * @return
+     */
+    public static<T> Set<T> union(Set<T> sets1,Set<T> sets2){
+        return Sets.union(sets1, sets2);
+    }
+
     public static void main(String[] args) {
 //        List<String> list = Lists.newArrayList("A","B","C","D","C");
 //        //removeDuplicate(list);
 //        System.out.println(list);
 //        System.out.println(listToSet(list));
-        List<String> str = objsToList("a");
-        System.out.println(str);
+//        List<String> str = objsToList("a");
+//        System.out.println(str);
         //List<String> strs = objsToList("1","2","3","1");
         //System.out.println(strs);
+
+        Set<String> sets = Sets.newHashSet("1", "2", "3", "4", "5", "6");
+        Set<String> sets2 = Sets.newHashSet("3", "4", "5", "6", "7", "8", "9");
+        System.out.println(intersection(sets,sets2));
+        System.out.println(difference(sets,sets2));
+        System.out.println(union(sets,sets2));
     }
 }

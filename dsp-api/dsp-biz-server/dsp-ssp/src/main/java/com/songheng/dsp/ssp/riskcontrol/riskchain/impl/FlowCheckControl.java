@@ -1,6 +1,7 @@
 package com.songheng.dsp.ssp.riskcontrol.riskchain.impl;
 
 import com.songheng.dsp.common.utils.StringUtils;
+import com.songheng.dsp.model.client.SspClientRequest;
 import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.ssp.riskcontrol.RiskControlResult;
 import com.songheng.dsp.ssp.riskcontrol.riskchain.RiskControl;
@@ -12,7 +13,7 @@ import com.songheng.dsp.ssp.riskcontrol.riskchain.RiskControl;
  **/
 public class FlowCheckControl extends RiskControl {
     @Override
-    protected RiskControlResult doVerification(BaseFlow flow) {
+    protected RiskControlResult doVerification(BaseFlow flow,SspClientRequest request) {
         if(null==flow){
             return new RiskControlResult(false,"10001","流量信息为空",flow);
         }

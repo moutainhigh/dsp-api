@@ -3,8 +3,7 @@ package com.songheng.dsp.partner.job.dspbidreq;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.songheng.dsp.dspbid.DspBidClient;
 import com.songheng.dsp.model.adx.response.ResponseBean;
-import com.songheng.dsp.model.adx.user.DspUserInfo;
-import com.songheng.dsp.model.flow.BaseFlow;
+import com.songheng.dsp.model.client.DspBidClientRequest;
 import com.songheng.dsp.partner.service.DspBidService;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.concurrent.Callable;
@@ -17,13 +16,10 @@ import java.util.concurrent.Callable;
 @Service
 public class SendDspBidReq implements Callable<ResponseBean> {
 
-    private DspUserInfo user;
+    private DspBidClientRequest dspBidClientRequest;
 
-    private BaseFlow baseFlow;
-
-    public SendDspBidReq(DspUserInfo user, BaseFlow baseFlow){
-        this.user = user;
-        this.baseFlow = baseFlow;
+    public SendDspBidReq(DspBidClientRequest request){
+       this.dspBidClientRequest =request;
     }
 
 
@@ -32,6 +28,6 @@ public class SendDspBidReq implements Callable<ResponseBean> {
 
     @Override
     public ResponseBean call() {
-        return DspBidClient.execute(baseFlow,user);
+        return DspBidClient.execute(dspBidClientRequest);
     }
 }

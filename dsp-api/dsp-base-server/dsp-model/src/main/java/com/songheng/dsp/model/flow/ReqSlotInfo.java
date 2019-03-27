@@ -73,7 +73,7 @@ public class ReqSlotInfo implements Comparable<ReqSlotInfo>{
      * */
     private int idx;
 
-    private ReqSlotInfo (){}
+    public ReqSlotInfo (){}
 
     /**
      * 从ssp配置中获取相关信息
@@ -98,6 +98,8 @@ public class ReqSlotInfo implements Comparable<ReqSlotInfo>{
             //拼接小维度的广告id
             reqSlotInfo.tagId = String.format("%s%s%s%s%s", reqSlotInfo.slotId, "_",
                     baseFlow.getPgnum(),"_",idx);
+            //设置有效的广告位id
+            baseFlow.getValidTagIds().add(reqSlotInfo.getTagId());
             //查找底价
             reqSlotInfo.minCpm = advSspSlot.getFloorPrice();
             reqSlotInfo.minPrice = MathUtils.doubleToLong(reqSlotInfo.minCpm,
@@ -109,11 +111,11 @@ public class ReqSlotInfo implements Comparable<ReqSlotInfo>{
 
     @Override
     public int hashCode() {
-        return slotId.hashCode();
+        return tagId.hashCode();
     }
 
     /**
-     * slotId 相同则为同一对象
+     * tagId 相同则为同一对象
      * @param o
      * @return
      */
@@ -126,7 +128,7 @@ public class ReqSlotInfo implements Comparable<ReqSlotInfo>{
             return false;
         }
         ReqSlotInfo that = (ReqSlotInfo) o;
-        return Objects.equals(slotId, that.slotId);
+        return Objects.equals(tagId, that.tagId);
     }
     @Override
     public int compareTo(ReqSlotInfo reqSlotInfo) {

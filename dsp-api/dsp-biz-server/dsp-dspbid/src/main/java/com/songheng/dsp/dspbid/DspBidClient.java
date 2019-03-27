@@ -4,6 +4,7 @@ import com.songheng.dsp.dspbid.dspbid.DspBidServer;
 import com.songheng.dsp.dspbid.dspbid.impl.DefaultDspBidServer;
 import com.songheng.dsp.model.adx.response.ResponseBean;
 import com.songheng.dsp.model.adx.user.DspUserInfo;
+import com.songheng.dsp.model.client.DspBidClientRequest;
 import com.songheng.dsp.model.flow.BaseFlow;
 
 import java.util.HashMap;
@@ -34,14 +35,14 @@ public class DspBidClient {
 
     /**
      * 执行竞价请求
-     * @param baseFlow 流量信息
+     * @param request 请求信息
      * @return 响应信息
      */
-    public static ResponseBean execute(BaseFlow baseFlow,DspUserInfo user) {
+    public static ResponseBean execute(DspBidClientRequest request) {
         try {
-            String key = getDispatchKey(baseFlow);
+            String key = getDispatchKey(request.getBaseFlow());
             DspBidServer dspBidServer = realize.containsKey(key) ? realize.get(key) : new DefaultDspBidServer();
-            return dspBidServer.getDspResponseBean(baseFlow, user);
+            return dspBidServer.getDspResponseBean(request);
         }catch (Exception e){
             e.printStackTrace();
         }

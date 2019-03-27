@@ -1,6 +1,7 @@
 package com.songheng.dsp.ssp.riskcontrol.riskchain.impl;
 
 
+import com.songheng.dsp.model.client.SspClientRequest;
 import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.ssp.context.RpcServiceContext;
 import com.songheng.dsp.ssp.riskcontrol.RiskControlResult;
@@ -18,11 +19,12 @@ import java.util.Set;
  **/
 public class BlackListControl extends RiskControl {
     @Override
-    protected RiskControlResult doVerification(BaseFlow baseFlow) {
-        BlackListLocalService blackListLocalService = RpcServiceContext.getLocalService(BlackListLocalService.class);
-        Map<String,String> blackListMap = blackListLocalService.getBlackListKey(baseFlow);
+    protected RiskControlResult doVerification(BaseFlow baseFlow,SspClientRequest request) {
+        //获取有哪些黑名单 以及需要验证的数据
+        Map<String,String> blackListMap = BlackListLocalService.getBlackListKey(baseFlow);
+        //流量验证
         for (Map.Entry<String, String> entry : blackListMap.entrySet()) {
-            if(blackListLocalService.isInBlackList(entry.getKey(),entry.getValue())){
+            if(BlackListLocalService.isInBlackList(request.getBlackListMap(),entry.getKey(),entry.getValue())){
                 return new RiskControlResult(false,"10004","黑名单;"+entry.getKey()+":"+entry.getValue(),baseFlow);
             }
         }

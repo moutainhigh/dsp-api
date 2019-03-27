@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @description: 物料的定向信息
@@ -170,6 +171,28 @@ public class MaterielDirect extends MaterielBudget implements java.io.Serializab
      * 拆分的投放id个数
      * */
     private String subHisIdNum;
+
+    @Override
+    public int hashCode() {
+        return getDeliveryId().hashCode();
+    }
+
+    /**
+     * deliveryId 相同则为同一对象
+     * @param o
+     * @return
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        MaterielDirect that = (MaterielDirect) o;
+        return Objects.equals(getDeliveryId(), that.getDeliveryId());
+    }
 
 
 }

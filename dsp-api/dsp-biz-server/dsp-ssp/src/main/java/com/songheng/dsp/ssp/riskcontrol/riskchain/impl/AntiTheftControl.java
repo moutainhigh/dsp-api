@@ -2,6 +2,7 @@ package com.songheng.dsp.ssp.riskcontrol.riskchain.impl;
 
 import com.songheng.dsp.common.enums.ProjectEnum;
 import com.songheng.dsp.common.utils.StringUtils;
+import com.songheng.dsp.model.client.SspClientRequest;
 import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.ssp.riskcontrol.RiskControlResult;
 import com.songheng.dsp.ssp.riskcontrol.riskchain.RiskControl;
@@ -15,7 +16,7 @@ import java.util.List;
  **/
 public class AntiTheftControl extends RiskControl{
     @Override
-    protected RiskControlResult doVerification(BaseFlow baseFlow) {
+    protected RiskControlResult doVerification(BaseFlow baseFlow,SspClientRequest request) {
         List<String> appIds =  StringUtils.strToList(baseFlow.getAppId());
         for(String appId : appIds ){
             if(appId.contains("http")){

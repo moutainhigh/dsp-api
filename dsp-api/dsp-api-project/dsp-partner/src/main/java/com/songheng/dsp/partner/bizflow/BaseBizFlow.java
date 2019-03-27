@@ -5,6 +5,7 @@ import com.songheng.dsp.adxrtb.AdxRtbClient;
 import com.songheng.dsp.common.utils.ThreadPoolUtils;
 import com.songheng.dsp.model.adx.response.ResponseBean;
 import com.songheng.dsp.model.adx.user.DspUserInfo;
+import com.songheng.dsp.model.client.DspBidClientRequest;
 import com.songheng.dsp.model.client.SspClientRequest;
 import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.model.output.OutPutAdv;
@@ -58,7 +59,8 @@ public abstract class BaseBizFlow{
         //发送DSP竞标请求
         DspUserInfo dspUserInfo = bizService.getOneSelfAdxUser(baseFlow.getTerminal());
         if(null!=dspUserInfo) {
-            Future future = ThreadPoolUtils.submit(dspUserInfo.getDspid(), new SendDspBidReq(dspUserInfo,baseFlow));
+            SendDspBidReq sendDspBidReq = createSendDspBidReqTask(baseFlow,dspUserInfo);
+            Future future = ThreadPoolUtils.submit(dspUserInfo.getDspid(), sendDspBidReq);
             futures.add(future);
         }
         //发送第三方ADX竞标请求
@@ -67,6 +69,19 @@ public abstract class BaseBizFlow{
         futures.addAll(thirdFutures);
         return futures;
     }
+    /**
+     * 创建dsp竞价请求任务
+     * */
+    private SendDspBidReq createSendDspBidReqTask(BaseFlow baseFlow, DspUserInfo dspUserInfo) {
+        DspBidClientRequest request = new DspBidClientRequest();
+        request.setBaseFlow(baseFlow);
+        request.setUser(dspUserInfo);
+        //TODO 查询消耗和广告素材
+        request.setConsumeInfo(null);
+        request.setMateriedInfoByTagIds(null);
+        return new SendDspBidReq(request);
+    }
+
     /**
      * 通过futures获取响应bean
      * */

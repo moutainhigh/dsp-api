@@ -1,5 +1,6 @@
 package com.songheng.dsp.model.flow;
 
+import com.google.common.collect.Sets;
 import com.songheng.dsp.common.utils.CollectionUtils;
 import com.songheng.dsp.common.utils.DeviceUtils;
 import com.songheng.dsp.common.utils.RandomUtils;
@@ -297,10 +298,10 @@ public class BaseFlow implements Serializable {
      * */
     private Set<ReqSlotInfo> reqSlotInfos;
     /**
-     * 请求的广告位ID集合
+     * 请求的真实有效的广告位ID集合
      * (parse)
      * */
-    private Set<String> reqSlotIds;
+    private Set<String> validTagIds;
 
     /**
      *jsonp 回调参数
@@ -310,7 +311,7 @@ public class BaseFlow implements Serializable {
     public BaseFlow(){
         this.reqId = RandomUtils.generateRandString("r",19);
         this.reqSlotInfos = new TreeSet<>();
-        this.reqSlotIds = new TreeSet<>();
+        this.validTagIds = new TreeSet<>();
     }
     /**
      * @param baseFlow 需要赋值的流量对象
@@ -352,8 +353,6 @@ public class BaseFlow implements Serializable {
         //添加广告位信息
         if(null!=advSspSlotMap && advSspSlotMap.size()>0){
             for(String slotId:advSspSlotMap.keySet()){
-                //设置广告位列表
-                baseFlow.reqSlotIds.add(slotId);
                 AdvSspSlot advSspSlot = advSspSlotMap.get(slotId);
                 //如果广告数量没有通过参数传过来则从ssp配置中取
                 if(null == baseFlow.getAdnum()) {

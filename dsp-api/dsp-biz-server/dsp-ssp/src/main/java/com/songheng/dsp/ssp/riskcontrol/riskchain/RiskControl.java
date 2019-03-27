@@ -1,5 +1,6 @@
 package com.songheng.dsp.ssp.riskcontrol.riskchain;
 
+import com.songheng.dsp.model.client.SspClientRequest;
 import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.ssp.riskcontrol.RiskControlResult;
 
@@ -22,15 +23,15 @@ public abstract class RiskControl {
      * @param riskControl 具体的风控业务
      * @return  true : 风控验证通过  false:风控验证失败
      **/
-    public RiskControlResult verification(BaseFlow baseFlow, RiskControl riskControl){
-        RiskControlResult riskControlResult = doVerification(baseFlow);
+    public RiskControlResult verification(BaseFlow baseFlow,SspClientRequest request, RiskControl riskControl){
+        RiskControlResult riskControlResult = doVerification(baseFlow,request);
         if(null == riskControlResult){
             throw new NullPointerException("风控业务模块未正确设置风控结果返回值,请检查风控业务模块是否异常!");
         }
         if(!riskControlResult.isSuccess()){
             return riskControlResult;
         }else{
-            return riskControl.verification(baseFlow,riskControl);
+            return riskControl.verification(baseFlow,request,riskControl);
         }
     }
 
@@ -40,5 +41,5 @@ public abstract class RiskControl {
      * @param baseFlow 流量信息
      * @return  true : 风控验证通过  false:风控验证失败
      **/
-    protected abstract RiskControlResult doVerification(BaseFlow baseFlow);
+    protected abstract RiskControlResult doVerification(BaseFlow baseFlow,SspClientRequest request);
 }
