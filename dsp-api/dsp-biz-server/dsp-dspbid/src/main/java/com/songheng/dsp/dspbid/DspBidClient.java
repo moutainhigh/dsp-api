@@ -3,7 +3,6 @@ package com.songheng.dsp.dspbid;
 import com.songheng.dsp.dspbid.dspbid.DspBidServer;
 import com.songheng.dsp.dspbid.dspbid.impl.DefaultDspBidServer;
 import com.songheng.dsp.model.adx.response.ResponseBean;
-import com.songheng.dsp.model.adx.user.DspUserInfo;
 import com.songheng.dsp.model.client.DspBidClientRequest;
 import com.songheng.dsp.model.flow.BaseFlow;
 

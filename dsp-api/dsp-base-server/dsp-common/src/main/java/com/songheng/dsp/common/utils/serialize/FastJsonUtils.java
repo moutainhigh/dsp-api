@@ -1,6 +1,7 @@
 package com.songheng.dsp.common.utils.serialize;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.serializer.SerializeConfig;
@@ -123,7 +124,35 @@ public class FastJsonUtils {
      * @param args
      */
     public static void main(String[] args){
-
+        String json = "{\n" +
+                "\"C\":{\n" +
+                " \"0(行业正向屏蔽)\":{\n" +
+                "\"all\":{\n" +
+                "\"time\":\"10:00-23:59\",\n" +
+                "\"area\":\"上海,北京\"\n" +
+                "}\n" +
+                "},\"1(行业反向屏蔽)\":{\n" +
+                "\"网赚\":{\n" +
+                "\"time\":\"8:00-10:00\",\n" +
+                "\"area\":\"上海,北京\"\n" +
+                "}\n" +
+                "}\n" +
+                "},\"D\":{\n" +
+                " \"0(行业正向屏蔽)\":{\n" +
+                "\"网赚\":{\n" +
+                "\"time\":\"10:00-23:59\",\n" +
+                "\"area\":\"上海,北京\"\n" +
+                "}\n" +
+                "},\"1(行业反向屏蔽)\":{\n" +
+                "\"网赚\":{\n" +
+                "\"time\":\"8:00-10:00\",\n" +
+                "\"area\":\"上海,北京\"\n" +
+                "}\n" +
+                "}\n" +
+                "}\n" +
+                "}\n";
+        System.out.println(toJsonObject(json));
+       //System.out.println(toJSONString(json.replace("\n","")).replace("\\",""));
     }
 
 }

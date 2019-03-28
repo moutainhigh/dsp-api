@@ -27,6 +27,14 @@ public class MaterielDirect extends MaterielBudget implements java.io.Serializab
      * 广告等级 isgrayav
      * */
     private int adlever;
+    /**
+     * 行业code
+     * */
+    private String sectorCode;
+    /**
+     * 行业名称
+     * */
+    private String sectorName;
 
     /**
      * 广告分类 图书、音像,金融
