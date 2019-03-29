@@ -21,6 +21,9 @@
         <module>dsp-dspbid</module>
         <module>dsp-adxrtb</module>
         <module>dsp-shield</module>
+        <module>dsp-speed</module>
+        <module>dsp-dsprtb</module>
+        <module>dsp-ctr</module>
     </modules>
 
     <dependencyManagement>
@@ -43,6 +46,21 @@
             <dependency>
                 <groupId>com.songheng.dsp</groupId>
                 <artifactId>dsp-match</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.songheng.dsp</groupId>
+                <artifactId>dsp-speed</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.songheng.dsp</groupId>
+                <artifactId>dsp-dsprtb</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.songheng.dsp</groupId>
+                <artifactId>dsp-ctr</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
