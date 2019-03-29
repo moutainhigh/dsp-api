@@ -20,7 +20,7 @@
         <module>dsp-match</module>
         <module>dsp-dspbid</module>
         <module>dsp-adxrtb</module>
-        <module>dsp-shiled</module>
+        <module>dsp-shield</module>
     </modules>
 
     <dependencyManagement>
