@@ -39,4 +39,9 @@ public class DspBidClientRequest {
      * */
     private Map<String, Set<MaterielDirect>> materiedInfoByTagIds;
 
+    /**
+     * 屏蔽的json政策
+     * */
+    private String shiledJson;
+
 }

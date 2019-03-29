@@ -36,10 +36,10 @@ public class ShieldClient {
     /**
      * 执行屏蔽服务
      * */
-    public static void execute(ShieldClientRequest request){
+    public static boolean execute(ShieldClientRequest request){
         String key = getDispatchKey(request.getBaseFlow());
         ShieldService shieldServer = realize.containsKey(key) ? realize.get(key) : new DefaultShieldService();
-        shieldServer.shield(request);
+        return shieldServer.shield(request);
     }
 
 
@@ -53,25 +53,21 @@ public class ShieldClient {
         baseFlow.setPgType("ny");
         request.setBaseFlow(baseFlow);
 
-        List<MaterielDirect> advList = new ArrayList<>();
         MaterielDirect adv1 = new MaterielDirect();
         adv1.setSectorName("网赚");
         adv1.setAdlever(1);
-        advList.add(adv1);
 
         MaterielDirect adv2 = new MaterielDirect();
         adv2.setSectorName("网游");
         adv2.setAdlever(1);
-        advList.add(adv2);
 
         String json = "{\"D\":{\"0\":{\"网赚\":{\"time\":\"10:00:00-23:59:00\",\"area\":\"上海,北京\"}},\"1\":{\"网赚\":{\"time\":\"08:00:00-10:00:00\",\"area\":\"上海,北京\"}}},\"C\":{\"0\":{\"all\":{\"time\":\"10:00:00-23:59:00\",\"area\":\"上海,北京\"}},\"1\":{\"网赚\":{\"time\":\"08:00:00-10:00:00\",\"area\":\"上海,北京\"}}}}";
         System.out.println(FastJsonUtils.toJsonObject(json));
         request.setShiledJson(json);
-        request.setAdvList(advList);
+        request.setAdv(adv1);
 
-        execute(request);
+        System.out.println(execute(request));
 
-        System.out.println(advList.size());
     }
 
 }

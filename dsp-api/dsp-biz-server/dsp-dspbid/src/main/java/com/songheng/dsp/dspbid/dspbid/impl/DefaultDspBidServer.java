@@ -1,9 +1,10 @@
 package com.songheng.dsp.dspbid.dspbid.impl;
 
 import com.songheng.dsp.dspbid.dspbid.DspBidServer;
+import com.songheng.dsp.match.AdvMatchClient;
 import com.songheng.dsp.model.client.DspBidClientRequest;
+import com.songheng.dsp.model.client.MatchClientRequest;
 import com.songheng.dsp.model.client.ShieldClientRequest;
-import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.model.materiel.MaterielDirect;
 import com.songheng.dsp.shield.ShieldClient;
 
@@ -16,28 +17,42 @@ import java.util.List;
  **/
 public class DefaultDspBidServer extends DspBidServer {
     @Override
-    protected void advSpeedLimit(List<MaterielDirect> advList, DspBidClientRequest request, String tagId, int bidModel) {
+    protected void putCpmByCtr(List<MaterielDirect> advList, DspBidClientRequest request, String tagId, int bidModel) {
 
     }
 
     @Override
-    protected MaterielDirect dspRtb(List<MaterielDirect> advList, BaseFlow baseFlow, String tagId, int bidModel) {
+    protected boolean advSpeedLimit(MaterielDirect adv, DspBidClientRequest request, String tagId, int bidModel) {
+        return true;
+    }
+
+    @Override
+    protected MaterielDirect dspRtb(List<MaterielDirect> advList, DspBidClientRequest request, String tagId, int bidModel) {
         return null;
     }
 
     @Override
-    protected void matchAdvList(List<MaterielDirect> advList, BaseFlow baseFlow, String tagId,int bidModel) {
-
+    protected boolean matchAdv(MaterielDirect adv, DspBidClientRequest request, String tagId,int bidModel) {
+        //组装匹配模块请求参数
+        MatchClientRequest matchRequest = new MatchClientRequest();
+        matchRequest.setAdv(adv);
+        matchRequest.setBaseFlow(request.getBaseFlow());
+        matchRequest.setTagId(tagId);
+        matchRequest.setBidModel(bidModel);
+        matchRequest.setConsumeInfo(request.getConsumeInfo());
+        return AdvMatchClient.execute(matchRequest);
     }
 
     @Override
-    protected void shieldAdvList(List<MaterielDirect> advList, BaseFlow baseFlow, String tagId, int bidModel) {
-        ShieldClientRequest request = new ShieldClientRequest();
-        request.setAdvList(advList);
-        request.setBaseFlow(baseFlow);
-        request.setBidModel(bidModel);
-        request.setPublicShiledJson("");
-        request.setSpecialShiledJson("");
-        ShieldClient.execute(request);
+    protected boolean shieldAdv(MaterielDirect adv,DspBidClientRequest request, String tagId,int bidModel) {
+        //组装屏蔽模块请求参数
+        ShieldClientRequest shieldRequest = new ShieldClientRequest();
+        shieldRequest.setAdv(adv);
+        shieldRequest.setBaseFlow(request.getBaseFlow());
+        shieldRequest.setTagId(tagId);
+        shieldRequest.setBidModel(bidModel);
+        shieldRequest.setShiledJson(request.getShiledJson());
+        //执行屏蔽模块
+        return ShieldClient.execute(shieldRequest);
     }
 }

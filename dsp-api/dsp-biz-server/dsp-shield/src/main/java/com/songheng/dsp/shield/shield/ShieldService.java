@@ -6,8 +6,6 @@ import com.songheng.dsp.model.enums.AdLevel;
 import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.model.materiel.MaterielDirect;
 import com.songheng.dsp.shield.support.ShieldSupport;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * @description: 屏蔽服务
@@ -17,36 +15,36 @@ import java.util.List;
 public abstract class ShieldService {
 
 
-    public void shield(ShieldClientRequest request){
+    /**
+     * 验证这个广告是否需要屏蔽
+     * @param request
+     * @return
+     */
+    public boolean shield(ShieldClientRequest request){
         JSONObject json = ShieldSupport.parseJsonStr(request.getShiledJson());
         BaseFlow baseFlow = request.getBaseFlow();
-        List<MaterielDirect> advList = request.getAdvList();
-        Iterator<MaterielDirect> iterator = advList.iterator();
-        while(iterator.hasNext()){
-            MaterielDirect next = iterator.next();
-            String sectorName = next.getSectorName();
-            //广告属性中屏蔽地域
-            if(ShieldSupport.validateArea(next.getShieldArea(),baseFlow)){
-                iterator.remove();
-                continue;
+
+        MaterielDirect next = request.getAdv();
+        String sectorName = next.getSectorName();
+        //广告属性中屏蔽地域
+        if(ShieldSupport.validateArea(next.getShieldArea(),baseFlow)){
+           return true;
+        }
+        //获取广告等级名
+        String levelName = AdLevel.getLevelNameByValue(next.getAdlever());
+        if(json.containsKey(levelName)){
+            //获取该等级下的屏蔽策略
+            JSONObject levelJson = json.getJSONObject(levelName);
+            //正向屏蔽策略:针对行业
+            if(positiveShield(levelJson,sectorName,baseFlow)){
+                return true;
             }
-            //获取广告等级名
-            String levelName = AdLevel.getLevelNameByValue(next.getAdlever());
-            if(json.containsKey(levelName)){
-                //获取该等级下的屏蔽策略
-                JSONObject levelJson = json.getJSONObject(levelName);
-                //正向屏蔽策略:针对行业
-                if(positiveShield(levelJson,sectorName,baseFlow)){
-                    iterator.remove();
-                    continue;
-                }
-                //反向屏蔽策略 :针对行业
-                if(oppositionShield(levelJson,sectorName,baseFlow)){
-                    iterator.remove();
-                    continue;
-                }
+            //反向屏蔽策略 :针对行业
+            if(oppositionShield(levelJson,sectorName,baseFlow)){
+                return true;
             }
         }
+        return false;
     }
 
     /**

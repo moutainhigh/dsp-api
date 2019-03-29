@@ -32,10 +32,10 @@ public class AdvMatchClient {
     /**
      * 执行匹配服务
      * */
-    public static void execute(MatchClientRequest request){
+    public static boolean execute(MatchClientRequest request){
         String key = getDispatchKey(request.getBaseFlow());
         MatchService server = realize.containsKey(key) ? realize.get(key) : new DefaultMatchService();
-        server.matchAdvInfo(request);
+        return server.matchAdvInfo(request);
     }
 
 }

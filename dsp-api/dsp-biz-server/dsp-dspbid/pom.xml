@@ -27,6 +27,10 @@
             <groupId>com.songheng.dsp</groupId>
             <artifactId>dsp-shield</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.songheng.dsp</groupId>
+            <artifactId>dsp-match</artifactId>
+        </dependency>
 
     </dependencies>
 </project>

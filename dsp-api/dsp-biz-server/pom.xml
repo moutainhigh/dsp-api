@@ -37,6 +37,16 @@
             </dependency>
             <dependency>
                 <groupId>com.songheng.dsp</groupId>
+                <artifactId>dsp-shield</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.songheng.dsp</groupId>
+                <artifactId>dsp-match</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.songheng.dsp</groupId>
                 <artifactId>dsp-dubbo-base-interface</artifactId>
                 <version>${project.version}</version>
             </dependency>

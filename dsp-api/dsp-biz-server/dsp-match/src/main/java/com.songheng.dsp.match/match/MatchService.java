@@ -14,22 +14,18 @@ import java.util.List;
  **/
 public abstract class MatchService {
 
-    public void matchAdvInfo(MatchClientRequest request){
-        List<MaterielDirect> advList = request.getAdvList();
-        Iterator<MaterielDirect> iterator = advList.iterator();
-        while(iterator.hasNext()) {
-            MaterielDirect next = iterator.next();
-            //基础匹配
-            if(!baseMatch(request,next)){
-                iterator.remove();
-                continue;
-            }
-            //高级匹配
-            if(!highMatch(request,next)){
-                iterator.remove();
-                continue;
-            }
+    public boolean matchAdvInfo(MatchClientRequest request){
+        MaterielDirect next = request.getAdv();
+        //基础匹配
+        if(!baseMatch(request,next)){
+           return false;
         }
+        //高级匹配
+        if(!highMatch(request,next)){
+            return false;
+        }
+        return true;
+
     }
     /**
      * 匹配基础信息
@@ -38,6 +34,8 @@ public abstract class MatchService {
      * @return
      */
     private boolean baseMatch(MatchClientRequest request,MaterielDirect next){
+        //展现频次匹配 consumeInfo
+        if(!matchFrequency(request,next)){ return false;}
         //投放应用匹配
         if(!matchAppTypeId(request,next)){return false;}
         //投放渠道匹配 qids
@@ -52,8 +50,6 @@ public abstract class MatchService {
         if(!matchNewsClassify(request,next)){return false;}
         //广告位匹配
         if(!matchTagId(request,next)){return false;}
-        //展现频次匹配 consumeInfo
-        if(!matchFrequency(request,next)){ return false;}
         return true;
     }
 

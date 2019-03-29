@@ -15,9 +15,9 @@ import java.util.List;
 @Setter
 public class ShieldClientRequest {
     /**
-     * 需要屏蔽的广告
+     * 需要验证的广告
      * */
-    private List<MaterielDirect> advList;
+    private MaterielDirect adv;
     /**
      * 流量信息
      * */

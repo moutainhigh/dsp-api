@@ -52,6 +52,10 @@ public class MaterielBudget extends MaterielBaseInfo implements java.io.Serializ
      * 二价
      * */
     private long secondPrice;
+    /**
+     * 排序的价格
+     * */
+    private long sortPrice;
 
     /**
      * 理论pv

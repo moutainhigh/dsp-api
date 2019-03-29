@@ -21,7 +21,7 @@ public class MatchClientRequest {
     /**
      * 需要匹配的广告
      * */
-    private List<MaterielDirect> advList;
+    private MaterielDirect adv;
     /**
      * 流量信息
      * */
