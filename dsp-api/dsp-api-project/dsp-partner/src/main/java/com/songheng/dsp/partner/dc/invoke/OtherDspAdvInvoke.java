@@ -1,5 +1,7 @@
 package com.songheng.dsp.partner.dc.invoke;
 
+import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.dubbo.rpc.cluster.support.FailoverCluster;
 import com.songheng.dsp.dubbo.baseinterface.materiel.adx.OtherDspAdvService;
 import com.songheng.dsp.model.materiel.DspAdvExtend;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +30,8 @@ public class OtherDspAdvInvoke {
     /**
      * otherDspAdvService
      */
-    @Autowired
-    private OtherDspAdvService otherDspAdvService;
+    @Reference(cluster = FailoverCluster.NAME, retries = 2, timeout = 1000, check = false, mock = "return null")
+    OtherDspAdvService otherDspAdvService;
 
     /**
      * getDspAdvInfos

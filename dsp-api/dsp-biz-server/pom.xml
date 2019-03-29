@@ -20,7 +20,7 @@
         <module>dsp-match</module>
         <module>dsp-dspbid</module>
         <module>dsp-adxrtb</module>
-        <module>dsp-shield</module>
+        <module>dsp-shiled</module>
     </modules>
 
     <dependencyManagement>
@@ -33,11 +33,6 @@
             <dependency>
                 <groupId>com.songheng.dsp</groupId>
                 <artifactId>dsp-model</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.songheng.dsp</groupId>
-                <artifactId>dsp-shield</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

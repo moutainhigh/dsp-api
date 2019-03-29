@@ -6,7 +6,8 @@ import com.songheng.dsp.model.client.ClientResponse;
 import com.songheng.dsp.model.client.SspClientRequest;
 import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.model.ssp.AdvSspSlot;
-import com.songheng.dsp.partner.dc.DictDc;
+import com.songheng.dsp.partner.dc.invoke.AdvSspSlotInvoke;
+import com.songheng.dsp.partner.dc.invoke.DspUserInvoke;
 import com.songheng.dsp.partner.service.BizService;
 import com.songheng.dsp.partner.utils.RemoteIpUtil;
 import com.songheng.dsp.ssp.SspClient;
@@ -24,7 +25,10 @@ import java.util.*;
 public class BizServiceImpl implements BizService {
 
     @Autowired
-    DictDc dictDc;
+    private AdvSspSlotInvoke advSspSlotInvoke;
+
+    @Autowired
+    private DspUserInvoke dspUserInvoke;
 
     /**
      * 初始化流量信息
@@ -45,7 +49,7 @@ public class BizServiceImpl implements BizService {
         List<String> slotIds = StringUtils.strToList(apiArg.getSlotIds());
         Map<String, AdvSspSlot> slotMap = new HashMap<>(slotIds.size());
         for(String slotId : slotIds){
-            AdvSspSlot advSspSlot = dictDc.getAdvSspSlotMap(slotId);
+            AdvSspSlot advSspSlot = advSspSlotInvoke.getAdvSspSlotById(slotId);
             if(advSspSlot!=null) {
                 slotMap.put(slotId,advSspSlot);
             }
@@ -65,7 +69,7 @@ public class BizServiceImpl implements BizService {
     @Override
     public List<DspUserInfo> getThirdAdxUserList(String terminal){
         List<DspUserInfo> result = new ArrayList<>();
-        List<DspUserInfo> list = dictDc.getAdxUserInfoList(terminal);
+        List<DspUserInfo> list = dspUserInvoke.getDspUsers(terminal);
         Iterator<DspUserInfo> iterable = list.iterator();
         while (iterable.hasNext()){
             DspUserInfo dspUserInfo = iterable.next();
@@ -81,7 +85,7 @@ public class BizServiceImpl implements BizService {
      * */
     @Override
     public DspUserInfo getOneSelfAdxUser(String terminal) {
-        List<DspUserInfo> list = dictDc.getAdxUserInfoList(terminal);
+        List<DspUserInfo> list = dspUserInvoke.getDspUsers(terminal);
         Iterator<DspUserInfo> iterable = list.iterator();
         while (iterable.hasNext()){
             DspUserInfo dspUserInfo = iterable.next();
