@@ -1,10 +1,9 @@
 package com.songheng.dsp.partner.service;
 
 import com.songheng.dsp.model.adx.user.DspUserInfo;
+import com.songheng.dsp.model.client.ClientResponse;
 import com.songheng.dsp.model.client.SspClientRequest;
 import com.songheng.dsp.model.flow.BaseFlow;
-import com.songheng.dsp.ssp.riskcontrol.RiskControlResult;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -24,18 +23,25 @@ public interface BizService {
 
     /**
      * 执行风控逻辑
+     * @param request 请求信息
      * @return 风控执行结果
      * */
-    RiskControlResult execute(SspClientRequest request);
+    ClientResponse execute(SspClientRequest request);
+
 
     /**
      * 获取第三方adx企业信息列表
-     * */
+     * @param terminal
+     * @return
+     */
     List<DspUserInfo> getThirdAdxUserList(String terminal);
+
 
     /**
      * 获取本方adx企业信息
-     * */
+     * @param terminal
+     * @return
+     */
     DspUserInfo getOneSelfAdxUser(String terminal);
 
 

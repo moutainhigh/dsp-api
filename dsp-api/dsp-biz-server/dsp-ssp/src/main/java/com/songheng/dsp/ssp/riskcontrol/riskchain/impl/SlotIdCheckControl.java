@@ -3,10 +3,11 @@ package com.songheng.dsp.ssp.riskcontrol.riskchain.impl;
 
 import com.google.common.collect.Sets;
 import com.songheng.dsp.common.utils.CollectionUtils;
+import com.songheng.dsp.model.client.ClientResponse;
 import com.songheng.dsp.model.client.SspClientRequest;
+import com.songheng.dsp.model.enums.ClientReason;
 import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.model.flow.ReqSlotInfo;
-import com.songheng.dsp.ssp.riskcontrol.RiskControlResult;
 import com.songheng.dsp.ssp.riskcontrol.riskchain.RiskControl;
 
 import java.util.Iterator;
@@ -19,7 +20,7 @@ import java.util.Set;
  **/
 public class SlotIdCheckControl extends RiskControl {
     @Override
-    protected RiskControlResult doVerification(BaseFlow baseFlow,SspClientRequest request) {
+    protected ClientResponse doVerification(BaseFlow baseFlow, SspClientRequest request) {
         //如果有白名单列表,则取白名单和请求有效的广告位id的交集
         if(request.getTagIdWhitelist().size()>0){
             baseFlow.setValidTagIds(CollectionUtils.intersection(baseFlow.getValidTagIds(),request.getTagIdWhitelist()));
@@ -37,7 +38,7 @@ public class SlotIdCheckControl extends RiskControl {
         if(baseFlow.getValidTagIds().size()>0) {
             return getSuccessResult(baseFlow);
         }else{
-            return new RiskControlResult(false,"10006","广告位屏蔽:"+request.getTagIdBlacklist(),baseFlow);
+            return new ClientResponse(ClientReason.SSP_SLOT_SHIELD,baseFlow);
         }
     }
 }

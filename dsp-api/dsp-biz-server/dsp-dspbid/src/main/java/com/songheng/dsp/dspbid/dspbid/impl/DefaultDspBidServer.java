@@ -2,8 +2,11 @@ package com.songheng.dsp.dspbid.dspbid.impl;
 
 import com.songheng.dsp.dspbid.dspbid.DspBidServer;
 import com.songheng.dsp.model.client.DspBidClientRequest;
+import com.songheng.dsp.model.client.ShieldClientRequest;
 import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.model.materiel.MaterielDirect;
+import com.songheng.dsp.shield.ShieldClient;
+
 import java.util.List;
 
 /**
@@ -29,6 +32,12 @@ public class DefaultDspBidServer extends DspBidServer {
 
     @Override
     protected void shieldAdvList(List<MaterielDirect> advList, BaseFlow baseFlow, String tagId, int bidModel) {
-
+        ShieldClientRequest request = new ShieldClientRequest();
+        request.setAdvList(advList);
+        request.setBaseFlow(baseFlow);
+        request.setBidModel(bidModel);
+        request.setPublicShiledJson("");
+        request.setSpecialShiledJson("");
+        ShieldClient.execute(request);
     }
 }

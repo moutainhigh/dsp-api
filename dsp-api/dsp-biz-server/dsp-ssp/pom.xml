@@ -24,18 +24,6 @@
             <groupId>com.songheng.dsp</groupId>
             <artifactId>dsp-model</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.songheng.dsp</groupId>
-            <artifactId>dsp-dubbo-base-interface</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba.boot</groupId>
-            <artifactId>dubbo-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.101tec</groupId>
-            <artifactId>zkclient</artifactId>
-        </dependency>
     </dependencies>
 
 </project>

@@ -1,21 +1,25 @@
 package com.songheng.dsp.model.client;
 
+import com.songheng.dsp.model.consume.ConsumeInfo;
 import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.model.materiel.MaterielDirect;
 import lombok.Getter;
 import lombok.Setter;
+
 import java.util.List;
+import java.util.Map;
 
 /**
- * @description: 屏蔽模块客户端请求参数
+ * @description: 广告匹配的客户端请求参数
  * @author: zhangshuai@021.com
- * @date: 2019-03-28 13:10
+ * @date: 2019-03-29 11:08
  **/
 @Getter
 @Setter
-public class ShiledClientRequest {
+public class MatchClientRequest {
+
     /**
-     * 需要屏蔽的广告
+     * 需要匹配的广告
      * */
     private List<MaterielDirect> advList;
     /**
@@ -30,12 +34,10 @@ public class ShiledClientRequest {
      * 竞价模式
      * */
     private int bidModel;
+
     /**
-     * 公共屏蔽的json
+     * 广告计划的消耗情况
      * */
-    private String publicShiledJson;
-    /**
-     * 特殊屏蔽的json
-     * */
-    private String specialShiledJson;
+    private Map<String, ConsumeInfo> consumeInfo;
+
 }

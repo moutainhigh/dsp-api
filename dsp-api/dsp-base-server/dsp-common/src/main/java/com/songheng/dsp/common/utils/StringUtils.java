@@ -4,10 +4,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -184,6 +181,9 @@ public final class StringUtils {
      * @return 分割好的字符串List集合
      **/
     public static List<String> strToList(String strings) {
+        if(StringUtils.isBlank(strings)) {
+            return new ArrayList<>();
+        }
         return Splitter.onPattern("\\s+|，|,").omitEmptyStrings().trimResults().splitToList(strings);
     }
     /**

@@ -23,5 +23,10 @@
             <groupId>com.songheng.dsp</groupId>
             <artifactId>dsp-model</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.songheng.dsp</groupId>
+            <artifactId>dsp-shield</artifactId>
+        </dependency>
+
     </dependencies>
 </project>

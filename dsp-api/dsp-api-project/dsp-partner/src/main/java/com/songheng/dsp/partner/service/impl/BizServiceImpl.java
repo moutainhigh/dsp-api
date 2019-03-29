@@ -2,17 +2,16 @@ package com.songheng.dsp.partner.service.impl;
 
 import com.songheng.dsp.common.utils.StringUtils;
 import com.songheng.dsp.model.adx.user.DspUserInfo;
+import com.songheng.dsp.model.client.ClientResponse;
 import com.songheng.dsp.model.client.SspClientRequest;
 import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.model.ssp.AdvSspSlot;
 import com.songheng.dsp.partner.dc.DictDc;
 import com.songheng.dsp.partner.service.BizService;
 import com.songheng.dsp.partner.utils.RemoteIpUtil;
-import com.songheng.dsp.ssp.RiskControlClient;
-import com.songheng.dsp.ssp.riskcontrol.RiskControlResult;
+import com.songheng.dsp.ssp.SspClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -57,8 +56,8 @@ public class BizServiceImpl implements BizService {
      * 执行风控业务
      * */
     @Override
-    public RiskControlResult execute(SspClientRequest request){
-        return RiskControlClient.verification(request);
+    public ClientResponse execute(SspClientRequest request){
+        return SspClient.verification(request);
     }
     /**
      * 获取第三方adx企业信息列表

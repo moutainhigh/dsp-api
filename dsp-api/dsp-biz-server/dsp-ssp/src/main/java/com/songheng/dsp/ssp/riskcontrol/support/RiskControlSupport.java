@@ -1,20 +1,17 @@
-package com.songheng.dsp.ssp.service;
+package com.songheng.dsp.ssp.riskcontrol.support;
 
-import com.songheng.dsp.common.utils.FileUtils;
 import com.songheng.dsp.model.flow.BaseFlow;
-import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * @description: 黑名单本地服务
+ * @description: 风控服务支持类
  * @author: zhangshuai@021.com
  * @date: 2019-03-19 20:31
  **/
-public class BlackListLocalService {
+public class RiskControlSupport {
 
     private final static String[] blackListKey = {"ip","advuid","appuid"};
 

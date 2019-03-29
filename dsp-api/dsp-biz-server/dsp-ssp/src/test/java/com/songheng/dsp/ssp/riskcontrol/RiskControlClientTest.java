@@ -3,7 +3,6 @@ package com.songheng.dsp.ssp.riskcontrol;
 import com.songheng.dsp.common.InitLoadConf;
 import com.songheng.dsp.common.enums.ProjectEnum;
 import com.songheng.dsp.model.flow.BaseFlow;
-import com.songheng.dsp.ssp.RiskControlClient;
 import com.songheng.dsp.ssp.riskcontrol.riskchain.impl.BlackListControl;
 import org.junit.After;
 import org.junit.Before;
@@ -36,45 +35,4 @@ public class RiskControlClientTest {
     public void tearDown() {
     }
 
-//    @Test
-//    public void riskControlPass() {
-//        RiskControlClient client = new RiskControlClient();
-//        System.out.println(client.verification(baseFlow,client));
-//    }
-//    @Test
-//    public void riskControlTest() {
-//        baseFlow.setTestFlow(true);
-//        RiskControlClient client = new RiskControlClient();
-//        System.out.println(client.verification(baseFlow,client));
-//    }
-//    @Test
-//    public void riskControlBrush() {
-//        baseFlow.setBrushFlow(true);
-//        RiskControlClient client = new RiskControlClient();
-//        System.out.println(client.verification(baseFlow,client));
-//    }
-//    @Test
-//    public void riskControlNoPc() {
-//        baseFlow.setTerminal("h5");
-//        RiskControlClient client = new RiskControlClient();
-//        System.out.println(client.verification(baseFlow,client));
-//    }
-//
-//    @Test
-//    public void riskControlNoPassAll() {
-//        baseFlow.setTerminal("h5");
-//        baseFlow.setTestFlow(true);
-//        baseFlow.setBrushFlow(true);
-//        RiskControlClient client = new RiskControlClient();
-//        System.out.println(client.verification(baseFlow,client));
-//    }
-//
-//    @Test
-//    public void riskControlOne() {
-//        baseFlow.setTerminal("h5");
-//        baseFlow.setTestFlow(false);
-//        baseFlow.setBrushFlow(true);
-//        RiskControlClient client = new RiskControlClient();
-//        System.out.println(new BlackListControl().verification(baseFlow,client));
-//    }
 }

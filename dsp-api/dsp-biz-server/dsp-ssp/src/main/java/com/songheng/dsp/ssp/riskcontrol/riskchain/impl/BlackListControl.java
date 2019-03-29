@@ -1,16 +1,13 @@
 package com.songheng.dsp.ssp.riskcontrol.riskchain.impl;
 
 
+import com.songheng.dsp.model.client.ClientResponse;
 import com.songheng.dsp.model.client.SspClientRequest;
+import com.songheng.dsp.model.enums.ClientReason;
 import com.songheng.dsp.model.flow.BaseFlow;
-import com.songheng.dsp.ssp.context.RpcServiceContext;
-import com.songheng.dsp.ssp.riskcontrol.RiskControlResult;
 import com.songheng.dsp.ssp.riskcontrol.riskchain.RiskControl;
-import com.songheng.dsp.ssp.service.BlackListLocalService;
-import org.springframework.stereotype.Service;
-
+import com.songheng.dsp.ssp.riskcontrol.support.RiskControlSupport;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @description: 黑名单验证
@@ -19,13 +16,13 @@ import java.util.Set;
  **/
 public class BlackListControl extends RiskControl {
     @Override
-    protected RiskControlResult doVerification(BaseFlow baseFlow,SspClientRequest request) {
+    protected ClientResponse doVerification(BaseFlow baseFlow, SspClientRequest request) {
         //获取有哪些黑名单 以及需要验证的数据
-        Map<String,String> blackListMap = BlackListLocalService.getBlackListKey(baseFlow);
+        Map<String,String> blackListMap = RiskControlSupport.getBlackListKey(baseFlow);
         //流量验证
         for (Map.Entry<String, String> entry : blackListMap.entrySet()) {
-            if(BlackListLocalService.isInBlackList(request.getBlackListMap(),entry.getKey(),entry.getValue())){
-                return new RiskControlResult(false,"10004","黑名单;"+entry.getKey()+":"+entry.getValue(),baseFlow);
+            if(RiskControlSupport.isInBlackList(request.getBlackListMap(),entry.getKey(),entry.getValue())){
+                return new ClientResponse(ClientReason.SSP_BLACK_LIST,entry.getKey()+"-"+entry.getValue(),baseFlow);
             }
         }
         return getSuccessResult(baseFlow);
