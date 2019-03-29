@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<mapper namespace="AdvDictShield">
+    <select id="queryAdvDictShield">
+        SELECT
+            qid,
+            qidFlag,
+            appIds,
+            tagIds,
+            shieldJson,
+            remark
+        FROM
+            adv_dict_shield
+        WHERE
+            STATUS = 1
+    </select>
+</mapper>

@@ -1,5 +1,6 @@
 package com.songheng.dsp.datacenter.job;
 
+import com.songheng.dsp.datacenter.dict.AdvDictImpl;
 import com.songheng.dsp.datacenter.dict.AdxPositionImpl;
 import com.songheng.dsp.datacenter.dict.IpCityImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,12 @@ public class UpdateDictCache {
      */
     @Autowired
     private IpCityImpl ipCityImpl;
+
+    /**
+     * advDictImpl
+     */
+    @Autowired
+    private AdvDictImpl advDictImpl;
 
     /**
      * 定时任务更新ADX广告位置缓存
@@ -55,6 +62,31 @@ public class UpdateDictCache {
             log.error("更新IpCity缓存数据失败\n{}",e);
         }
         log.debug("更新IpCity缓存数据成功！");
+    }
+
+    /**
+     * 定时任务更新AdvDict缓存
+     * 60秒更新一次
+     */
+    @Scheduled(initialDelay = 1000 * 5, fixedDelay = 1000 * 60)
+    public void updateAdvDict(){
+        log.debug("开始更新AdvDict缓存数据...");
+        try {
+            advDictImpl.updateSectorInfo();
+        } catch (Exception e) {
+            log.error("更新行业信息缓存数据失败\n{}",e);
+        }
+        try {
+            advDictImpl.updateMobileVendor();
+        } catch (Exception e) {
+            log.error("更新手机型号信息缓存数据失败\n{}",e);
+        }
+        try {
+            advDictImpl.updateOtherVendor();
+        } catch (Exception e) {
+            log.error("更新其他手机型号信息缓存数据失败\n{}",e);
+        }
+        log.debug("更新AdvDict缓存数据成功！");
     }
 
 }

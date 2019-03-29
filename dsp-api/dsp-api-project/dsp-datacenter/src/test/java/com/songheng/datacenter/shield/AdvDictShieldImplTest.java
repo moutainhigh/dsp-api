@@ -1,8 +1,8 @@
 package com.songheng.datacenter.shield;
 
 import com.songheng.dsp.datacenter.DataCenterApplication;
-import com.songheng.dsp.datacenter.shield.ShieldAreaImpl;
-import com.songheng.dsp.model.shield.ShieldArea;
+import com.songheng.dsp.datacenter.shield.AdvDictShieldImpl;
+import com.songheng.dsp.model.shield.AdvDictShield;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,20 +11,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
 import java.util.Map;
 
 /**
  * @author: luoshaobing
- * @date: 2019/3/19 21:01
+ * @date: 2019/3/29 18:37
  * @description:
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = DataCenterApplication.class)
-public class ShieldAreaImplTest {
+public class AdvDictShieldImplTest {
 
     @Autowired
-    private ShieldAreaImpl shieldAreaImpl;
+    private AdvDictShieldImpl advDictShieldImpl;
+
 
     @Before
     public void init() {
@@ -32,15 +32,12 @@ public class ShieldAreaImplTest {
     }
 
     @Test
-    public void getShieldAreaInfo(){
-        shieldAreaImpl.updateShieldArea();
-        Map<String, List<ShieldArea>> map = shieldAreaImpl.getTmlSiteQidMap();
+    public void getAdvDictShield(){
+        advDictShieldImpl.updateAdvDictShield();
+        Map<String, AdvDictShield> map = advDictShieldImpl.getAdvDictShieldMap();
         for (String key : map.keySet()){
             System.out.println("key: " + key);
-            for (ShieldArea shieldArea : map.get(key)){
-                System.out.println(shieldArea);
-            }
-            System.out.println("----------------------------");
+            System.out.println("value: " + map.get(key));
         }
     }
 

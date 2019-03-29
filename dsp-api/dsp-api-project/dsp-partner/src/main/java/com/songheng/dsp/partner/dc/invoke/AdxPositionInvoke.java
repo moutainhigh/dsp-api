@@ -60,7 +60,6 @@ public class AdxPositionInvoke {
      * @param locationName
      * @return
      */
-    @Cacheable(value ="ad_position", key = "#terminal.concat('_').concat(#locationName)", condition = "#result != null")
     public AdPosition getAdPositionByName(String terminal, String locationName){
         Cache cache = cacheManager.getCache("ad_position");
         if(null != locationName && (locationName.split("_").length == 5
@@ -88,7 +87,7 @@ public class AdxPositionInvoke {
             }
             return null == position ? new AdPosition() : (AdPosition) position;
         }
-        return adxPositionService.getAdPositionByName(terminal, locationName);
+        return null;
     }
 
     /**

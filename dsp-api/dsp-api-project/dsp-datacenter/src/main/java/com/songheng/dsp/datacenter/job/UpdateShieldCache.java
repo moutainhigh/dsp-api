@@ -1,6 +1,6 @@
 package com.songheng.dsp.datacenter.job;
 
-import com.songheng.dsp.datacenter.shield.ShieldAreaImpl;
+import com.songheng.dsp.datacenter.shield.AdvDictShieldImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,10 +17,10 @@ import org.springframework.stereotype.Component;
 public class UpdateShieldCache {
 
     /**
-     * shieldAreaImpl
+     * advDictShieldImpl
      */
     @Autowired
-    private ShieldAreaImpl shieldAreaImpl;
+    private AdvDictShieldImpl advDictShieldImpl;
 
     /**
      * 定时任务更新地域屏蔽信息
@@ -30,26 +30,10 @@ public class UpdateShieldCache {
     public void updateShieldArea(){
         log.debug("开始更新屏蔽信息缓存数据...");
         try {
-            shieldAreaImpl.updateShieldArea();
+            advDictShieldImpl.updateAdvDictShield();
         } catch (Exception e) {
             log.error("更新地域屏蔽信息缓存数据失败\n{}",e);
         }
-        try {
-            shieldAreaImpl.updateSectorInfo();
-        } catch (Exception e) {
-            log.error("更新行业信息缓存数据失败\n{}",e);
-        }
-        try {
-            shieldAreaImpl.updateMobileVendor();
-        } catch (Exception e) {
-            log.error("更新手机型号信息缓存数据失败\n{}",e);
-        }
-        try {
-            shieldAreaImpl.updateOtherVendor();
-        } catch (Exception e) {
-            log.error("更新其他手机型号信息缓存数据失败\n{}",e);
-        }
-
         log.debug("更新屏蔽信息缓存数据成功！");
     }
 

@@ -57,9 +57,6 @@ public class ZkWatcherSubscriber implements InitializingBean {
     private IpCityInvoke ipCityInvoke;
 
     @Autowired
-    private ShieldAreaInvoke shieldAreaInvoke;
-
-    @Autowired
     private AdvDictAdStyleInvoke advDictAdStyleInvoke;
 
     @Autowired
@@ -70,6 +67,12 @@ public class ZkWatcherSubscriber implements InitializingBean {
 
     @Autowired
     private AdvSspSlotInvoke advSspSlotInvoke;
+
+    @Autowired
+    private AdvDictInvoke advDictInvoke;
+
+    @Autowired
+    private AdvDictShieldInvoke advDictShieldInvoke;
 
 
 
@@ -198,11 +201,6 @@ public class ZkWatcherSubscriber implements InitializingBean {
                 e.printStackTrace();
             }
             try {
-                shieldAreaInvoke.updateShieldArea();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            try {
                 advDictAdStyleInvoke.updateAdvDictAdStyle();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -217,7 +215,16 @@ public class ZkWatcherSubscriber implements InitializingBean {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
+            try {
+                advDictInvoke.updateAdvDict();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                advDictShieldInvoke.updateAdvDictShield();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         /**
