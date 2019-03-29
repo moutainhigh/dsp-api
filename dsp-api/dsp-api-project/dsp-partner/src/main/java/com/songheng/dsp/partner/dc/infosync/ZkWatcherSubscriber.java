@@ -3,8 +3,7 @@ package com.songheng.dsp.partner.dc.infosync;
 import com.songheng.dsp.common.utils.HostIpUtils;
 import com.songheng.dsp.common.utils.MsgNotifyUtils;
 import com.songheng.dsp.common.utils.ZkClientUtils;
-import com.songheng.dsp.partner.dc.invoke.DspUserInvoke;
-import com.songheng.dsp.partner.dc.invoke.OtherDspAdvInvoke;
+import com.songheng.dsp.partner.dc.invoke.*;
 import org.I0Itec.zkclient.IZkDataListener;
 import org.I0Itec.zkclient.IZkStateListener;
 import org.I0Itec.zkclient.ZkClient;
@@ -45,6 +44,33 @@ public class ZkWatcherSubscriber implements InitializingBean {
     @Autowired
     private OtherDspAdvInvoke otherDspAdvInvoke;
 
+    @Autowired
+    private DbConfigInvoke dbConfigInvoke;
+
+    @Autowired
+    private PropsConfigInvoke propsConfigInvoke;
+
+    @Autowired
+    private AdxPositionInvoke adxPositionInvoke;
+
+    @Autowired
+    private IpCityInvoke ipCityInvoke;
+
+    @Autowired
+    private ShieldAreaInvoke shieldAreaInvoke;
+
+    @Autowired
+    private AdvDictAdStyleInvoke advDictAdStyleInvoke;
+
+    @Autowired
+    private AdvDictSellSeatInvoke advDictSellSeatInvoke;
+
+    @Autowired
+    private AdvSspQidInvoke advSspQidInvoke;
+
+    @Autowired
+    private AdvSspSlotInvoke advSspSlotInvoke;
+
 
 
     /**
@@ -73,10 +99,10 @@ public class ZkWatcherSubscriber implements InitializingBean {
         List<String> childListByMinPath = zkClient.getChildren(parentMinPath);
         List<String> childListBySecPath = zkClient.getChildren(parentSecPath);
         for (String childNode : childListByMinPath){
-            zkClient.subscribeDataChanges(parentMinPath+"/"+childNode, new ZkDataListener());
+            zkClient.subscribeDataChanges(parentMinPath+"/"+childNode, new ZkDataListenerByMinPath());
         }
         for (String childNode : childListBySecPath){
-            zkClient.subscribeDataChanges(parentSecPath+"/"+childNode, new ZkDataListener());
+            zkClient.subscribeDataChanges(parentSecPath+"/"+childNode, new ZkDataListenerBySecPath());
         }
         zkClient.subscribeStateChanges(new ZkStateListener());
     }
@@ -102,7 +128,7 @@ public class ZkWatcherSubscriber implements InitializingBean {
                     || Watcher.Event.KeeperState.Expired == keeperState){
                 StringBuffer msg = new StringBuffer("【ip:")
                         .append(HostIpUtils.getServerIp())
-                        .append("】【dsp-datacenter】【监听zk连接状态：")
+                        .append("】【dsp-partner】【监听zk连接状态：")
                         .append(keeperState.name())
                         .append("】\r\n").append("zk连接下线");
                 MsgNotifyUtils.sendMsg(msg.toString());
@@ -127,9 +153,9 @@ public class ZkWatcherSubscriber implements InitializingBean {
     }
 
     /**
-     * 订阅zk节点数据变化
+     * 订阅zk节点数据变化（分钟：更新）
      */
-    private class ZkDataListener implements IZkDataListener {
+    private class ZkDataListenerByMinPath implements IZkDataListener {
 
         /**
          * 节点数据变化 处理
@@ -141,8 +167,90 @@ public class ZkWatcherSubscriber implements InitializingBean {
         public void handleDataChange(String dataPath, Object data) throws Exception {
             System.out.println("节点数据变化："+dataPath+"-数据："+data.toString());
             //更新缓存
-            dspUserInvoke.updateDspUsers();
-            otherDspAdvInvoke.updateOtherDspAdv();
+            try {
+                dspUserInvoke.updateDspUsers();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                otherDspAdvInvoke.updateOtherDspAdv();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                dbConfigInvoke.updateDbConfig();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                propsConfigInvoke.updatePropsConfig();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                adxPositionInvoke.updateAdxPosition();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                ipCityInvoke.updateIpCity();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                shieldAreaInvoke.updateShieldArea();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                advDictAdStyleInvoke.updateAdvDictAdStyle();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                advDictSellSeatInvoke.updateAdvDictSellSeat();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                advSspQidInvoke.updateAdvSspQid();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        /**
+         * 节点删除 处理
+         * @param dataPath
+         * @throws Exception
+         */
+        @Override
+        public void handleDataDeleted(String dataPath) throws Exception {
+            System.out.println("节点数据删除："+dataPath);
+        }
+    }
+
+    /**
+     * 订阅zk节点数据变化（秒：更新）
+     */
+    private class ZkDataListenerBySecPath implements IZkDataListener {
+
+        /**
+         * 节点数据变化 处理
+         * @param dataPath
+         * @param data
+         * @throws Exception
+         */
+        @Override
+        public void handleDataChange(String dataPath, Object data) throws Exception {
+            System.out.println("节点数据变化："+dataPath+"-数据："+data.toString());
+            //更新缓存
+            try {
+                advSspSlotInvoke.updateAdvSspSlot();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         /**

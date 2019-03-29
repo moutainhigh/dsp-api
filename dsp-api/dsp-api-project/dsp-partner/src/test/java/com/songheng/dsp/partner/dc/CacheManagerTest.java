@@ -26,6 +26,7 @@ public class CacheManagerTest {
     @Autowired
     private CacheableTest cacheableTest;
 
+
     @Before
     public void init() {
         System.out.println("开始测试-----------------");
@@ -37,7 +38,9 @@ public class CacheManagerTest {
         Cache cache = cacheManager.getCache("adx_user");
         cache.put("getTerminal", "pc");
         String termianl = cacheableTest.getTerminal();
-        System.out.println(termianl);
+        System.out.println("get method cache: "+termianl);
+        String tml = (String) cache.get("getTerminal").get();
+        System.out.println("get cache manager: "+tml);
     }
 
     @After
