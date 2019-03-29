@@ -48,6 +48,14 @@ public class ShieldSupport {
     }
 
 
+    /**
+     * 验证地域信息
+     * @param areas
+     * @param baseFlow
+     * @return
+     *   true : 需要屏蔽
+     *   false : 不需要屏蔽
+     */
     public static boolean validateArea(String areas, BaseFlow baseFlow) {
         //不包含地域信息则不屏蔽
         if(StringUtils.isNullOrEmpty(areas)){

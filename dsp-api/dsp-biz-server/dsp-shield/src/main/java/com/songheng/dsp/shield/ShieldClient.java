@@ -25,7 +25,7 @@ public class ShieldClient {
      **/
     static{
         realize.put("default",new DefaultShieldService());
-        realize.put("pc_ny",new NoneShieldService());
+        realize.put("test",new NoneShieldService());
     }
     /**
      * 根据不同流量获取不同垄断广告策略key

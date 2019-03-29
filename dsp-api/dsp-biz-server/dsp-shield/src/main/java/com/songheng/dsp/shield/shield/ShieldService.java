@@ -25,6 +25,11 @@ public abstract class ShieldService {
         while(iterator.hasNext()){
             MaterielDirect next = iterator.next();
             String sectorName = next.getSectorName();
+            //广告属性中屏蔽地域
+            if(ShieldSupport.validateArea(next.getShieldArea(),baseFlow)){
+                iterator.remove();
+                continue;
+            }
             //获取广告等级名
             String levelName = AdLevel.getLevelNameByValue(next.getAdlever());
             if(json.containsKey(levelName)){
