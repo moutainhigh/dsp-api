@@ -11,5 +11,11 @@
 
     <artifactId>dsp-dsprtb</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.songheng.dsp</groupId>
+            <artifactId>dsp-model</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

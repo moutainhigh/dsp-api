@@ -304,6 +304,11 @@ public class BaseFlow implements Serializable {
     private Set<String> validTagIds;
 
     /**
+     * 当前流量是否是夜间
+     * */
+    private boolean isNight;
+
+    /**
      *jsonp 回调参数
      * */
     private String jsonpcallback;
@@ -312,6 +317,7 @@ public class BaseFlow implements Serializable {
         this.reqId = RandomUtils.generateRandString("r",19);
         this.reqSlotInfos = new TreeSet<>();
         this.validTagIds = new TreeSet<>();
+        this.isNight = false;
     }
     /**
      * @param baseFlow 需要赋值的流量对象
