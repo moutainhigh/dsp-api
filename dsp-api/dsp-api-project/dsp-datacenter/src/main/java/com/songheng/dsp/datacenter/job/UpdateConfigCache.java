@@ -57,7 +57,7 @@ public class UpdateConfigCache {
         try {
             String nodeData = ZkClientUtils.readData(zkWatcherAdvice.getZkClient(), zkWatcherAdvice.getSecPath());
             long remoteTs = Long.parseLong(StringUtils.replaceInvalidString(nodeData, "0"));
-            if ((startTs - remoteTs) > 10L){
+            if ((startTs - remoteTs) > 60000L){
                 //更新节点数据，通知监听该节点的所有客户端更新缓存
                 ZkClientUtils.updateNode(zkWatcherAdvice.getZkClient(), zkWatcherAdvice.getSecPath(), startTs);
             }
