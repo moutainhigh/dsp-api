@@ -61,9 +61,9 @@ public class UpdateDspCache {
 
     /**
      * 定时任务更新DSP广告缓存
-     * 60秒更新一次
+     * 10秒更新一次
      */
-    @Scheduled(initialDelay = 1000 * 5, fixedDelay = 1000 * 60)
+    @Scheduled(initialDelay = 1000 * 5, fixedDelay = 10 * 1000)
     public void updateDspCache(){
         log.debug("开始更新DSP广告缓存数据...");
         try {
@@ -100,7 +100,7 @@ public class UpdateDspCache {
         try {
             String nodeData = ZkClientUtils.readData(zkWatcherAdvice.getZkClient(), zkWatcherAdvice.getMinPath());
             long remoteTs = Long.parseLong(StringUtils.replaceInvalidString(nodeData, "0"));
-            if ((startTs - remoteTs) > 10L){
+            if ((startTs - remoteTs) > 10000L){
                 //更新节点数据，通知监听该节点的所有客户端更新缓存
                 ZkClientUtils.updateNode(zkWatcherAdvice.getZkClient(), zkWatcherAdvice.getMinPath(), startTs);
             }
