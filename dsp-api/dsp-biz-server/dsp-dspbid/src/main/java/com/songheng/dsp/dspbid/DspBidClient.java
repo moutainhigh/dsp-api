@@ -1,7 +1,7 @@
 package com.songheng.dsp.dspbid;
 
-import com.songheng.dsp.dspbid.dspbid.DspBidServer;
-import com.songheng.dsp.dspbid.dspbid.impl.DefaultDspBidServer;
+import com.songheng.dsp.dspbid.dspbid.DspBidService;
+import com.songheng.dsp.dspbid.dspbid.impl.DefaultDspBidService;
 import com.songheng.dsp.model.adx.response.ResponseBean;
 import com.songheng.dsp.model.client.DspBidClientRequest;
 import com.songheng.dsp.model.flow.BaseFlow;
@@ -15,18 +15,18 @@ import java.util.Map;
  * @date: 2019-03-25 11:48
  **/
 public class DspBidClient {
-    private static Map<String, DspBidServer> realize = new HashMap<>();
+    private static Map<String, DspBidService> realize = new HashMap<>();
 
     /**
      *注册具体实现
      **/
     static{
-        realize.put("pc",new DefaultDspBidServer());
-        realize.put("app",new DefaultDspBidServer());
-        realize.put("h5",new DefaultDspBidServer());
+        realize.put("pc",new DefaultDspBidService());
+        realize.put("app",new DefaultDspBidService());
+        realize.put("h5",new DefaultDspBidService());
     }
     /**
-     * 根据不同流量获取不同垄断广告策略key
+     * 根据不同流量获取不同实现的key
      **/
     private static String getDispatchKey(BaseFlow baseFlow){
         return baseFlow.getTerminal() + "_" + baseFlow.getPgType();
@@ -40,8 +40,8 @@ public class DspBidClient {
     public static ResponseBean execute(DspBidClientRequest request) {
         try {
             String key = getDispatchKey(request.getBaseFlow());
-            DspBidServer dspBidServer = realize.containsKey(key) ? realize.get(key) : new DefaultDspBidServer();
-            return dspBidServer.getDspResponseBean(request);
+            DspBidService service = realize.containsKey(key) ? realize.get(key) : new DefaultDspBidService();
+            return service.getDspResponseBean(request);
         }catch (Exception e){
             e.printStackTrace();
         }

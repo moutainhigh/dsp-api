@@ -24,7 +24,7 @@ public class AdvMatchClient {
         realize.put("test",new NoneMatchService());
     }
     /**
-     * 根据不同流量获取不同垄断广告策略key
+     * 根据不同流量获取不同的服务
      **/
     private static String getDispatchKey(BaseFlow baseFlow){
         return baseFlow.getTerminal() + "_" + baseFlow.getPgType();
@@ -34,8 +34,8 @@ public class AdvMatchClient {
      * */
     public static boolean execute(MatchClientRequest request){
         String key = getDispatchKey(request.getBaseFlow());
-        MatchService server = realize.containsKey(key) ? realize.get(key) : new DefaultMatchService();
-        return server.matchAdvInfo(request);
+        MatchService service = realize.containsKey(key) ? realize.get(key) : new DefaultMatchService();
+        return service.matchAdvInfo(request);
     }
 
 }

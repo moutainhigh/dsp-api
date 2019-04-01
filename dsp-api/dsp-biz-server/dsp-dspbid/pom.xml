@@ -31,6 +31,17 @@
             <groupId>com.songheng.dsp</groupId>
             <artifactId>dsp-match</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.songheng.dsp</groupId>
+            <artifactId>dsp-speed</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.songheng.dsp</groupId>
+            <artifactId>dsp-dsprtb</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.songheng.dsp</groupId>
+            <artifactId>dsp-ctr</artifactId>
+        </dependency>
     </dependencies>
 </project>

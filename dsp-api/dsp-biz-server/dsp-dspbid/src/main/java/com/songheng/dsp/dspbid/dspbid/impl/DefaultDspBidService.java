@@ -1,12 +1,12 @@
 package com.songheng.dsp.dspbid.dspbid.impl;
 
-import com.songheng.dsp.dspbid.dspbid.DspBidServer;
+import com.songheng.dsp.ctr.CtrClient;
+import com.songheng.dsp.dspbid.dspbid.DspBidService;
 import com.songheng.dsp.match.AdvMatchClient;
-import com.songheng.dsp.model.client.DspBidClientRequest;
-import com.songheng.dsp.model.client.MatchClientRequest;
-import com.songheng.dsp.model.client.ShieldClientRequest;
+import com.songheng.dsp.model.client.*;
 import com.songheng.dsp.model.materiel.MaterielDirect;
 import com.songheng.dsp.shield.ShieldClient;
+import com.songheng.dsp.speed.SpeedClient;
 
 import java.util.List;
 
@@ -15,19 +15,35 @@ import java.util.List;
  * @author: zhangshuai@021.com
  * @date: 2019-03-25 14:50
  **/
-public class DefaultDspBidServer extends DspBidServer {
+public class DefaultDspBidService extends DspBidService {
     @Override
     protected void putCpmByCtr(List<MaterielDirect> advList, DspBidClientRequest request, String tagId, int bidModel) {
-
+        //组装点击率预测模块请求参数
+        CtrClientRequest ctrClientRequest = new CtrClientRequest();
+        ctrClientRequest.setAdvList(advList);
+        ctrClientRequest.setConsumeInfo(request.getConsumeInfo());
+        ctrClientRequest.setBaseFlow(request.getBaseFlow());
+        ctrClientRequest.setTagId(tagId);
+        ctrClientRequest.setBidModel(bidModel);
+        //执行点击率预估模块任务
+        CtrClient.execute(ctrClientRequest);
     }
 
     @Override
     protected boolean advSpeedLimit(MaterielDirect adv, DspBidClientRequest request, String tagId, int bidModel) {
-        return true;
+        //组装限速模块请求参数
+        SpeedClientRequest speedClientRequest = new SpeedClientRequest();
+        speedClientRequest.setAdv(adv);
+        speedClientRequest.setBaseFlow(request.getBaseFlow());
+        speedClientRequest.setTagId(tagId);
+        speedClientRequest.setBidModel(bidModel);
+        //执行限速模块任务
+        return SpeedClient.execute(speedClientRequest);
     }
 
     @Override
     protected MaterielDirect dspRtb(List<MaterielDirect> advList, DspBidClientRequest request, String tagId, int bidModel) {
+
         return null;
     }
 

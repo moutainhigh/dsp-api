@@ -7,9 +7,7 @@ import com.songheng.dsp.model.materiel.MaterielDirect;
 import com.songheng.dsp.shield.shield.ShieldService;
 import com.songheng.dsp.shield.shield.impl.DefaultShieldService;
 import com.songheng.dsp.shield.shield.impl.NoneShieldService;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,7 +26,7 @@ public class ShieldClient {
         realize.put("test",new NoneShieldService());
     }
     /**
-     * 根据不同流量获取不同垄断广告策略key
+     * 根据不同流量获取不同的服务
      **/
     private static String getDispatchKey(BaseFlow baseFlow){
         return baseFlow.getTerminal() + "_" + baseFlow.getPgType();
@@ -38,8 +36,8 @@ public class ShieldClient {
      * */
     public static boolean execute(ShieldClientRequest request){
         String key = getDispatchKey(request.getBaseFlow());
-        ShieldService shieldServer = realize.containsKey(key) ? realize.get(key) : new DefaultShieldService();
-        return shieldServer.shield(request);
+        ShieldService service = realize.containsKey(key) ? realize.get(key) : new DefaultShieldService();
+        return service.shield(request);
     }
 
 

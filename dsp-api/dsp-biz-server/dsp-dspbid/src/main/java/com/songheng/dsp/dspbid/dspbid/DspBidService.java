@@ -18,7 +18,7 @@ import java.util.*;
  * @date: 2019-03-25 13:53
  **/
 @Slf4j
-public abstract class DspBidServer {
+public abstract class DspBidService {
 
     /**
      * 竞价模式 1:优先竞价 0:自由竞价 2：打底竞价
