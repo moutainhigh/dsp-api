@@ -4,8 +4,6 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.songheng.dsp.dspbid.DspBidClient;
 import com.songheng.dsp.model.adx.response.ResponseBean;
 import com.songheng.dsp.model.client.DspBidClientRequest;
-import com.songheng.dsp.partner.service.DspBidService;
-import org.springframework.beans.factory.annotation.Autowired;
 import java.util.concurrent.Callable;
 
 /**
@@ -21,10 +19,6 @@ public class SendDspBidReq implements Callable<ResponseBean> {
     public SendDspBidReq(DspBidClientRequest request){
        this.dspBidClientRequest =request;
     }
-
-
-    @Autowired
-    DspBidService dspBidService;
 
     @Override
     public ResponseBean call() {
