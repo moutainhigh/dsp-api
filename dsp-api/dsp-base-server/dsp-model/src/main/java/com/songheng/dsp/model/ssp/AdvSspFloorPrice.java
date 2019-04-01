@@ -23,25 +23,25 @@ public class AdvSspFloorPrice {
      */
     private String qid;
     /**
-     * 请求个数
+     * 页码
      */
-    private String pgnum;
+    private Integer pgnum;
     /**
      * idx
      */
-    private String idx;
+    private Integer idx;
     /**
      * 白天推荐底价
      */
-    private String minCpmDay;
+    private Long minCpmDay;
     /**
      * 晚上推荐底价
      */
-    private String minCpmNight;
+    private Long minCpmNight;
     /**
      * k值
      */
-    private String krate;
+    private double krate;
 
 
 }
