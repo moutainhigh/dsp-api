@@ -10,7 +10,7 @@ import com.songheng.dsp.model.materiel.MaterielDirect;
  **/
 public abstract class SpeedService {
 
-    private boolean speed(SpeedClientRequest request){
+    public boolean speed(SpeedClientRequest request){
         MaterielDirect adv = request.getAdv();
         //账户少于一定的余额停止投放
         if(accountMoneyStop(request)){
@@ -31,16 +31,12 @@ public abstract class SpeedService {
      * @param request
      * @return
      */
-    private boolean accountMoneyLimit(SpeedClientRequest request) {
-        return true;
-    }
+    protected abstract boolean accountMoneyLimit(SpeedClientRequest request);
 
     /**
      * 账户余额不足 终止投放
      * @param request
      * @return
      */
-    private boolean accountMoneyStop(SpeedClientRequest request){
-        return true;
-    }
+    protected abstract  boolean accountMoneyStop(SpeedClientRequest request);
 }
