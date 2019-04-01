@@ -74,6 +74,9 @@ public class ZkWatcherSubscriber implements InitializingBean {
     @Autowired
     private AdvDictShieldInvoke advDictShieldInvoke;
 
+    @Autowired
+    private AdvSspFloorPriceInvoke advSspFloorPriceInvoke;
+
 
 
     /**
@@ -222,6 +225,11 @@ public class ZkWatcherSubscriber implements InitializingBean {
             }
             try {
                 advDictShieldInvoke.updateAdvDictShield();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                advSspFloorPriceInvoke.updateAdvSspFloorPrice();
             } catch (Exception e) {
                 e.printStackTrace();
             }

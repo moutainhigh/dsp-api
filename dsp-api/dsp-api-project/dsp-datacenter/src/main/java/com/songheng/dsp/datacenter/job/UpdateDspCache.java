@@ -4,10 +4,7 @@ import com.songheng.dsp.common.utils.StringUtils;
 import com.songheng.dsp.common.utils.ZkClientUtils;
 import com.songheng.dsp.datacenter.infosync.ZkWatcherAdvice;
 import com.songheng.dsp.datacenter.materiel.dsp.DfDspAdvCache;
-import com.songheng.dsp.datacenter.ssp.AdvDictAdStyleImpl;
-import com.songheng.dsp.datacenter.ssp.AdvDictSellSeatImpl;
-import com.songheng.dsp.datacenter.ssp.AdvSspQidImpl;
-import com.songheng.dsp.datacenter.ssp.AdvSspSlotImpl;
+import com.songheng.dsp.datacenter.ssp.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -27,24 +24,6 @@ public class UpdateDspCache {
      */
     @Autowired
     private DfDspAdvCache dfDspAdvCache;
-
-    /**
-     * advDictAdStyle
-     */
-    @Autowired
-    private AdvDictAdStyleImpl advDictAdStyle;
-
-    /**
-     * advDictSellSeat
-     */
-    @Autowired
-    private AdvDictSellSeatImpl advDictSellSeat;
-
-    /**
-     * advSspQid
-     */
-    @Autowired
-    private AdvSspQidImpl advSspQid;
 
     /**
      * advSspSlot
@@ -77,24 +56,6 @@ public class UpdateDspCache {
             advSspSlot.updateAdvSspSlot();
         } catch (Exception e){
             log.error("更新SSP广告位缓存数据失败\n{}", e);
-        }
-        try {
-            //更新 渠道白名单缓存
-            advSspQid.updateAdvSspQid();
-        } catch (Exception e){
-            log.error("更新渠道白名单缓存数据失败\n{}", e);
-        }
-        try {
-            //更新 dsp售卖位置
-            advDictSellSeat.updateAdvDictSellSeat();
-        } catch (Exception e){
-            log.error("更新DSP售卖位置缓存数据失败\n{}", e);
-        }
-        try {
-            //更新 广告样式
-            advDictAdStyle.updateAdvDictAdStyle();
-        } catch (Exception e){
-            log.error("更新广告样式缓存数据失败\n{}", e);
         }
         long startTs = System.currentTimeMillis();
         try {

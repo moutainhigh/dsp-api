@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<mapper namespace="AdvSspFloorPrice">
+    <select id="queryAdvSspFloorPrice">
+        SELECT
+            slotId,
+            qid,
+            pgnum,
+            idx,
+            minCpmDay,
+            minCpmNight,
+            krate
+        FROM
+            adv_ssp_floor_price
+    </select>
+</mapper>
