@@ -5,13 +5,13 @@ import com.songheng.dsp.adxrtb.AdxRtbClient;
 import com.songheng.dsp.common.utils.ThreadPoolUtils;
 import com.songheng.dsp.model.adx.response.ResponseBean;
 import com.songheng.dsp.model.adx.user.DspUserInfo;
+import com.songheng.dsp.model.client.ClientResponse;
 import com.songheng.dsp.model.client.DspBidClientRequest;
 import com.songheng.dsp.model.client.SspClientRequest;
 import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.model.output.OutPutAdv;
 import com.songheng.dsp.partner.job.dspbidreq.SendDspBidReq;
 import com.songheng.dsp.partner.service.BizService;
-import com.songheng.dsp.ssp.riskcontrol.RiskControlResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import javax.servlet.http.HttpServletRequest;
@@ -39,8 +39,8 @@ public abstract class BaseBizFlow{
         //初始化风控请求对象
         SspClientRequest sspClientRequest = bizService.initSspClientRequestObj(request,baseFlow);
         //风控验证
-        RiskControlResult riskControlResult = bizService.execute(sspClientRequest);
-        if(riskControlResult.isSuccess()){
+        ClientResponse response = bizService.execute(sspClientRequest);
+        if(response.isSuccess()){
             //发送竞标请求获取Future信息
             List<Future> futures = sendBidReqAndGetFuture(baseFlow);
             //通过futures获取响应bean
