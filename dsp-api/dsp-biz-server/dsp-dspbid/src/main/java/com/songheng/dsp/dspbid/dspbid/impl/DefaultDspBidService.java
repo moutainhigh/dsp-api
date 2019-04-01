@@ -2,6 +2,7 @@ package com.songheng.dsp.dspbid.dspbid.impl;
 
 import com.songheng.dsp.ctr.CtrClient;
 import com.songheng.dsp.dspbid.dspbid.DspBidService;
+import com.songheng.dsp.dsprtb.DspRtbClient;
 import com.songheng.dsp.match.AdvMatchClient;
 import com.songheng.dsp.model.client.*;
 import com.songheng.dsp.model.materiel.MaterielDirect;
@@ -43,8 +44,13 @@ public class DefaultDspBidService extends DspBidService {
 
     @Override
     protected MaterielDirect dspRtb(List<MaterielDirect> advList, DspBidClientRequest request, String tagId, int bidModel) {
-
-        return null;
+        DspRtbClientRequest dspRtbClientRequest = new DspRtbClientRequest();
+        dspRtbClientRequest.setAdvList(advList);
+        dspRtbClientRequest.setBaseFlow(request.getBaseFlow());
+        dspRtbClientRequest.setAdvSspFloorPrice(request.getAdvSspFloorPrice());
+        dspRtbClientRequest.setBidModel(bidModel);
+        //执行rtb模块
+        return DspRtbClient.execute(dspRtbClientRequest);
     }
 
     @Override
@@ -56,6 +62,7 @@ public class DefaultDspBidService extends DspBidService {
         matchRequest.setTagId(tagId);
         matchRequest.setBidModel(bidModel);
         matchRequest.setConsumeInfo(request.getConsumeInfo());
+        //执行匹配模块
         return AdvMatchClient.execute(matchRequest);
     }
 

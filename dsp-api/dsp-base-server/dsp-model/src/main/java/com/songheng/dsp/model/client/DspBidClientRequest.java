@@ -4,6 +4,7 @@ import com.songheng.dsp.model.adx.user.DspUserInfo;
 import com.songheng.dsp.model.consume.ConsumeInfo;
 import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.model.materiel.MaterielDirect;
+import com.songheng.dsp.model.ssp.AdvSspFloorPrice;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -43,5 +44,9 @@ public class DspBidClientRequest {
      * 屏蔽的json政策
      * */
     private String shiledJson;
+    /**
+     * 广告位置的底价
+     */
+    private AdvSspFloorPrice advSspFloorPrice;
 
 }

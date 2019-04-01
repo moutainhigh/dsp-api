@@ -23,10 +23,10 @@ public abstract class DspRtbService {
         if(null!=advList && advList.size()>0) {
             //获取当前竞价的底价信息
             AdvSspFloorPrice price = request.getAdvSspFloorPrice();
-            Long floorPrice = request.getBaseFlow().isNight() ? price.getMinCpmNight() : price.getMinCpmDay();
-            if (null == floorPrice) {
+            if(null == price){
                 return null;
             }
+            Long floorPrice = request.getBaseFlow().isNight() ? price.getMinCpmNight() : price.getMinCpmDay();
             //获取竞价上的广告
             MaterielDirect adv = getTopAdv(advList,floorPrice,request.getBidModel());
             //设置广告的售卖情况
