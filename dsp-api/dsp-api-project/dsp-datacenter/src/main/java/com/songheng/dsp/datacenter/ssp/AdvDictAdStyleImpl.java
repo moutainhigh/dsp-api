@@ -2,6 +2,7 @@ package com.songheng.dsp.datacenter.ssp;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.songheng.dsp.common.db.DbUtils;
+import com.songheng.dsp.common.enums.ProjectEnum;
 import com.songheng.dsp.common.utils.StringUtils;
 import com.songheng.dsp.datacenter.config.db.SqlMapperLoader;
 import com.songheng.dsp.dubbo.baseinterface.ssp.AdvDictAdStyleService;
@@ -61,7 +62,7 @@ public class AdvDictAdStyleImpl implements AdvDictAdStyleService {
             log.error("updateAdvDictAdStyle error sql is null, namespace: AdvSsp, id: queryAdvDictAdStyle");
             return;
         }
-        List<AdvDictAdStyle> advDictAdStyleList = DbUtils.queryList(sql, AdvDictAdStyle.class);
+        List<AdvDictAdStyle> advDictAdStyleList = DbUtils.queryList(ProjectEnum.DATACENTER.getDs()[0], sql, AdvDictAdStyle.class);
         Map<String, AdvDictAdStyle> advDictAdStyleTmp = new ConcurrentHashMap<>(64);
         for (AdvDictAdStyle advDictAdStyle : advDictAdStyleList){
             if (StringUtils.isNotBlank(advDictAdStyle.getStyleId())){

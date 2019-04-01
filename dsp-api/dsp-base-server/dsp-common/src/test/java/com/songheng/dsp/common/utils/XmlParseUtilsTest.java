@@ -45,8 +45,8 @@ public class XmlParseUtilsTest {
         for (String key : sqlMap.keySet()){
             System.out.println("id: "+key+", sql: "+sqlMap.get(key));
         }
-        List<String> list = DbUtils.queryList(sqlMap.get("AdStateChangeMapper.getMonopolyFloorPrice"), String.class, "2019-02-12", "2019-03-13");
-        List<String> list2 = DbUtils.queryList(sqlMap.get("AdStateChangeMapper.getMonopolyFloorPrice2"), String.class);
+        List<String> list = DbUtils.queryList(ProjectEnum.H5.getDs()[0], sqlMap.get("AdStateChangeMapper.getMonopolyFloorPrice"), String.class, "2019-02-12", "2019-03-13");
+        List<String> list2 = DbUtils.queryList(ProjectEnum.H5.getDs()[0], sqlMap.get("AdStateChangeMapper.getMonopolyFloorPrice2"), String.class);
         for (String str : list){
             System.out.println(str);
         }

@@ -2,6 +2,7 @@ package com.songheng.dsp.datacenter.dict;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.songheng.dsp.common.db.DbUtils;
+import com.songheng.dsp.common.enums.ProjectEnum;
 import com.songheng.dsp.common.utils.StringUtils;
 import com.songheng.dsp.datacenter.config.db.SqlMapperLoader;
 import com.songheng.dsp.dubbo.baseinterface.dict.AdvDictService;
@@ -123,7 +124,7 @@ public class AdvDictImpl implements AdvDictService {
             return;
         }
         Map<String, String> sectorTmp = new ConcurrentHashMap<>(128);
-        DbUtils.query2Map(sql, sectorTmp);
+        DbUtils.query2Map(ProjectEnum.DATACENTER.getDs()[0], sql, sectorTmp);
         if (sectorTmp.size() > 0){
             sectorMap = sectorTmp;
         }
@@ -140,7 +141,7 @@ public class AdvDictImpl implements AdvDictService {
             return;
         }
         Map<String, String> mobileVendorTmp = new ConcurrentHashMap<>(128);
-        DbUtils.query2Map(sql, mobileVendorTmp);
+        DbUtils.query2Map(ProjectEnum.DATACENTER.getDs()[0], sql, mobileVendorTmp);
         if (mobileVendorTmp.size() > 0){
             mobileVendorMap = mobileVendorTmp;
         }
@@ -157,7 +158,7 @@ public class AdvDictImpl implements AdvDictService {
             return;
         }
         Map<String, String> otherVendorTmp = new ConcurrentHashMap<>(16);
-        DbUtils.query2Map(sql, otherVendorTmp);
+        DbUtils.query2Map(ProjectEnum.DATACENTER.getDs()[0], sql, otherVendorTmp);
         if (otherVendorTmp.size() > 0){
             otherVendorMap = otherVendorTmp;
         }

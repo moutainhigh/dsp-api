@@ -11,28 +11,32 @@ public enum ProjectEnum {
     /**
      * h5项目
      * */
-    H5("partner","h5",new String[]{"CLUSTER_B"},"mobile",""),
+    H5("partner","h5",new String[]{"CLUSTER_B"}, new String[]{"advertise","ctrmodel"},"mobile",""),
     /**
      * app项目
      * */
-    APP("admethod","app",new String[]{"CLUSTER_B"},"mobile",""),
+    APP("admethod","app",new String[]{"CLUSTER_B"},new String[]{"advertise"},"mobile",""),
     /**
      * pc项目
      * */
-    PC("dfpcitv","pc",new String[]{"CLUSTER_E"},"computer",""),
+    PC("dfpcitv","pc",new String[]{"CLUSTER_E"},new String[]{"advertise"},"computer",""),
 
     /**
      * dspdatalog项目
      */
-    DSPDATALOG("dspdatalog","log",new String[]{"CLUSTER_B","CLUSTER_E"},"",""),
+    DSPDATALOG("dspdatalog","log",new String[]{"CLUSTER_B","CLUSTER_E"},new String[]{"advertise"},"",""),
     /**
      * datacenter项目
      */
-    DATACENTER("datacenter","dc",new String[]{"CLUSTER_B","CLUSTER_E"},"",""),
+    DATACENTER("datacenter","dc",new String[]{"CLUSTER_B","CLUSTER_E"},new String[]{"advertise","ctrmodel"},"",""),
     /**
      * dsp-web项目
      */
-    DSPWEB("dspweb","web",new String[]{"CLUSTER_B","CLUSTER_E"},"","");
+    DSPWEB("dspweb","web",new String[]{"CLUSTER_B","CLUSTER_E"},new String[]{"advertise"},"",""),
+    /**
+     * cloudcontrol 项目
+     */
+    CLOUDCONTROL("cloudcontrol", "cloudcontrol", new String[]{"CLUSTER_B"}, new String[]{"cloudcontrol"},"", "");
 
     /**
      * 项目名称
@@ -47,6 +51,10 @@ public enum ProjectEnum {
      */
     private String[] cluster;
     /**
+     * 数据源
+     */
+    private String[] ds;
+    /**
      * 设备类型
      * */
     private String deviceType;
@@ -56,10 +64,11 @@ public enum ProjectEnum {
      * */
     private String describe;
 
-    ProjectEnum(String projectName, String terminal, String[] cluster, String deviceType, String describe){
+    ProjectEnum(String projectName, String terminal, String[] cluster, String[] ds, String deviceType, String describe){
         this.projectName = projectName;
         this.terminal = terminal;
         this.cluster = cluster;
+        this.ds = ds;
         this.deviceType = deviceType;
         this.describe = describe;
     }

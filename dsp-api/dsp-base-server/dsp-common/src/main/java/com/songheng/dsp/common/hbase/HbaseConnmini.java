@@ -117,13 +117,15 @@ public class HbaseConnmini {
                 if (!"localhost".equalsIgnoreCase(conf_B.get("hbase.zookeeper.quorum"))){
                     conf_B.setInt("hbase.client.instance.id",i);
                     connections_B.add(HConnectionManager.createConnection(conf_B));
+                    log.info("正常创建第"+(i+1)+"个HBASE连接: CLUSTER_B("+zkQuorum_B+")\t"+zkPort+"\t"+linknum);
+                    System.out.println("正常创建第"+(i+1)+"个HBASE连接: CLUSTER_B("+zkQuorum_B+")\t"+zkPort+"\t"+linknum);
                 }
                 if (!"localhost".equalsIgnoreCase(conf_E.get("hbase.zookeeper.quorum"))){
                     conf_E.setInt("hbase.client.instance.id",i);
                     connections_E.add(HConnectionManager.createConnection(conf_E));
+                    log.info("正常创建第"+(i+1)+"个HBASE连接: CLUSTER_E("+zkQuorum_E+")\t"+zkPort+"\t"+linknum);
+                    System.out.println("正常创建第"+(i+1)+"个HBASE连接: CLUSTER_E("+zkQuorum_E+")\t"+zkPort+"\t"+linknum);
                 }
-                log.info("正常创建第"+(i+1)+"个HBASE连接:"+zkQuorum_B+"\t"+zkQuorum_E+"\t"+zkPort+"\t"+linknum);
-                System.out.println("正常创建第"+(i+1)+"个HBASE连接:"+zkQuorum_B+"\t"+zkQuorum_E+"\t"+zkPort+"\t"+linknum);
             } catch (IOException e) {
                 log.error("创建第"+(i+1)+"个HBASE连接异常："+e.getMessage());
                 System.out.println("创建第"+(i+1)+"个HBASE连接异常："+e.getMessage());

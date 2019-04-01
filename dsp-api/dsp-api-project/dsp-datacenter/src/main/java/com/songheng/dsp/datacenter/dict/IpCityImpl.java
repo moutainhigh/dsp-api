@@ -2,6 +2,7 @@ package com.songheng.dsp.datacenter.dict;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.songheng.dsp.common.db.DbUtils;
+import com.songheng.dsp.common.enums.ProjectEnum;
 import com.songheng.dsp.common.utils.StringUtils;
 import com.songheng.dsp.datacenter.config.db.SqlMapperLoader;
 import com.songheng.dsp.dubbo.baseinterface.dict.IpCityService;
@@ -38,7 +39,7 @@ public class IpCityImpl implements IpCityService {
             log.error("updateIpCityInfo error sql is null, namespace: IpCity, id: queryIpCityInfo");
             return;
         }
-        List<IpCityInfo> ipCityInfoList = DbUtils.queryList(sql, IpCityInfo.class);
+        List<IpCityInfo> ipCityInfoList = DbUtils.queryList(ProjectEnum.DATACENTER.getDs()[0], sql, IpCityInfo.class);
         Map<String,IpCityInfo> ipcityTmp = new ConcurrentHashMap<>(16);
         for (IpCityInfo ipCityInfo : ipCityInfoList){
             if (StringUtils.isNotBlank(ipCityInfo.getIp())){

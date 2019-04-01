@@ -26,7 +26,7 @@ public class InitLoadConf {
                 "common-hbase-config.properties",
                 "common-redis-config.properties");
         //加载druid数据源
-        DruidConfiguration.initDataSource();
+        DruidConfiguration.initDataSource(project.getProjectName());
         //初始化redis pool
         RedisPool.initRedisPool(project.getProjectName(), project.getCluster());
         //初始化创建hbase连接

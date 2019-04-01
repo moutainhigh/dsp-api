@@ -22,14 +22,15 @@ public class TransactionUtils {
 
     /**
      * 获取连接
+     * @param dsName 数据库名
      * @return
      */
-    public static Connection getConnection() {
+    public static Connection getConnection(String dsName) {
         // 从ThreadLoacl中获取，如果没有再从DataSource中获取
         Connection conn = threadLocal.get();
         if (conn == null) {
             try {
-                conn = DruidConfiguration.getConnection();
+                conn = DruidConfiguration.getConnection(dsName);
                 // 存入ThreadLoacl
                 threadLocal.set(conn);
             } catch (Exception e) {
@@ -41,13 +42,14 @@ public class TransactionUtils {
 
     /**
      * 开启事务
+     * @param dsName 数据库名
      */
-    public static void startTransaction() {
+    public static void startTransaction(String dsName) {
         try {
             Connection conn = threadLocal.get();
             //如果ThreadLoacl中没有，就从DataSource中获取
             if(conn == null) {
-                conn = DruidConfiguration.getConnection();
+                conn = DruidConfiguration.getConnection(dsName);
                 //存入
                 threadLocal.set(conn);
             }

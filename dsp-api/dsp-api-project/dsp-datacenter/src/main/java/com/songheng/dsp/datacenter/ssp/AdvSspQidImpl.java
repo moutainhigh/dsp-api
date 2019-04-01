@@ -2,6 +2,7 @@ package com.songheng.dsp.datacenter.ssp;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.songheng.dsp.common.db.DbUtils;
+import com.songheng.dsp.common.enums.ProjectEnum;
 import com.songheng.dsp.common.utils.StringUtils;
 import com.songheng.dsp.datacenter.config.db.SqlMapperLoader;
 import com.songheng.dsp.dubbo.baseinterface.materiel.dsp.DfDspAdvService;
@@ -62,7 +63,7 @@ public class AdvSspQidImpl implements AdvSspQidService {
             log.error("updateAdvSspQid error sql is null, namespace: AdvSsp, id: queryAdvSspQid");
             return;
         }
-        List<AdvSspQid> advSspQidList = DbUtils.queryList(sql, AdvSspQid.class);
+        List<AdvSspQid> advSspQidList = DbUtils.queryList(ProjectEnum.DATACENTER.getDs()[0], sql, AdvSspQid.class);
         Map<String, AdvSspQid> advSspQidTmp = new ConcurrentHashMap<>(32);
         String tml_site_qid;
         for (AdvSspQid advSspQid : advSspQidList){

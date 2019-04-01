@@ -2,6 +2,7 @@ package com.songheng.dsp.datacenter.ssp;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.songheng.dsp.common.db.DbUtils;
+import com.songheng.dsp.common.enums.ProjectEnum;
 import com.songheng.dsp.common.utils.StringUtils;
 import com.songheng.dsp.datacenter.config.db.SqlMapperLoader;
 import com.songheng.dsp.dubbo.baseinterface.ssp.AdvSspFloorPriceService;
@@ -47,7 +48,7 @@ public class AdvSspFloorPriceImpl implements AdvSspFloorPriceService {
             log.error("updateAdvSspFloorPrice error sql is null, namespace: AdvSspFloorPrice, id: queryAdvSspFloorPrice");
             return;
         }
-        List<AdvSspFloorPrice> advSspFloorPriceList = DbUtils.queryList(sql, AdvSspFloorPrice.class);
+        List<AdvSspFloorPrice> advSspFloorPriceList = DbUtils.queryList(ProjectEnum.DATACENTER.getDs()[0], sql, AdvSspFloorPrice.class);
         Map<String, List<AdvSspFloorPrice>> advSspFloorPriceListMapTmp = new ConcurrentHashMap<>(32);
         Map<String, AdvSspFloorPrice> advSspFloorPriceTmp = new ConcurrentHashMap<>(32);
         String slotId_qid, slotId_pgnum_idx;

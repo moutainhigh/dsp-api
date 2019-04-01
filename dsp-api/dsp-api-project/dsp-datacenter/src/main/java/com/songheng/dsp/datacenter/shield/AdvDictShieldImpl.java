@@ -2,6 +2,7 @@ package com.songheng.dsp.datacenter.shield;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.songheng.dsp.common.db.DbUtils;
+import com.songheng.dsp.common.enums.ProjectEnum;
 import com.songheng.dsp.common.utils.StringUtils;
 import com.songheng.dsp.datacenter.config.db.SqlMapperLoader;
 import com.songheng.dsp.dubbo.baseinterface.shield.AdvDictShieldService;
@@ -67,7 +68,7 @@ public class AdvDictShieldImpl implements AdvDictShieldService {
             log.error("updateAdvDictShield error sql is null, namespace: AdvDictShield, id: queryAdvDictShield");
             return;
         }
-        List<AdvDictShield> advDictShieldList = DbUtils.queryList(sql, AdvDictShield.class);
+        List<AdvDictShield> advDictShieldList = DbUtils.queryList(ProjectEnum.DATACENTER.getDs()[0], sql, AdvDictShield.class);
         Map<String, AdvDictShield> advDictShieldTmp = new ConcurrentHashMap<>(32);
         for (AdvDictShield advDictShield : advDictShieldList){
             if (StringUtils.isNotBlank(advDictShield.getQid())){

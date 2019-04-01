@@ -2,6 +2,7 @@ package com.songheng.dsp.datacenter.ssp;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.songheng.dsp.common.db.DbUtils;
+import com.songheng.dsp.common.enums.ProjectEnum;
 import com.songheng.dsp.common.utils.StringUtils;
 import com.songheng.dsp.datacenter.config.db.SqlMapperLoader;
 import com.songheng.dsp.dubbo.baseinterface.ssp.AdvDictSellSeatService;
@@ -86,7 +87,7 @@ public class AdvDictSellSeatImpl implements AdvDictSellSeatService {
             log.error("updateAdvDictSellSeat error sql is null, namespace: AdvSsp, id: queryAdvDictSellSeat");
             return;
         }
-        List<AdvDictSellSeat> advDictSellSeatList = DbUtils.queryList(sql, AdvDictSellSeat.class);
+        List<AdvDictSellSeat> advDictSellSeatList = DbUtils.queryList(ProjectEnum.DATACENTER.getDs()[0], sql, AdvDictSellSeat.class);
         Map<String, AdvDictSellSeat> sellSeatIdTmp = new ConcurrentHashMap<>(32);
         Map<Integer, AdvDictSellSeat> priorityTmp = new ConcurrentHashMap<>(32);
         for (AdvDictSellSeat advDictSellSeat : advDictSellSeatList){

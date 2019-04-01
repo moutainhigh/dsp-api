@@ -3,6 +3,7 @@ package com.songheng.dsp.datacenter.materiel.dsp;
 import com.songheng.dsp.common.db.DbUtils;
 import com.songheng.dsp.common.enums.ClusterEnum;
 import com.songheng.dsp.common.enums.HbaseFamilyQualifierEnum;
+import com.songheng.dsp.common.enums.ProjectEnum;
 import com.songheng.dsp.common.hbase.HbaseUtil;
 import com.songheng.dsp.common.utils.DateUtils;
 import com.songheng.dsp.common.utils.PropertyPlaceholder;
@@ -67,7 +68,7 @@ public class DfDspAdvCache {
             log.error("updateDfDspAdv error sql is null, namespace: DfDspAdv, id: queryDfDspAdvs");
             return;
         }
-        List<ExtendNews> extendNewsList = DbUtils.queryList(sql, ExtendNews.class);
+        List<ExtendNews> extendNewsList = DbUtils.queryList(ProjectEnum.DATACENTER.getDs()[0], sql, ExtendNews.class);
         Map<String, ExtendNews> extendNewsMap = new HashMap<>(256);
         //deliveryid --> groupRowKey映射
         Map<String, String> groupRowKeyMap = new HashMap<>(256);

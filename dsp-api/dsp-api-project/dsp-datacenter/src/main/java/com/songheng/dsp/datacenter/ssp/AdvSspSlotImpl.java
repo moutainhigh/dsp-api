@@ -2,6 +2,7 @@ package com.songheng.dsp.datacenter.ssp;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.songheng.dsp.common.db.DbUtils;
+import com.songheng.dsp.common.enums.ProjectEnum;
 import com.songheng.dsp.common.utils.StringUtils;
 import com.songheng.dsp.datacenter.config.db.SqlMapperLoader;
 import com.songheng.dsp.datacenter.materiel.dsp.DfDspAdvCache;
@@ -115,7 +116,7 @@ public class AdvSspSlotImpl implements AdvSspSlotService {
             log.error("updateAdvSspSlot error sql is null, namespace: AdvSsp, id: queryAdvSspSlot");
             return;
         }
-        List<AdvSspSlot> advSspSlotList = DbUtils.queryList(sql, AdvSspSlot.class);
+        List<AdvSspSlot> advSspSlotList = DbUtils.queryList(ProjectEnum.DATACENTER.getDs()[0], sql, AdvSspSlot.class);
         //映射slotId对应广告池
         Map<String, Set<ExtendNews>> slot_extendNews = new ConcurrentHashMap<>(64);
         Map<String, AdvSspSlot> advSspSlotTmp = new ConcurrentHashMap<>(64);

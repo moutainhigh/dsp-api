@@ -2,6 +2,7 @@ package com.songheng.dsp.datacenter.dict;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.songheng.dsp.common.db.DbUtils;
+import com.songheng.dsp.common.enums.ProjectEnum;
 import com.songheng.dsp.common.utils.StringUtils;
 import com.songheng.dsp.datacenter.config.db.SqlMapperLoader;
 import com.songheng.dsp.dubbo.baseinterface.dict.AdxPositionService;
@@ -46,7 +47,7 @@ public class AdxPositionImpl implements AdxPositionService {
             log.error("updateAdPosition error sql is null, namespace: AdPosition, id: queryAdPositions");
             return;
         }
-        List<AdPosition> adPositions = DbUtils.queryList(sql, AdPosition.class);
+        List<AdPosition> adPositions = DbUtils.queryList(ProjectEnum.DATACENTER.getDs()[0], sql, AdPosition.class);
         List<AdPosition> appAdPosit = new ArrayList<>();
         List<AdPosition> h5AdPosit = new ArrayList<>();
         List<AdPosition> pcAdPosit = new ArrayList<>();

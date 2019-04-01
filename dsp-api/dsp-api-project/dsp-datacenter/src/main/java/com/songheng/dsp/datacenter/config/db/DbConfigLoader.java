@@ -1,6 +1,7 @@
 package com.songheng.dsp.datacenter.config.db;
 
 import com.songheng.dsp.common.db.DbUtils;
+import com.songheng.dsp.common.enums.ProjectEnum;
 import com.songheng.dsp.common.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 
@@ -72,7 +73,7 @@ public class DbConfigLoader {
             log.error("loadAllDBConfig error sql is null, namespace: DbConfig, id: getAllDbConfig");
             return;
         }
-        DbUtils.query2Map(sql, dbConfigMapTmp);
+        DbUtils.query2Map(ProjectEnum.DATACENTER.getDs()[0], sql, dbConfigMapTmp);
         if (dbConfigMapTmp.size() > 0){
             dbConfigMap = dbConfigMapTmp;
         }

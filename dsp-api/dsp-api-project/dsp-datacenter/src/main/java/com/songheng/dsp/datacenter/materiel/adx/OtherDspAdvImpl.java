@@ -2,6 +2,7 @@ package com.songheng.dsp.datacenter.materiel.adx;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.songheng.dsp.common.db.DbUtils;
+import com.songheng.dsp.common.enums.ProjectEnum;
 import com.songheng.dsp.common.utils.StringUtils;
 import com.songheng.dsp.datacenter.config.db.SqlMapperLoader;
 import com.songheng.dsp.datacenter.config.props.PropertiesLoader;
@@ -52,7 +53,7 @@ public class OtherDspAdvImpl implements OtherDspAdvService {
             log.error("updateDspAdvs error sql is null, namespace: OtherDspAdv, id: queryOtherDspAdvs");
             return;
         }
-        List<DspAdvExtend> dspAdvs = DbUtils.queryList(sql, DspAdvExtend.class);
+        List<DspAdvExtend> dspAdvs = DbUtils.queryList(ProjectEnum.DATACENTER.getDs()[0], sql, DspAdvExtend.class);
         List<DspAdvExtend> appAdvList = new ArrayList<>();
         List<DspAdvExtend> h5AdvList = new ArrayList<>();
         List<DspAdvExtend> pcAdvList = new ArrayList<>();

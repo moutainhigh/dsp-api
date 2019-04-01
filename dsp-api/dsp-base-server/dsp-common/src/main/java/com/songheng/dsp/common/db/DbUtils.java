@@ -22,14 +22,15 @@ public class DbUtils {
 
     /**
      * 单个对象查询
+     * @param dsName 数据库名
      * @param sql
      * @param paras
      * @param cls
      * @param <T>
      * @return
      */
-    public static <T> T queryById(String sql, Class<T> cls, Object... paras) {
-        Connection conn = DruidConfiguration.getConnection();
+    public static <T> T queryById(String dsName, String sql, Class<T> cls, Object... paras) {
+        Connection conn = DruidConfiguration.getConnection(dsName);
         if (null == conn) {
             return null;
         }
@@ -61,36 +62,39 @@ public class DbUtils {
 
     /**
      * 查询是否存在
+     * @param dsName 数据库名
      * @param sql
      * @param paras
      * @return
      */
-    public static boolean selectExists(String sql, Object... paras){
-        Integer num = queryById(sql, Integer.class, paras);
+    public static boolean selectExists(String dsName, String sql, Object... paras){
+        Integer num = queryById(dsName, sql, Integer.class, paras);
         return num > 0 ? true : false;
     }
 
     /**
      * 查询count
+     * @param dsName 数据库名
      * @param sql
      * @param paras
      * @return
      */
-    public static int selectCount(String sql, Object... paras){
-        Integer num = queryById(sql, Integer.class, paras);
+    public static int selectCount(String dsName, String sql, Object... paras){
+        Integer num = queryById(dsName, sql, Integer.class, paras);
         return num.intValue();
     }
 
     /**
      * 列表查询
+     * @param dsName 数据库名
      * @param sql
      * @param paras
      * @param cls
      * @param <T>
      * @return
      */
-    public static <T> List<T> queryList(String sql, Class<T> cls, Object... paras){
-        Connection conn = DruidConfiguration.getConnection();
+    public static <T> List<T> queryList(String dsName, String sql, Class<T> cls, Object... paras){
+        Connection conn = DruidConfiguration.getConnection(dsName);
         if (null == conn) {
             return null;
         }
@@ -122,14 +126,15 @@ public class DbUtils {
 
     /**
      * 列表查询
+     * @param dsName 数据库名
      * @param sql
      * @param jsonObject
      * @param cls
      * @param <T>
      * @return
      */
-    public static <T> List<T> queryList(String sql, Class<T> cls, JSONObject jsonObject){
-        Connection conn = DruidConfiguration.getConnection();
+    public static <T> List<T> queryList(String dsName, String sql, Class<T> cls, JSONObject jsonObject){
+        Connection conn = DruidConfiguration.getConnection(dsName);
         if (null == conn) {
             return null;
         }
@@ -338,12 +343,13 @@ public class DbUtils {
 
     /**
      * 查询，返回Map
+     * @param dsName 数据库名
      * @param sql
      * @param paras
      *
      */
-    public static void query2Map(String sql, Map<String, String> rltMap, Object... paras){
-        Connection conn = DruidConfiguration.getConnection();
+    public static void query2Map(String dsName, String sql, Map<String, String> rltMap, Object... paras){
+        Connection conn = DruidConfiguration.getConnection(dsName);
         if (null == conn) {
             return;
         }
@@ -370,12 +376,13 @@ public class DbUtils {
 
     /**
      * 存储过程调用，返回Map
+     * @param dsName 数据库名
      * @param sql
      * @param paras
      *
      */
-    public static void callProcedure2Map(String sql, Map<String, String> rltMap, Object... paras){
-        Connection conn = DruidConfiguration.getConnection();
+    public static void callProcedure2Map(String dsName, String sql, Map<String, String> rltMap, Object... paras){
+        Connection conn = DruidConfiguration.getConnection(dsName);
         if (null == conn) {
             return;
         }
@@ -402,14 +409,15 @@ public class DbUtils {
 
     /**
      * 存储过程调用
+     * @param dsName 数据库名
      * @param sql
      * @param cls
      * @param paras
      * @param <T>
      * @return
      */
-    public static <T> List<T> callProcedure(String sql, Class<T> cls, Object... paras){
-        Connection conn = DruidConfiguration.getConnection();
+    public static <T> List<T> callProcedure(String dsName, String sql, Class<T> cls, Object... paras){
+        Connection conn = DruidConfiguration.getConnection(dsName);
         if (null == conn) {
             return null;
         }
@@ -442,12 +450,13 @@ public class DbUtils {
     /**
      * 执行 INSERT/UPDATE/DELETE 语句
      * 添加事务
+     * @param dsName 数据库名
      * @param sql
      * @param paras
      * @return
      */
-    public static boolean executeNamingSql(String sql, Object... paras) {
-        Connection conn = TransactionUtils.getConnection();
+    public static boolean executeNamingSql(String dsName, String sql, Object... paras) {
+        Connection conn = TransactionUtils.getConnection(dsName);
         boolean flag = false;
         int index = 1;
         try {
@@ -469,12 +478,13 @@ public class DbUtils {
 
     /**
      * 批量插入数据
+     * @param dsName 数据库名
      * @param sql
      * @param jsonArray
      * @return
      */
-    public static void insertBatch(String sql, JSONArray jsonArray) {
-        Connection conn = DruidConfiguration.getConnection();
+    public static void insertBatch(String dsName, String sql, JSONArray jsonArray) {
+        Connection conn = DruidConfiguration.getConnection(dsName);
         PreparedStatement pst = null;
         int index = 1;
         try {

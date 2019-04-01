@@ -2,6 +2,7 @@ package com.songheng.dsp.datacenter.user.adx;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.songheng.dsp.common.db.DbUtils;
+import com.songheng.dsp.common.enums.ProjectEnum;
 import com.songheng.dsp.common.utils.StringUtils;
 import com.songheng.dsp.datacenter.config.db.SqlMapperLoader;
 import com.songheng.dsp.datacenter.config.props.PropertiesLoader;
@@ -54,7 +55,7 @@ public class DspUserImpl implements DspUserService {
             log.error("updateDspUsers error sql is null, namespace: DspUser, id: queryDspUsers");
             return;
         }
-        List<DspUserInfo> users = DbUtils.queryList(sql, DspUserInfo.class);
+        List<DspUserInfo> users = DbUtils.queryList(ProjectEnum.DATACENTER.getDs()[0], sql, DspUserInfo.class);
         List<DspUserInfo> appUserList = new ArrayList<>();
         List<DspUserInfo> h5UserList = new ArrayList<>();
         List<DspUserInfo> pcUserList = new ArrayList<>();
