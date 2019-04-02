@@ -67,7 +67,7 @@ public class ZkClientUtils {
             zkClient.createPersistent(parentPath, createParents);
         }
         if (!zkClient.exists(path)){
-            return zkClient.create(path, data, mode);
+            return zkClient.create(path, String.valueOf(data), mode);
         }
         return null;
     }
@@ -112,7 +112,7 @@ public class ZkClientUtils {
                 || !zkClient.exists(path)){
             return;
         }
-        zkClient.writeData(path, data);
+        zkClient.writeData(path, String.valueOf(data));
     }
 
     /**
