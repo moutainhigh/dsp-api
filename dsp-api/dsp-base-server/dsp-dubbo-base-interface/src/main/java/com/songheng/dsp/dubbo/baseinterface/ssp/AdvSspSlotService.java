@@ -1,6 +1,6 @@
 package com.songheng.dsp.dubbo.baseinterface.ssp;
 
-import com.songheng.dsp.model.materiel.ExtendNews;
+import com.songheng.dsp.model.materiel.MaterielDirect;
 import com.songheng.dsp.model.ssp.AdvSspSlot;
 
 import java.util.Map;
@@ -17,7 +17,7 @@ public interface AdvSspSlotService {
      * 获取所有 slotId对应广告池 信息
      * @return
      */
-    Map<String, Set<ExtendNews>> getExtendNewsMap();
+    Map<String, Set<MaterielDirect>> getMaterielDirectMap();
 
     /**
      * 获取所有 slotId 对应ssp广告位信息
@@ -30,14 +30,14 @@ public interface AdvSspSlotService {
      * @param slotId
      * @return
      */
-    Set<ExtendNews> getExtendNewsSet(String slotId);
+    Set<MaterielDirect> getMaterielDirectSet(String slotId);
 
     /**
-     * 获取一个或多个slotId 映射的 Set<ExtendNews>
+     * 获取一个或多个slotId 映射的 Set<MaterielDirect>
      * @param slotIds
      * @return
      */
-    Map<String, Set<ExtendNews>> getExtendNewsBySlotIds(String slotIds);
+    Map<String, Set<MaterielDirect>> getMaterielDirectBySlotIds(String slotIds);
 
     /**
      * 获取指定 slotId 对应ssp广告位信息

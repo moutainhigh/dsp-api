@@ -62,5 +62,8 @@ public class MaterielBudget extends MaterielBaseInfo implements java.io.Serializ
      * */
     private long calshow;
 
-
+    /**
+     * unitprice 用于接收DB查询
+     */
+    private double unitprice;
 }

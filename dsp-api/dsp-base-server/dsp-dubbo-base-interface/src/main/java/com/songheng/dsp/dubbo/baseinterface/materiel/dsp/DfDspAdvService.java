@@ -1,6 +1,6 @@
 package com.songheng.dsp.dubbo.baseinterface.materiel.dsp;
 
-import com.songheng.dsp.model.materiel.ExtendNews;
+import com.songheng.dsp.model.materiel.MaterielDirect;
 
 import java.util.Map;
 import java.util.Set;
@@ -13,17 +13,17 @@ import java.util.Set;
 public interface DfDspAdvService {
 
     /**
-     * 获取以 terminal+pgtype 为key的 ExtendNews Map
+     * 获取以 terminal+pgtype 为key的 MaterielDirect Map
      * @return
      */
-    Map<String, Set<ExtendNews>> getTmlPgTypeExtendNewsMap();
+    Map<String, Set<MaterielDirect>> getTmlPgTypeMaterielDirectMap();
 
     /**
-     * 根据指定 terminal,pgtype 获取 Set<ExtendNews>
+     * 根据指定 terminal,pgtype 获取 Set<MaterielDirect>
      * @param terminal
      * @param pgtype
      * @return
      */
-    Set<ExtendNews> getExtendNewsSet(String terminal, String pgtype);
+    Set<MaterielDirect> getMaterielDirectSet(String terminal, String pgtype);
 
 }

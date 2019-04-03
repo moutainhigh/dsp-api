@@ -3,7 +3,7 @@ package com.songheng.datacenter.ssp;
 import com.songheng.dsp.datacenter.DataCenterApplication;
 import com.songheng.dsp.datacenter.materiel.dsp.DfDspAdvCache;
 import com.songheng.dsp.datacenter.ssp.AdvSspSlotImpl;
-import com.songheng.dsp.model.materiel.ExtendNews;
+import com.songheng.dsp.model.materiel.MaterielDirect;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,11 +45,11 @@ public class AdvSspSlotImplTest {
 
     @Test
     public void getExtendNewsMap(){
-        Map<String, Set<ExtendNews>> result = advSspSlot.getExtendNewsMap();
+        Map<String, Set<MaterielDirect>> result = advSspSlot.getMaterielDirectMap();
         for (String key : result.keySet()){
-            Set<ExtendNews> set = result.get(key);
+            Set<MaterielDirect> set = result.get(key);
             System.out.println("key: "+key);
-            for (ExtendNews adv : set){
+            for (MaterielDirect adv : set){
                 System.out.println(adv);
             }
             System.out.println("-------------------------------------");

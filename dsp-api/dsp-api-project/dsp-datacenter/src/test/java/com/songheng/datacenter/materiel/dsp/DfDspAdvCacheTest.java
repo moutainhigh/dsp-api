@@ -2,7 +2,7 @@ package com.songheng.datacenter.materiel.dsp;
 
 import com.songheng.dsp.datacenter.DataCenterApplication;
 import com.songheng.dsp.datacenter.materiel.dsp.DfDspAdvCache;
-import com.songheng.dsp.model.materiel.ExtendNews;
+import com.songheng.dsp.model.materiel.MaterielDirect;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,30 +32,30 @@ public class DfDspAdvCacheTest {
     }
 
     @Test
-    public void getExtendNewsSet(){
+    public void getMaterielDirectSet(){
         dfDspAdvCache.updateDfDspAdv();
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Set<ExtendNews> set = dfDspAdvCache.getExtendNewsSet("h5", "list");
+        Set<MaterielDirect> set = dfDspAdvCache.getMaterielDirectSet("h5", "list");
         if (null == set){
             return;
         }
-        for (ExtendNews adv : set){
-            System.out.println(adv.getDeliveryId()+" : " + adv.getTotalmoney());
+        for (MaterielDirect adv : set){
+            System.out.println(adv.getDeliveryId()+" : " + adv.getPlanBudget());
         }
     }
 
     @Test
-    public void getTmlPgTypeExtendNewsMap(){
+    public void getTmlPgTypeMaterielDirectMap(){
         dfDspAdvCache.updateDfDspAdv();
-        Map<String,Set<ExtendNews>> result = dfDspAdvCache.getTmlPgTypeExtendNewsMap();
+        Map<String,Set<MaterielDirect>> result = dfDspAdvCache.getTmlPgTypeMaterielDirectMap();
         for (String key : result.keySet()){
             System.out.println("key: " + key);
-            Set<ExtendNews> set = result.get(key);
-            for (ExtendNews adv : set){
+            Set<MaterielDirect> set = result.get(key);
+            for (MaterielDirect adv : set){
 //                System.out.println(adv.getDeliveryId()+" : " + adv.getTotalmoney());
                 System.out.println(adv);
             }

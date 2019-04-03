@@ -3,7 +3,7 @@ package com.songheng.dsp.partner.dc.invoke;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.rpc.cluster.support.FailoverCluster;
 import com.songheng.dsp.dubbo.baseinterface.ssp.AdvSspSlotService;
-import com.songheng.dsp.model.materiel.ExtendNews;
+import com.songheng.dsp.model.materiel.MaterielDirect;
 import com.songheng.dsp.model.ssp.AdvSspSlot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
@@ -40,8 +40,8 @@ public class AdvSspSlotInvoke {
      * @return
      */
     @Cacheable(value ="adv_ssp_slot", key = "#slotId", condition = "#result != null and #result.size() > 0")
-    public Set<ExtendNews> getExtendNewsSet(String slotId){
-        return advSspSlotService.getExtendNewsSet(slotId);
+    public Set<MaterielDirect> getMaterielDirectSet(String slotId){
+        return advSspSlotService.getMaterielDirectSet(slotId);
     }
 
     /**
@@ -58,11 +58,11 @@ public class AdvSspSlotInvoke {
      * 更新缓存
      */
     public void updateAdvSspSlot(){
-        Map<String, Set<ExtendNews>> extendNewsMap = advSspSlotService.getExtendNewsMap();
+        Map<String, Set<MaterielDirect>> materielDirectMap = advSspSlotService.getMaterielDirectMap();
         Cache cache = cacheManager.getCache("adv_ssp_slot");
-        if (null != extendNewsMap && extendNewsMap.size() > 0){
-            for (String key : extendNewsMap.keySet()){
-                cache.put(key, extendNewsMap.get(key));
+        if (null != materielDirectMap && materielDirectMap.size() > 0){
+            for (String key : materielDirectMap.keySet()){
+                cache.put(key, materielDirectMap.get(key));
             }
         }
 

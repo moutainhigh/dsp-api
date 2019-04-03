@@ -156,6 +156,10 @@ public class MaterielDirect extends MaterielBudget implements java.io.Serializab
      * */
     private String orderId;
     /**
+     * 挂单创建时间
+     */
+    private String orderCreateTime;
+    /**
      * 第三方监测曝光url extra3
      * */
     private String showRep;
@@ -173,12 +177,59 @@ public class MaterielDirect extends MaterielBudget implements java.io.Serializab
     /**
      * 高德标签
      * */
-    private String gdLable;
+    private String gdLabel;
 
     /**
      * 拆分的投放id个数
      * */
     private String subHisIdNum;
+    /**
+     * 终端
+     */
+    private String terminal;
+    /**
+     * 图片路径 img1Path, img2Path, img3Path
+     */
+    private String img1Path,img2Path,img3Path;
+    /**
+     * imgPath 以，分割
+     */
+    private String imgJson;
+    /**
+     * 图片高度
+     */
+    private int imgHeight;
+    /**
+     * 图片宽度
+     */
+    private int imgWidth;
+    /**
+     * pgtype list/detail/ny_y1...
+     */
+    private String pgtype;
+    /**
+     * channel app/h5/pc
+     */
+    private String channel;
+    /**
+     * 是否精准投放
+     */
+    private int isaccurate;
+    /**
+     * 新版广告标
+     */
+    private int switchTag ;
+    /**
+     * 投放时间段
+     */
+    private String timeQuantum;
+
+
+    public MaterielDirect(){
+        //十分钟
+        this.intervalTime = 1000 * 60 * 10;
+        this.switchTag = -1;
+    }
 
     @Override
     public int hashCode() {

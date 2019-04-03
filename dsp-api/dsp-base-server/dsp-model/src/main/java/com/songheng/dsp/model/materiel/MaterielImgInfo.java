@@ -16,7 +16,9 @@ public class MaterielImgInfo implements java.io.Serializable{
     private String src;
     private int width;
     private int height;
-    //图片类型 0:主要图片 1:辅助图片 2:icon图标
+    /**
+     * 图片类型 0:主要图片 1:辅助图片 2:icon图标
+     */
     private int type;
 
     public MaterielImgInfo(){}

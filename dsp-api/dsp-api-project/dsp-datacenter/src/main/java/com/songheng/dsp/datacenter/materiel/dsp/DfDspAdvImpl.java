@@ -1,8 +1,8 @@
 package com.songheng.dsp.datacenter.materiel.dsp;
 
 import com.alibaba.dubbo.config.annotation.Service;
-import com.songheng.dsp.dubbo.baseinterface.materiel.dsp.DfDspAdvService;
-import com.songheng.dsp.model.materiel.ExtendNews;
+import com.songheng.dsp.dubbo.baseinterface.materiel.dsp.DfDspAdvService;;
+import com.songheng.dsp.model.materiel.MaterielDirect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,23 +27,23 @@ public class DfDspAdvImpl implements DfDspAdvService {
     private DfDspAdvCache dfDspAdvCache;
 
     /**
-     * 获取以 terminal+pgtype 为key的 ExtendNews Map
+     * 获取以 terminal+pgtype 为key的 MaterielDirect Map
      * @return
      */
     @Override
-    public Map<String, Set<ExtendNews>> getTmlPgTypeExtendNewsMap() {
-        return dfDspAdvCache.getTmlPgTypeExtendNewsMap();
+    public Map<String, Set<MaterielDirect>> getTmlPgTypeMaterielDirectMap() {
+        return dfDspAdvCache.getTmlPgTypeMaterielDirectMap();
     }
 
     /**
-     * 根据指定 terminal,pgtype 获取 Set<ExtendNews>
+     * 根据指定 terminal,pgtype 获取 Set<MaterielDirect>
      * @param terminal
      * @param pgtype
      * @return
      */
     @Override
-    public Set<ExtendNews> getExtendNewsSet(String terminal, String pgtype) {
-        Set<ExtendNews> result = dfDspAdvCache.getExtendNewsSet(terminal, pgtype);
-        return null != result ? result : new HashSet<ExtendNews>();
+    public Set<MaterielDirect> getMaterielDirectSet(String terminal, String pgtype) {
+        Set<MaterielDirect> result = dfDspAdvCache.getMaterielDirectSet(terminal, pgtype);
+        return null != result ? result : new HashSet<MaterielDirect>();
     }
 }

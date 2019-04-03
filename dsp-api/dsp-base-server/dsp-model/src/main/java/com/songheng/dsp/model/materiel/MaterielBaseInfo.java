@@ -19,9 +19,21 @@ public class MaterielBaseInfo implements java.io.Serializable{
      * */
     private String deliveryId;
     /**
+     * 素材Id
+     */
+    private String advId;
+    /**
+     * dspId
+     */
+    private String dspId;
+    /**
      * 素材类型 0:展示类 1:下载类 2:小程序类
      * */
     private String type;
+    /**
+     * 广告样式
+     */
+    private String adStyle;
     /**
      * 素材基本样式 big,one,group,video
      * */
@@ -37,7 +49,10 @@ public class MaterielBaseInfo implements java.io.Serializable{
      * 广告主来源
      * */
     private String source;
-
+    /**
+     * 标题
+     */
+    private String topic;
     /**
      * 广告落地页url
      * */
@@ -72,6 +87,14 @@ public class MaterielBaseInfo implements java.io.Serializable{
      * 下载地址
      * */
     private String downloadurl;
+    /**
+     * 是否是下载类型的广告
+     */
+    private int isdownload;
+    /**
+     * deeplink连接
+     */
+    private String deeplink;
 
     /**
      * iOS 应用商店id

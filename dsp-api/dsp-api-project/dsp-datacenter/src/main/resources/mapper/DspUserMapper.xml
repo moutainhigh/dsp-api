@@ -2,25 +2,28 @@
 
 <mapper namespace="DspUser">
     <select id="queryDspUsers">
-        SELECT
-            dspid,
-            token,
-            banlance,
-            point,
-            mappingurl,
-            bidurl,
-            winnoticeurl,
-            qps AS h5Qps,
-            app_qps AS appQps,
-            nocmresponse,
-            usedfuserinfo,
-            rtbmsgformat,
-            priority,
-            terminal,
-            imei_sendreq,
-            noimei_sendreq
-        FROM adx_dspuser
-        WHERE flag = 1
-        AND banlance &gt; 0
+        <![CDATA[
+            SELECT
+                dspid,
+                token,
+                banlance,
+                point,
+                mappingurl,
+                bidurl,
+                winnoticeurl,
+                qps AS h5Qps,
+                app_qps AS appQps,
+                nocmresponse,
+                usedfuserinfo,
+                rtbmsgformat,
+                priority,
+                terminal,
+                imei_sendreq,
+                noimei_sendreq
+            FROM
+                adx_dspuser
+            WHERE flag = 1
+                AND banlance &gt; 0
+        ]]>
     </select>
 </mapper>

@@ -1,16 +1,8 @@
 package com.songheng.dsp.adxrtb.rtb;
 
-
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.songheng.dsp.common.utils.PropertyPlaceholder;
-import com.songheng.dsp.common.utils.RandomUtils;
 import com.songheng.dsp.model.adx.response.BidBean;
 import com.songheng.dsp.model.adx.response.ResponseBean;
 import com.songheng.dsp.model.client.AdxRtbClientRequest;
-import com.songheng.dsp.model.flow.BaseFlow;
-import com.songheng.dsp.model.flow.ReqSlotInfo;
-import com.songheng.dsp.model.materiel.DspAdvInfo;
 import com.songheng.dsp.model.output.OutPutAdv;
 import lombok.extern.slf4j.Slf4j;
 
