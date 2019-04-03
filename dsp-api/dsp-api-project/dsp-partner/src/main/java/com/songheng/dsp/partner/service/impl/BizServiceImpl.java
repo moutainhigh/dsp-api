@@ -7,6 +7,7 @@ import com.songheng.dsp.model.client.SspClientRequest;
 import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.model.ssp.AdvSspSlot;
 import com.songheng.dsp.partner.dc.invoke.AdvSspSlotInvoke;
+import com.songheng.dsp.partner.dc.invoke.BlackListConfigInvoke;
 import com.songheng.dsp.partner.dc.invoke.DspUserInvoke;
 import com.songheng.dsp.partner.service.BizService;
 import com.songheng.dsp.partner.utils.RemoteIpUtil;
@@ -29,6 +30,9 @@ public class BizServiceImpl implements BizService {
 
     @Autowired
     private DspUserInvoke dspUserInvoke;
+
+    @Autowired
+    private BlackListConfigInvoke blackListConfigInvoke;
 
     /**
      * 初始化流量信息
@@ -54,7 +58,10 @@ public class BizServiceImpl implements BizService {
                 slotMap.put(slotId,advSspSlot);
             }
         }
-        return new SspClientRequest(slotMap,apiArg);
+        Map<String, List<String>> blackList = blackListConfigInvoke.getBlackList();
+        SspClientRequest ssp = new SspClientRequest(slotMap, apiArg);
+        ssp.setBlackListMap(blackList);
+        return ssp;
     }
     /**
      * 执行风控业务

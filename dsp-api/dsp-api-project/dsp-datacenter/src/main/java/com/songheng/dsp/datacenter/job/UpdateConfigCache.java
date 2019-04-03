@@ -2,6 +2,7 @@ package com.songheng.dsp.datacenter.job;
 
 import com.songheng.dsp.common.utils.StringUtils;
 import com.songheng.dsp.common.utils.ZkClientUtils;
+import com.songheng.dsp.datacenter.config.blacklist.BlackListConfigLoader;
 import com.songheng.dsp.datacenter.config.db.DbConfigLoader;
 import com.songheng.dsp.datacenter.config.props.PropertiesLoader;
 import com.songheng.dsp.datacenter.infosync.ZkWatcherAdvice;
@@ -41,6 +42,20 @@ public class UpdateConfigCache {
         log.debug("更新配置文件缓存数据成功！");
     }
 
+    /**
+     * 定时黑名单列表文件缓存数据
+     * 60秒更新一次
+     */
+    @Scheduled(initialDelay = 1000 * 5, fixedDelay = 1000 * 60)
+    public void updateBlackListConfig(){
+        log.debug("开始更新黑名单列表缓存数据...");
+        try {
+            BlackListConfigLoader.loadAllBlackListConfig();
+        } catch (Exception e) {
+            log.error("更新黑名单列表缓存数据失败\n{}",e);
+        }
+        log.debug("更新黑名单列表缓存数据成功！");
+    }
     /**
      * 定时任务更新DBCONFIG缓存
      * 60秒更新一次

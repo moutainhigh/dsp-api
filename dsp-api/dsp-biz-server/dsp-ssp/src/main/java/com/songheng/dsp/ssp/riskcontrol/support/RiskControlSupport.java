@@ -13,7 +13,7 @@ import java.util.Map;
  **/
 public class RiskControlSupport {
 
-    private final static String[] blackListKey = {"ip","advuid","appuid"};
+    private final static String[] blackListKey = {"remote_ip","adv_uid","app_uid"};
 
     public static Map<String,String> getBlackListKey(BaseFlow baseFlow){
         Map<String,String> result = new HashMap<>(3);
