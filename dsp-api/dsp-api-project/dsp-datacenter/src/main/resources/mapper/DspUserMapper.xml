@@ -23,7 +23,7 @@
             FROM
                 adx_dspuser
             WHERE flag = 1
-                AND banlance &gt; 0
+                AND banlance > 0
         ]]>
     </select>
 </mapper>

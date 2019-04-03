@@ -99,17 +99,8 @@ public class ZkWatcherSubscriber implements InitializingBean {
     private void subscriber(){
         //获取zkClient连接
         zkClient = ZkClientUtils.getClient(zkClusterAddress, zkConnectTimeOut, zkSessionTimeOut);
-        String parentMinPath = ZkClientUtils.getParentPath(zkAdviceMinPath);
-        String parentSecPath = ZkClientUtils.getParentPath(zkAdviceSecPath);
-        //获得子节点
-        List<String> childListByMinPath = zkClient.getChildren(parentMinPath);
-        List<String> childListBySecPath = zkClient.getChildren(parentSecPath);
-        for (String childNode : childListByMinPath){
-            zkClient.subscribeDataChanges(parentMinPath+"/"+childNode, new ZkDataListenerByMinPath());
-        }
-        for (String childNode : childListBySecPath){
-            zkClient.subscribeDataChanges(parentSecPath+"/"+childNode, new ZkDataListenerBySecPath());
-        }
+        zkClient.subscribeDataChanges(zkAdviceMinPath, new ZkDataListenerByMinPath());
+        zkClient.subscribeDataChanges(zkAdviceSecPath, new ZkDataListenerBySecPath());
         zkClient.subscribeStateChanges(new ZkStateListener());
     }
 

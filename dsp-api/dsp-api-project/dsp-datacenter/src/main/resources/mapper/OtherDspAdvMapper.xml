@@ -28,7 +28,7 @@
             WHERE
                 STATUS = 1
                 AND reviewstatus = 1
-                AND startTime &lt;= NOW( ) AND endTime &gt;= NOW( )
+                AND startTime <= NOW( ) AND endTime >= NOW( )
          ]]>
     </select>
 </mapper>

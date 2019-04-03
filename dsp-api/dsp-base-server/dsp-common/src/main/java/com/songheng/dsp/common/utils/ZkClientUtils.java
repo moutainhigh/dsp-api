@@ -69,7 +69,7 @@ public class ZkClientUtils {
         if (!zkClient.exists(path)){
             return zkClient.create(path, String.valueOf(data), mode);
         }
-        return null;
+        return path;
     }
 
     /**

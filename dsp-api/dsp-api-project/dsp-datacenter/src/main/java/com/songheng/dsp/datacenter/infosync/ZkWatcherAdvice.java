@@ -69,10 +69,10 @@ public class ZkWatcherAdvice implements InitializingBean {
         zkClient = ZkClientUtils.getClient(zkClusterAddress, zkConnectTimeOut, zkSessionTimeOut);
         //创建节点
         minPath = ZkClientUtils.createNode(zkClient, zkAdviceMinPath, true,
-                System.currentTimeMillis(), CreateMode.EPHEMERAL_SEQUENTIAL);
+                System.currentTimeMillis(), CreateMode.PERSISTENT);
         System.out.println("创建节点："+minPath);
         secPath = ZkClientUtils.createNode(zkClient, zkAdviceSecPath, true,
-                System.currentTimeMillis(), CreateMode.EPHEMERAL_SEQUENTIAL);
+                System.currentTimeMillis(), CreateMode.PERSISTENT);
         System.out.println("创建节点："+secPath);
         //订阅zk节点连接及状态的变化情况
         zkClient.subscribeStateChanges(new ZkStateListener());

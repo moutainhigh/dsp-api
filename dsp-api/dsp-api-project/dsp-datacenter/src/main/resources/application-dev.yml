@@ -24,8 +24,8 @@ zk:
   session:
     timeout: 5000
   subscribe:
-    minutepath: /dsp-dc/advice/timerupt/minute-
-    secondspath: /dsp-dc/advice/timerupt/seconds-
+    minutepath: /dsp-dc/advice/timerupt/sync-minute
+    secondspath: /dsp-dc/advice/timerupt/sync-seconds
 
 
 

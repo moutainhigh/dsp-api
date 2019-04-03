@@ -33,8 +33,8 @@
             WHERE
               siteState = 1
               AND qidState = 1
-              AND (CASE WHEN (planStartTime<>'' AND planStartTime<>'0000-00-00' AND planEndTime<>'' AND planEndTime<>'0000-00-00') THEN NOW() BETWEEN planStartTime AND planEndTime ELSE 1=1 END)
-              AND (CASE WHEN cycleStartTime<>'00:00:00' AND cycleEndTime<>'00:00:00' THEN NOW() BETWEEN cycleStartTime AND cycleEndTime ELSE 1=1 END)
+              AND (CASE WHEN (planStartTime <> '' AND planStartTime <> '0000-00-00' AND planEndTime <> '' AND planEndTime <> '0000-00-00') THEN NOW() BETWEEN planStartTime AND planEndTime ELSE 1=1 END)
+              AND (CASE WHEN cycleStartTime <> '00:00:00' AND cycleEndTime <> '00:00:00' THEN NOW() BETWEEN cycleStartTime AND cycleEndTime ELSE 1=1 END)
               ORDER BY shielType ASC, site ASC, qid ASC
         ]]>
     </select>
