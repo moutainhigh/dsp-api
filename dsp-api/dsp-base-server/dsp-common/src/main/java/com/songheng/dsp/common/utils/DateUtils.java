@@ -356,6 +356,17 @@ public class DateUtils {
     }
 
     /**
+     * 获取日期时间的当前小时
+     * @param date
+     * @return
+     */
+    public static int getHour(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.get(Calendar.HOUR_OF_DAY);
+    }
+
+    /**
      * 获取日期时间当月的总天数
      * @param date
      * @return
@@ -437,5 +448,6 @@ public class DateUtils {
         System.out.println(dateFormat(dateAddMonths(dateParse("2017-02-07", DateUtils.DATE_FORMAT_YYYY_MM), -12), DateUtils.DATE_FORMAT_YYYY_MM));
         System.out.println(dateFormat(maxDateOfMonth(dateParse("2016-02", "yyyy-MM")), null));
         System.out.println(dateFormat(minDateOfMonth(dateParse("2016-03-31", null)), null));
+        System.out.println(getHour(new Date()));
     }
 }

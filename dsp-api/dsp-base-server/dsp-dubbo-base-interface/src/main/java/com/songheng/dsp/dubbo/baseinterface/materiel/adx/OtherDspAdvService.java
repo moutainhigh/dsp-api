@@ -1,6 +1,6 @@
 package com.songheng.dsp.dubbo.baseinterface.materiel.adx;
 
-import com.songheng.dsp.model.materiel.DspAdvExtend;
+import com.songheng.dsp.model.materiel.MaterielDirect;
 
 import java.util.List;
 import java.util.Map;
@@ -13,46 +13,46 @@ import java.util.Map;
 public interface OtherDspAdvService {
 
     /**
-     * 根据terminal 获取 List<DspAdvExtend>
+     * 根据terminal 获取 List<MaterielDirect>
      * @param terminal
      * @return
      */
-    List<DspAdvExtend> getDspAdvInfos(String terminal);
+    List<MaterielDirect> getDspAdvInfos(String terminal);
 
     /**
-     * 根据terminal,hisId,dspId 获取 DspAdvExtend
+     * 根据terminal,hisId,dspId 获取 MaterielDirect
      * @param terminal
      * @param hisId 投放id
      * @param dspId
      * @return
      */
-    DspAdvExtend getDspAdvByHisIdDspId(String terminal, String hisId, String dspId);
+    MaterielDirect getDspAdvByHisIdDspId(String terminal, String hisId, String dspId);
 
     /**
-     * 根据terminal,advId,dspId 获取 DspAdvExtend
+     * 根据terminal,advId,dspId 获取 MaterielDirect
      * @param terminal
      * @param advId 物料id
      * @param dspId
      * @return
      */
-    DspAdvExtend getDspAdvByAdvIdDspId(String terminal, String advId, String dspId);
+    MaterielDirect getDspAdvByAdvIdDspId(String terminal, String advId, String dspId);
 
     /**
-     * 获取所有 List<DspAdvExtend>
+     * 获取所有 List<MaterielDirect>
      * @return
      */
-    Map<String, List<DspAdvExtend>> getDspAdvListMap();
+    Map<String, List<MaterielDirect>> getDspAdvListMap();
 
     /**
-     * 获取所有 DspAdvExtend
+     * 获取所有 MaterielDirect
      * @return
      */
-    Map<String, DspAdvExtend> getDspAdvByHisIdMap();
+    Map<String, MaterielDirect> getDspAdvByHisIdMap();
 
     /**
-     * 获取所有 DspAdvExtend
+     * 获取所有 MaterielDirect
      * @return
      */
-    Map<String, DspAdvExtend> getDspAdvByAdvIdMap();
+    Map<String, MaterielDirect> getDspAdvByAdvIdMap();
 
 }

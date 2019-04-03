@@ -2,14 +2,13 @@ package com.songheng.dsp.web.base.controller;
 
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.dubbo.rpc.cluster.support.FailoverCluster;
 import com.alibaba.fastjson.JSON;
 import com.songheng.dsp.dubbo.baseinterface.materiel.dsp.DfDspAdvService;
-import com.songheng.dsp.model.materiel.ExtendNews;
 import com.songheng.dsp.web.model.UserInfo;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @description: 登录页面
@@ -18,7 +17,8 @@ import java.util.Set;
  **/
 @RestController
 public class LoginController {
-    @Reference
+
+    @Reference(cluster = FailoverCluster.NAME, retries = 2, timeout = 1000, check = false, mock = "return null")
     private DfDspAdvService dfDspAdvService;
 
 
@@ -35,6 +35,6 @@ public class LoginController {
     @RequestMapping(value="/api/list")
     public String getAdvList(@RequestBody Map<String,String> param){
         System.out.println(param);
-        return JSON.toJSON(dfDspAdvService.getExtendNewsSet(param.get("termail"),param.get("sell"))).toString();
+        return JSON.toJSON(dfDspAdvService.getMaterielDirectSet(param.get("termail"),param.get("sell"))).toString();
     }
 }
