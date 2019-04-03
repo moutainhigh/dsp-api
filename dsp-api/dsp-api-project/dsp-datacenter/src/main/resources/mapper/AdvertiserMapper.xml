@@ -2,6 +2,15 @@
 
 <mapper namespace="Advertiser">
     <select id="queryAdvertiser">
-
+        SELECT a.userId,a.userName,b.banlance AS cashBalance,b.virtualBalance AS rebateBalance,
+        convert(b.banlance+b.virtualBalance,decimal(10,2)) AS totalBalance,c.sectors sectorCode
+        FROM adplatform_user a
+        INNER join adplatform_banlance b
+        ON a.userId = b.userId
+        INNER JOIN adplatform_extendInfo c
+        ON a.userId=c.userId
+        WHERE a.isActive = 1
+        AND a.dspuserid = 0
+        AND convert(b.banlance+b.virtualBalance,decimal(10,2)) > 200
     </select>
 </mapper>
