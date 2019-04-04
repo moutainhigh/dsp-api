@@ -2,6 +2,8 @@ package com.songheng.dsp.dubbo.baseinterface.user.dsp;
 
 import com.songheng.dsp.model.dsp.AdvertiserInfo;
 
+import java.util.Map;
+
 /**
  * @description: DSP广告主信息
  * @author: zhangshuai@021.com
@@ -15,5 +17,11 @@ public interface AdvertiserService {
      * @return 广告主信息
      */
     AdvertiserInfo getAdvertiserInfoByUserId(Integer userId);
+
+    /**
+     * 获取所有的广告主信息
+     * @return 广告主信息
+     */
+    Map<Integer,AdvertiserInfo> getAdvertiserInfo();
 
 }

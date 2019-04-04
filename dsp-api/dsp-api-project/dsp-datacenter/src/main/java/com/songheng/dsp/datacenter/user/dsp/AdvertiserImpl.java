@@ -10,7 +10,6 @@ import com.songheng.dsp.model.adx.user.DspUserInfo;
 import com.songheng.dsp.model.dsp.AdvertiserInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -34,6 +33,11 @@ public class AdvertiserImpl implements AdvertiserService {
     @Override
     public AdvertiserInfo getAdvertiserInfoByUserId(Integer userId) {
         return advertiserInfoMap.get(userId);
+    }
+
+    @Override
+    public Map<Integer, AdvertiserInfo> getAdvertiserInfo() {
+        return advertiserInfoMap;
     }
 
 

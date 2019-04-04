@@ -224,11 +224,17 @@ public class MaterielDirect extends MaterielBudget implements java.io.Serializab
      */
     private String timeQuantum;
 
+    /**
+     * 平均收费上报的时间(单位s)
+     * 用于限速 ,值越大 则限速更严
+     */
+    private double advReportTime;
 
     public MaterielDirect(){
         //十分钟
         this.intervalTime = 1000 * 60 * 10;
         this.switchTag = -1;
+        this.advReportTime = 5;
     }
 
     @Override

@@ -209,7 +209,7 @@ public final class MathUtils {
      * double * rate ---> double
      * **/
     public static double doubleMulRate(double v,int rate){
-        BigDecimal b1 = new BigDecimal(Double.toString(v)).setScale(DEF_DIV_SCALE,ROUND_MODE);
+        BigDecimal b1 = new BigDecimal(Double.toString(v));
         BigDecimal b2 = new BigDecimal(String.valueOf(rate));
         return b1.multiply(b2).setScale(DEF_DIV_SCALE,ROUND_MODE).doubleValue();
 
@@ -240,22 +240,42 @@ public final class MathUtils {
         return DoubleMath.roundToInt(value,RoundingMode.HALF_UP);
     }
 
+    /**
+     * @param v1
+     * @param v2
+     * @param scale
+     * @return
+     *   -1 : v1< v2
+     *   0  : v1 == v2
+     *   1  : v1 > v2
+     */
+    public static int compareTo(double v1,double v2){
+        BigDecimal b1 = new BigDecimal(Double.toString(v1)).setScale(DEF_DIV_SCALE,ROUND_MODE);
+        BigDecimal b2 = new BigDecimal(Double.toString(v2)).setScale(DEF_DIV_SCALE,ROUND_MODE);
+        return b1.compareTo(b2);
+    }
     public static void main(String[] args) {
-        System.out.println(mul(add(1.745,0),1000));
-        System.out.println(sub(7.091,7.342221));
-        System.out.println(mul(1.5,0.12121121212121212));
-        System.out.println(div(10,3));
-        System.out.println(div(10,3));
-        System.out.println(round(10.2125512));
-        System.out.println(new BigDecimal(1.745).multiply(new BigDecimal(100)).longValue());
-        System.out.println(mul(1.745,100));
-        System.out.println(mul(0.3276,100));
-        System.out.println(mode(-7,4));
-        System.out.println(
-                doubleToLong(sub(200000000,
-                        100000)));
-        System.out.println(doubleToLong(1.745));
-        System.out.println((long)1.745);
-        System.out.println(doubleToLong(1.745,1000));
+//        System.out.println(mul(add(1.745,0),1000));
+//        System.out.println(sub(7.091,7.342221));
+//        System.out.println(mul(1.5,0.12121121212121212));
+//        System.out.println(div(10,3));
+//        System.out.println(div(10,3));
+//        System.out.println(round(10.2125512));
+//        System.out.println(new BigDecimal(1.745).multiply(new BigDecimal(100)).longValue());
+//        System.out.println(mul(1.745,100));
+//        System.out.println(mul(0.3276,100));
+//        System.out.println(mode(-7,4));
+//        System.out.println(
+//                doubleToLong(sub(200000000,
+//                        100000)));
+//        System.out.println(doubleToLong(1.745));
+//        System.out.println((long)1.745);
+//        System.out.println(doubleToLong(1.745,1000));
+        double d1 = 1.00000001;
+        double d2 = 0.00000001;
+        System.out.println(d1-d2);
+        //BigDecimal bd1 = new BigDecimal(String.valueOf(d1));
+        System.out.println(MathUtils.compareTo(d1,d2));
+
     }
 }

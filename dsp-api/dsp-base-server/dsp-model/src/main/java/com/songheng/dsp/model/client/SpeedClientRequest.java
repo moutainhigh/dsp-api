@@ -1,9 +1,13 @@
 package com.songheng.dsp.model.client;
 
+import com.songheng.dsp.model.consume.ConsumeInfo;
+import com.songheng.dsp.model.dsp.AdvertiserInfo;
 import com.songheng.dsp.model.flow.BaseFlow;
 import com.songheng.dsp.model.materiel.MaterielDirect;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Map;
 
 /**
  * @description: 限速模块请求数据
@@ -29,4 +33,14 @@ public class SpeedClientRequest {
      * 竞价模式
      * */
     private int bidModel;
+
+    /**
+     * 广告主信息
+     */
+    private Map<Integer, AdvertiserInfo> advertiserInfoMap;
+
+    /**
+     * 广告计划的消耗情况
+     * */
+    private Map<String, ConsumeInfo> consumeInfo;
 }

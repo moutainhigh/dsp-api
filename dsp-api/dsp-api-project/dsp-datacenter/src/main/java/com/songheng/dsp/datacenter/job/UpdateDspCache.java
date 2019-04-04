@@ -5,6 +5,7 @@ import com.songheng.dsp.common.utils.ZkClientUtils;
 import com.songheng.dsp.datacenter.infosync.ZkWatcherAdvice;
 import com.songheng.dsp.datacenter.materiel.dsp.DfDspAdvCache;
 import com.songheng.dsp.datacenter.ssp.*;
+import com.songheng.dsp.datacenter.user.dsp.AdvertiserImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -24,6 +25,9 @@ public class UpdateDspCache {
      */
     @Autowired
     private DfDspAdvCache dfDspAdvCache;
+
+    @Autowired
+    private AdvertiserImpl advertiser;
 
     /**
      * advSspSlot
@@ -45,6 +49,12 @@ public class UpdateDspCache {
     @Scheduled(initialDelay = 1000 * 5, fixedDelay = 10 * 1000)
     public void updateDspCache(){
         log.debug("开始更新DSP广告缓存数据...");
+        try {
+            //更新DSP广告主信息
+            advertiser.updateAdvertiser();
+        } catch (Exception e){
+            log.error("更新DSP广告主信息失败\n{}", e);
+        }
         try {
             //更新DfDsp广告池缓存
             dfDspAdvCache.updateDfDspAdv();
